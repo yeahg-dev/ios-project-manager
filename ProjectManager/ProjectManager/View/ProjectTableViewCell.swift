@@ -77,6 +77,7 @@ class ProjectTableViewCell: UITableViewCell {
     private func configureCellUI() {
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
+        self.selectionStyle = .none
         self.cellContainerView.backgroundColor = .white
     }
     
@@ -106,4 +107,25 @@ class ProjectTableViewCell: UITableViewCell {
         self.deadlineLabel.textColor = DeadlineTextColor
         self.deadlineLabel.text = deadline
     }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        if selected == true {
+            self.cellContainerView.backgroundColor = .systemBlue
+            self.titleLabel.textColor = .white
+            if self.deadlineLabel.textColor == .black {
+                self.deadlineLabel.textColor = .white
+            }
+        }
+    }
+
+    override func prepareForReuse() {
+        self.cellContainerView.backgroundColor = .white
+        self.titleLabel.textColor = .black
+        if self.deadlineLabel.textColor == .white {
+            self.deadlineLabel.textColor = .black
+        }
+    }
+    
 }

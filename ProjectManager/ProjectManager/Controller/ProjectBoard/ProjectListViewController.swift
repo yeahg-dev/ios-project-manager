@@ -261,6 +261,7 @@ extension ProjectListViewController: UITableViewDelegate {
         detailViewController.modalPresentationStyle = .formSheet
         
         self.present(detailViewController, animated: false, completion: nil)
+        self.projectTableView.deselectRow(at: indexPath, animated: false)
     }
     
     func tableView(
