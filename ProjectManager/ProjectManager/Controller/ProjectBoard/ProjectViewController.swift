@@ -121,6 +121,7 @@ final class ProjectViewController: UIViewController {
         self.configureNavigationBarLayout()
         self.configureStackViewLayout()
         self.configureMode()
+        self.descriptionTextView.delegate = self
     }
     
     // MARK: - Configure View
@@ -253,5 +254,22 @@ final class ProjectViewController: UIViewController {
         }
         projectTableViewController.updateProject(of: identifier, with: content)
         dismiss(animated: false, completion: nil)
+    }
+}
+
+extension ProjectViewController: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let limitedCharacterCount = 1000
+        
+        let currentText = textView.text ?? ""
+        
+        guard let rangeToUpdate = Range(range, in: currentText) else {
+            return false
+        }
+        
+        let changedText = currentText.replacingCharacters(in: rangeToUpdate, with: text)
+        
+        return changedText.count <= limitedCharacterCount
     }
 }
