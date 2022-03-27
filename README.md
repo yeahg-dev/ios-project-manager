@@ -1,6 +1,10 @@
-[TOC]
-
 # 🏁프로젝트 관리 앱
+
+목차
+
+- [개요](##about...)
+- [STEP1️⃣: 기술스택 선정](#step1️⃣)
+- [STEP2️⃣-1: MVC설계 및 UI구현](#step-2️⃣-1️⃣)
 
 ## About...
 
@@ -110,10 +114,11 @@ Firebase: Cocoapods, SPM, Carthage으로 사용할 수 있습니다. 이전 프�
 
 <br>
 
-# STEP 2️⃣ -1
+# STEP 2️⃣-1
 ## 🗺 MVC 설계
 
-![](/Users/a1/Desktop/157486108-856bcca4-ba0a-4d30-8225-0176978228c5.jpeg)
+![157486108-856bcca4-ba0a-4d30-8225-0176978228c5](https://user-images.githubusercontent.com/81469717/160266978-e62e802a-3312-4751-aa1c-7868aff6f524.jpeg)
+
 
 #### 설계 설명, 의도
 
@@ -136,8 +141,6 @@ Firebase: Cocoapods, SPM, Carthage으로 사용할 수 있습니다. 이전 프�
 - 모델의 역할을 프로토콜로 분리하여, 자식 뷰컨에서 필요한 기능만 사용할 수 있도록 제한
 
 <br>
-
-### 🔨 구현 기능
 
 ## 🔨 구현 기능
 1.  Array로 구현한 CRUD	
@@ -170,7 +173,8 @@ Firebase: Cocoapods, SPM, Carthage으로 사용할 수 있습니다. 이전 프�
 
 **문제 상황**
 
-![스크린샷 2022-03-27 오후 1.08.48](/Users/a1/Desktop/스크린샷 2022-03-27 오후 1.08.48.png)
+<img width="736" alt="스크린샷 2022-03-27 오후 1 08 48" src="https://user-images.githubusercontent.com/81469717/160266981-cf9e3975-f9df-4b65-a72c-8556e55c8539.png">
+
 
 TableView의 Header를 커스텀하게 만들기 위해 UITableViewHeaderFooterView를 서브클래스를 만들어서,
 tableViewDelegate에서 지정.
@@ -221,11 +225,11 @@ bounds를 벗어난 TextView의 textContainer에 대해서만 invisible하게 �
 
 [STEP2 PR](https://github.com/yagom-academy/ios-project-manager/pull/95)
 
-### 1. `TodoViewController` `DoingViewController` `DoneViewController`를`ListViewController` 구현하여 중복 코드 최소화
+#### 1. `TodoViewController` `DoingViewController` `DoneViewController`를`ListViewController` 구현하여 중복 코드 최소화
 
  `TodoViewController` `DoingViewController` `DoneViewController`는 현재 동일한 UI로 그려지기 때문에 중복되는 코드가 많았다. 따라서 현재 중복되는 코드를 최소화하기 위해  `ListViewController` 상위 클래스를 생성하고, 초기자에서 `projectStatus`를 주입하여 주었다.
 
-### 2. `DetailViewController` `CreatorViewController`의 상위 클래스 `ProjectViewController`구현하여 중복 코드 최소화
+#### 2. `DetailViewController` `CreatorViewController`의 상위 클래스 `ProjectViewController`구현하여 중복 코드 최소화
 
 프로젝트 수정화면과 생성화면을 담당하는  `DetailViewController` `CreatorViewController`의 UI는 구조는 동일하지만, `BarButton`과 제공하는 기능이 다름.
 
