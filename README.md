@@ -1,12 +1,10 @@
 # 🏁프로젝트 관리 앱
 
 목차
+- [STEP 1️⃣ : 기술스택 선정](#step-1️⃣)
+- [STEP 2️⃣-1 : MVC설계 및 UI구현](#step-2️⃣-1)
 
-- [개요](##about...)
-- [STEP1️⃣: 기술스택 선정](#step-1️⃣)
-- [STEP2️⃣-1: MVC설계 및 UI구현](#step-2️⃣-1️)
-
-## About...
+## About
 
 ### contributors
 👩🏻‍💻개발 @yeahg-dev
