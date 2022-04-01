@@ -121,6 +121,7 @@ class ProjectTableViewCell: UITableViewCell {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         self.cellContainerView.backgroundColor = .white
         self.titleLabel.textColor = .black
         if self.deadlineLabel.textColor == .white {

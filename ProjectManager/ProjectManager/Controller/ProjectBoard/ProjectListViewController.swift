@@ -284,6 +284,19 @@ extension ProjectListViewController: UITableViewDelegate {
         let actionConfigurations = UISwipeActionsConfiguration(actions: [deleteAction])
         return actionConfigurations
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print("willDisplay \(indexPath)🍎")
+    }
+
+    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
+        if let swipeContainerView = tableView.subviews.first(where: { String(describing: type(of: $0)) == "_UITableViewCellSwipeContainerView" }) {
+            if let swipeActionPullView = swipeContainerView.subviews.first, String(describing: type(of: swipeActionPullView)) == "UISwipeActionPullView" {
+                swipeActionPullView.frame.size.height -= 10
+                swipeActionPullView.frame = swipeActionPullView.frame.offsetBy(dx: 0, dy: 5)
+            }
+        }
+    }
 }
 
 // MARK: - ProjectEditViewControllerDelegate
