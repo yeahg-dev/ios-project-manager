@@ -96,19 +96,22 @@ final class ProjectBoardViewController: UIViewController {
     
     private func configureTableStackViewLayout() {
         let safeArea = self.view.safeAreaLayoutGuide
+        let tabHeight = self.view.bounds.height * 0.05
         NSLayoutConstraint.activate([
             tableStackView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
             tableStackView.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
             tableStackView.rightAnchor.constraint(equalTo: safeArea.rightAnchor),
-            tableStackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -40)
+            tableStackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -tabHeight)
         ])
     }
     
     private func configureDataSourceSettingButtonLayout() {
         let safeArea = self.view.safeAreaLayoutGuide
+        let tabHeiht = self.view.bounds.height * 0.05
+        let margin = tabHeiht * 0.4
         NSLayoutConstraint.activate([
-            dataSourceSettingButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20),
-            dataSourceSettingButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: 7)])
+            dataSourceSettingButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -margin),
+            dataSourceSettingButton.topAnchor.constraint(equalTo: tableStackView.bottomAnchor, constant: margin)])
     }
     
     // MARK: - Configure Controller
