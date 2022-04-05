@@ -69,15 +69,11 @@ final class DataSourceConfigViewController: UIViewController {
         self.configureLayout()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.preferredContentSize = CGSize(width: 300, height: 150)
-    }
-    
     // MARK: - Method
     private func configureView() {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.view.backgroundColor = .white
+        self.preferredContentSize = CGSize(width: 300, height: 150)
     }
     
     private func configureViewHeirachry() {
