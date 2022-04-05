@@ -18,7 +18,17 @@ extension Date {
         return dateFormatter
     }()
     
+    static let timeFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .medium
+        return dateFormatter
+    }()
+    
     func localeString() -> String {
         return Date.localeDateFormatter.string(from: self)
+    }
+    
+    var formattedTimeString: String {
+        return Date.timeFormatter.string(from: self)
     }
 }
