@@ -12,6 +12,7 @@
 		635862CE27E35D84005E2A2B /* ProjectCoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635862CD27E35D84005E2A2B /* ProjectCoreDataManager.swift */; };
 		635862D127E392DB005E2A2B /* CDProject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635862CF27E392DB005E2A2B /* CDProject+CoreDataClass.swift */; };
 		6365151C27FC7B5300581C29 /* OperationHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6365151B27FC7B5300581C29 /* OperationHistory.swift */; };
+		6365151E27FC86F400581C29 /* HistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6365151D27FC86F400581C29 /* HistoryStorage.swift */; };
 		636B231227EB770F00478751 /* NetworkChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636B231127EB770F00478751 /* NetworkChecker.swift */; };
 		63974A4527D8D5F600523B16 /* ProjectListViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63974A4427D8D5F600523B16 /* ProjectListViewControllerDelegate.swift */; };
 		63B96DA927E024AF00144F7C /* ProjectBoardScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B96DA827E024AF00144F7C /* ProjectBoardScene.swift */; };
@@ -47,6 +48,7 @@
 		635862CD27E35D84005E2A2B /* ProjectCoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCoreDataManager.swift; sourceTree = "<group>"; };
 		635862CF27E392DB005E2A2B /* CDProject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDProject+CoreDataClass.swift"; sourceTree = "<group>"; };
 		6365151B27FC7B5300581C29 /* OperationHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationHistory.swift; sourceTree = "<group>"; };
+		6365151D27FC86F400581C29 /* HistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStorage.swift; sourceTree = "<group>"; };
 		636B231127EB770F00478751 /* NetworkChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkChecker.swift; sourceTree = "<group>"; };
 		63974A4427D8D5F600523B16 /* ProjectListViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListViewControllerDelegate.swift; sourceTree = "<group>"; };
 		63B96DA827E024AF00144F7C /* ProjectBoardScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectBoardScene.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				63D21E6627D4F9B900E35D3B /* ProjectManager.swift */,
+				6365151D27FC86F400581C29 /* HistoryStorage.swift */,
 				63B96DA727E0249000144F7C /* ViewNameSpace */,
 				635862BB27E34DEF005E2A2B /* Data */,
 				63D21E6527D4C4FB00E35D3B /* DataBase */,
@@ -349,6 +352,7 @@
 				63B96DE527E0BF7300144F7C /* CALayer+Extension.swift in Sources */,
 				636B231227EB770F00478751 /* NetworkChecker.swift in Sources */,
 				634A508F27E457310097303B /* ProjectFirestoreManager.swift in Sources */,
+				6365151E27FC86F400581C29 /* HistoryStorage.swift in Sources */,
 				63E164B227E99688004E3D2E /* DataSource.swift in Sources */,
 				6365151C27FC7B5300581C29 /* OperationHistory.swift in Sources */,
 				63B96DAD27E028CF00144F7C /* ProjectListViewController.swift in Sources */,
