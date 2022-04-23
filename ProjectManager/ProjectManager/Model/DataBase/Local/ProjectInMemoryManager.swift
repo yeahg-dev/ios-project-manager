@@ -11,7 +11,7 @@ final class ProjectInMemoryManager {
 
     // MARK: - Property
     private var projects: [String: Project] = [:]
-    
+    private var historyStorage = HistoryStorage()
 }
 
 // MARK: - DataSource
@@ -32,7 +32,11 @@ extension ProjectInMemoryManager: DataSource {
                                  deadline: content[ProjectKey.deadline.rawValue] as? Date,
                                  description: content[ProjectKey.description.rawValue] as? String,
                                  status: content[ProjectKey.status.rawValue] as? Status)
-        projects.updateValue(newProject, forKey: identifier)
+        self.projects.updateValue(newProject, forKey: identifier)
+        self.historyStorage.makeHistory(type: .add,
+                                        of: identifier,
+                                        title: content[ProjectKey.title.rawValue] as? String,
+                                        status: content[ProjectKey.status.rawValue] as? Status)
     }
     
     func read(of identifier: String, completion: @escaping (Result<Project?, Error>) -> Void) {
@@ -50,19 +54,34 @@ extension ProjectInMemoryManager: DataSource {
         }
         
         updatingProject.updateContent(with: content)
-        projects.updateValue(updatingProject, forKey: identifier)
+        self.projects.updateValue(updatingProject, forKey: identifier)
     }
     
     func updateStatus(of identifier: String, with status: Status) {
         guard var updatingProject = projects[identifier] else {
             return
         }
+        let currentStatus = updatingProject.status
         
         updatingProject.updateStatus(with: status)
-        projects.updateValue(updatingProject, forKey: identifier)
+        self.projects.updateValue(updatingProject, forKey: identifier)
+        
+        self.historyStorage.makeHistory(type: .move(status),
+                                        of: identifier,
+                                        title: updatingProject.title,
+                                        status: currentStatus)
     }
    
     func delete(of identifier: String) {
-        projects.removeValue(forKey: identifier)
+        guard let deletingProject = projects[identifier] else {
+            return
+        }
+        
+        self.projects.removeValue(forKey: identifier)
+        
+        self.historyStorage.makeHistory(type: .remove,
+                                        of: identifier,
+                                        title: deletingProject.title,
+                                        status: deletingProject.status)
     }
 }

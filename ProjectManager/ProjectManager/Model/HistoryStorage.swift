@@ -9,22 +9,23 @@ import Foundation
 
 struct HistoryStorage {
     
-    private var historys: [OperationHistory]?
+    private var historys: [OperationHistory] = []
     
     var numberOfHistory: Int {
-        return historys?.count ?? 0
+        return historys.count
     }
     
     func readHistory(of inedx: Int) -> OperationHistory? {
-        return self.historys?[inedx]
+        return self.historys[inedx]
     }
     
-    mutating func makeHistory(about project: Project, type: OperationType) {
-        let newHistory = OperationHistory(type: type, target: project)
-        self.historys?.append(newHistory)
+    mutating func makeHistory(type: OperationType, of projectIdentifier: String?, title: String?, status: Status?) {
+        let newHistory = OperationHistory(type: type, projectIdentifier: projectIdentifier, projectTitle: title, projectStatus: status)
+        historys.append(newHistory)
+        print(newHistory.historyDescription + newHistory.dateDescription)
     }
     
     mutating func deleteHistory(of index: Int) {
-        historys?.remove(at: index)
+        historys.remove(at: index)
     }
 }

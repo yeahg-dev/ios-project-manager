@@ -22,6 +22,7 @@ final class ProjectCoreDataManager {
     }()
     
     private lazy var context = persistentContainer.viewContext
+    private var historyStorage = HistoryStorage()
     
     // MARK: - Method
     private func fetch<T>(of identifier: T) -> CDProject? {
@@ -82,6 +83,11 @@ extension ProjectCoreDataManager: DataSource {
         project.status = content[ProjectKey.status.rawValue] as? Status
         
         self.save()
+        
+        self.historyStorage.makeHistory(type: .add,
+                                        of: project.identifier,
+                                        title: project.title,
+                                        status: project.status)
     }
     
     func read(of identifier: String, completion: @escaping (Result<Project?, Error>) -> Void) {
@@ -118,16 +124,28 @@ extension ProjectCoreDataManager: DataSource {
     
     func updateStatus(of identifier: String, with status: Status) {
         let project = self.fetch(of: identifier)
-        
+        let currentStatus = project?.status
         project?.status = status
         self.save()
+        
+        self.historyStorage.makeHistory(type: .move(status),
+                                        of: identifier,
+                                        title: project?.title,
+                                        status: currentStatus)
     }
     
     func delete(of identifier: String) {
-        guard let project = self.fetch(of: identifier) else {
-            return
-        }
+        guard let project = self.fetch(of: identifier),
+              let title = project.title,
+              let status = project.status else {
+                  return
+              }
         context.delete(project)
         self.save()
+        
+        self.historyStorage.makeHistory(type: .remove,
+                                        of: identifier,
+                                        title: title,
+                                        status: status)
     }
 }

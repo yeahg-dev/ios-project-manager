@@ -19,26 +19,32 @@ enum OperationType {
 struct OperationHistory {
     
     private let type: OperationType
-    private let target: Project
+    private let projectIdentifier: String?
+    private let projectTitle: String?
+    private let projectStatus: Status?
     private let date: Date
     
-    init(type: OperationType, target: Project) {
+    init(type: OperationType, projectIdentifier: String?, projectTitle: String?, projectStatus: Status?) {
         self.type = type
-        self.target = target
+        self.projectIdentifier = projectIdentifier
+        self.projectTitle = projectTitle
+        self.projectStatus = projectStatus
         self.date = Date()
     }
     
     var historyDescription: String {
-        let title = self.target.title ?? "제목없음"
-        let currentStatus = self.target.status?.description ?? ""
+        guard let projectTitle = self.projectTitle,
+              let projectStatus = self.projectStatus else {
+                  return "오류 발생"
+              }
         
         switch type {
         case .add:
-            return "Added '\(title)'."
+            return "Added '\(projectTitle)'."
         case .move(let status):
-            return "Moved '\(title)' from \(currentStatus) to \(status.description)."
+            return "Moved '\(projectTitle)' from \(projectStatus.description) to \(status.description)."
         case .remove:
-            return "Removed '\(title)' from \(currentStatus)."
+            return "Removed '\(projectTitle)' from \(projectStatus.description)."
         }
     }
     

@@ -22,7 +22,8 @@ final class ProjectFirestoreManager {
     }
     
     // MARK: - Property
-    let db = Firestore.firestore()
+    private let db = Firestore.firestore()
+    private var historyStorage = HistoryStorage()
     
     // MARK: - Method
     func readAll(completion: @escaping (Result<[[String: Any]?], FirestoreError>) -> Void) {
@@ -65,18 +66,24 @@ extension ProjectFirestoreManager: DataSource {
     // MARK: - Method
     func create(with content: [String : Any]) {
         guard let identifeir = content[ProjectKey.identifier.rawValue] as? String,
-              let deadline = content[ProjectKey.deadline.rawValue] as? Date else {
-                  return
-              }
+              let deadline = content[ProjectKey.deadline.rawValue] as? Date,
+              let title = content[ProjectKey.title.rawValue] as? String,
+              let status = content[ProjectKey.status.rawValue] as? Status else {
+            return
+        }
         
         var dict = self.formatProjectToJSONDict(with: content)
         dict.updateValue(Timestamp(date: deadline), forKey: ProjectKey.deadline.rawValue)
         
-        db.collection(FirestorePath.collection).document(identifeir).setData(dict) { err in
+        db.collection(FirestorePath.collection).document(identifeir).setData(dict) { [weak self] err in
             if let err = err {
                 print("☠️Error writing document: \(err)")
             } else {
                 print("Document successfully written!")
+                self?.historyStorage.makeHistory(type: .add,
+                                                 of: identifeir,
+                                                 title: title,
+                                                 status: status)
             }
         }
     }
@@ -165,7 +172,7 @@ extension ProjectFirestoreManager: DataSource {
         var updatingContent: [String: Any] = [:]
         updatingContent.updateValue(status.rawValue, forKey: ProjectKey.status.rawValue)
         
-        projectRef.updateData(updatingContent) { err in
+        projectRef.updateData(updatingContent) { [weak self] err in
             if let err = err {
                 print("Error updating document: \(err)")
             } else {
@@ -175,11 +182,24 @@ extension ProjectFirestoreManager: DataSource {
     }
     
     func delete(of identifier: String) {
-        db.collection(FirestorePath.collection).document(identifier).delete() { err in
-            if let err = err {
-                print("Error removing document: \(err)")
-            } else {
-                print("Document successfully removed!")
+        self.read(of: identifier) { [weak self] result in
+            switch result {
+            case.success(let project):
+                let title = project?.title
+                let status = project?.status
+                self?.db.collection(FirestorePath.collection).document(identifier).delete() { err in
+                    if let err = err {
+                        print("Error removing document: \(err)")
+                    } else {
+                        print("Document successfully removed!")
+                        self?.historyStorage.makeHistory(type: .remove,
+                                                        of: identifier,
+                                                        title: title,
+                                                        status: status)
+                    }
+                }
+            case .failure(let err):
+                print(err.localizedDescription)
             }
         }
     }
