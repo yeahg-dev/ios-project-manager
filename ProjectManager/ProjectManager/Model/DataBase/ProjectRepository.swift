@@ -1,5 +1,5 @@
 //
-//  DataSource.swift
+//  ProjectRepository.swift
 //  ProjectManager
 //
 //  Created by 1 on 2022/03/22.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-protocol DataSource: AnyObject {
+protocol ProjectRepository: AnyObject {
     
-    var type: DataSourceType { get }
+    var type: Repository { get }
 
     func create(with content: [String: Any])
         

@@ -1,5 +1,5 @@
 //
-//  ProjectCoreDataManager.swift
+//  ProjectCoreDataRepository.swift
 //  ProjectManager
 //
 //  Created by 1 on 2022/03/17.
@@ -8,7 +8,7 @@
 import CoreData
 import UIKit
 
-final class ProjectCoreDataManager {
+final class ProjectCoreDataRepository {
     
     // MARK: - Property
     private let persistentContainer: NSPersistentContainer = {
@@ -65,10 +65,10 @@ final class ProjectCoreDataManager {
     }
 }
 
-// MARK: - DataSource
-extension ProjectCoreDataManager: DataSource {
+// MARK: - ProjectRepository
+extension ProjectCoreDataRepository: ProjectRepository {
     
-    var type: DataSourceType {
+    var type: Repository {
         get {
             return .coreData
         }

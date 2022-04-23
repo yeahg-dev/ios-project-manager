@@ -1,5 +1,5 @@
 //
-//  DataSourceConfigViewController.swift
+//  RepositotyConfigViewController.swift
 //  ProjectManager
 //
 //  Created by 1 on 2022/03/22.
@@ -8,23 +8,23 @@
 import UIKit
 import CoreData
 
-final class DataSourceConfigViewController: UIViewController {
+final class RepositotyConfigViewController: UIViewController {
     
     // MARK: - Property
     weak var projectManager: ProjectManager?
-    let dataSourceTypes: [DataSourceType] = [.inMemory, .coreData, .firestore]
+    let repositoryTypes: [Repository] = [.inMemory, .coreData, .firestore]
     
     // MARK: - UIProperty
     private var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .callout)
-        label.text = DataSourceConfigScene.title.rawValue
+        label.text = RepositoryConfigScene.title.rawValue
         return label
     }()
     
     private lazy var sourceSegmentedControl: UISegmentedControl = {
-        let dataSourceTypeDescriptions = dataSourceTypes.map { dataSource in
+        let dataSourceTypeDescriptions = repositoryTypes.map { dataSource in
             return dataSource.userDescription
         }
         let segmentedControl = UISegmentedControl(items: dataSourceTypeDescriptions)
@@ -90,8 +90,8 @@ final class DataSourceConfigViewController: UIViewController {
     }
 
     private func configureContent() {
-        guard let currentSourceType = projectManager?.projectSourceType,
-              let index = dataSourceTypes.firstIndex(of: currentSourceType) else {
+        guard let currentSourceType = projectManager?.repositoryType,
+              let index = repositoryTypes.firstIndex(of: currentSourceType) else {
                   return
               }
         self.sourceSegmentedControl.selectedSegmentIndex = index
@@ -99,6 +99,6 @@ final class DataSourceConfigViewController: UIViewController {
     
     private func switchDataSource() {
         let selectedIndex = self.sourceSegmentedControl.selectedSegmentIndex
-        self.projectManager?.switchProjectSource(with: dataSourceTypes[selectedIndex])
+        self.projectManager?.switchProjectSource(with: repositoryTypes[selectedIndex])
     }
 }

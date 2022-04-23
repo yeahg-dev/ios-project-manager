@@ -7,8 +7,8 @@
 
 import Foundation
 
-// MARK: - DataSourceType
-enum DataSourceType {
+// MARK: - Repository 
+enum Repository {
     
     case inMemory
     case coreData
@@ -37,9 +37,9 @@ enum NetworkStatus {
 // MARK: - ProjectManagerDelegate
 protocol ProjectManagerDelegate: AnyObject {
     
-    func projectManager(didChangedDataSource dataSource: DataSourceType)
+    func projectManager(didChangedRepositoryWith repositoryType: Repository)
     
-    func projectManager(didChangedNetworkStatus with: NetworkStatus)
+    func projectManager(didChangedNetworkStatusWith status: NetworkStatus)
 }
 
 // MARK: - ProjectManager
@@ -47,57 +47,57 @@ final class ProjectManager {
     
     // MARK: - Property
     weak var delegate: ProjectManagerDelegate?
-    private var projectSource: DataSource? = ProjectCoreDataManager()
-    private (set) var projectSourceType: DataSourceType? {
+    private var repository: ProjectRepository? = ProjectCoreDataRepository()
+    private (set) var repositoryType: Repository? {
         get {
-            return self.projectSource?.type
+            return self.repository?.type
         }
         set
         {
             switch newValue {
             case .coreData:
-                self.projectSource = ProjectCoreDataManager()
+                self.repository = ProjectCoreDataRepository()
             case .firestore:
-                self.projectSource = ProjectFirestoreManager()
+                self.repository = ProjectFirestoreRepository()
             case .inMemory, .none:
-                self.projectSource = ProjectInMemoryManager()
+                self.repository = ProjectInMemoryRepository()
             }
         }
     }
     
     // MARK: - Method
     func create(with content: [String: Any]) {
-        self.projectSource?.create(with: content)
+        self.repository?.create(with: content)
     }
     
     func readProject(
         of identifier: String,
         completion: @escaping (Result<Project?, Error>
         ) -> Void) {
-        self.projectSource?.read(of: identifier, completion: completion)
+        self.repository?.read(of: identifier, completion: completion)
     }
     
     func readProject(
         of status: Status,
         completion: @escaping (Result<[Project]?, Error>
     ) -> Void)  {
-        self.projectSource?.read(of: status, completion: completion)
+        self.repository?.read(of: status, completion: completion)
     }
     
     func updateProjectContent(of identifier: String, with content: [String: Any]) {
-        self.projectSource?.updateContent(of: identifier, with: content)
+        self.repository?.updateContent(of: identifier, with: content)
     }
     
     func updateProjectStatus(of identifier: String, with status: Status) {
-        self.projectSource?.updateStatus(of: identifier, with: status)
+        self.repository?.updateStatus(of: identifier, with: status)
     }
     
     func delete(of identifier: String) {
-        self.projectSource?.delete(of: identifier)
+        self.repository?.delete(of: identifier)
     }
     
-    func switchProjectSource(with dataSource: DataSourceType) {
-        self.projectSourceType = dataSource
-        self.delegate?.projectManager(didChangedDataSource: dataSource)
+    func switchProjectSource(with repository: Repository) {
+        self.repositoryType = repository
+        self.delegate?.projectManager(didChangedRepositoryWith: repository)
     }
 }

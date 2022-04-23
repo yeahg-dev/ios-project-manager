@@ -1,5 +1,5 @@
 //
-//  ProjectFirestoreManager.swift
+//  ProjectFirestoreRepository.swift
 //  ProjectManager
 //
 //  Created by 1 on 2022/03/18.
@@ -14,7 +14,7 @@ enum FirestoreError: Error {
     case invalidDeadline
 }
 
-final class ProjectFirestoreManager {
+final class ProjectFirestoreRepository {
     
     // MARK: - FirestorePath Namespace
     struct FirestorePath {
@@ -54,10 +54,10 @@ final class ProjectFirestoreManager {
     }
 }
 
-// MARK: - DataSource
-extension ProjectFirestoreManager: DataSource {
+// MARK: - ProjectRepository
+extension ProjectFirestoreRepository: ProjectRepository {
     
-    var type: DataSourceType {
+    var type: Repository {
         get {
             return .firestore
         }

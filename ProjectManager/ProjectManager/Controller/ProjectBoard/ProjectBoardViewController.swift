@@ -35,19 +35,19 @@ final class ProjectBoardViewController: UIViewController {
         return stackView
     }()
     
-    private lazy var dataSourceSettingButton: UIButton = {
+    private lazy var repositorySettingButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         let cloudImage = UIImage(systemName: "cloud.fill",
                                  withConfiguration: UIImage.SymbolConfiguration(textStyle: .title1))
         button.setImage(cloudImage, for: .normal)
-        button.addAction(dataSourceSettingButtonAction, for: .touchUpInside)
+        button.addAction(repository, for: .touchUpInside)
         return button
     }()
     
-    private lazy var dataSourceSettingButtonAction: UIAction = {
+    private lazy var repository: UIAction = {
         let action = UIAction { [weak self] _ in
-            self?.presentDataSourceConfigView()
+            self?.presentRepositoryConfigView()
         }
         return action
     }()
@@ -61,8 +61,8 @@ final class ProjectBoardViewController: UIViewController {
         self.configureNavigationItem()
         self.configureNavigationBarLayout()
         self.configureTableStackViewLayout()
-        self.configureDataSourceSettingButtonLayout()
-        self.projectManager(didChangedDataSource: self.projectManager.projectSourceType ?? .coreData)
+        self.configureRepositorySettingButtonLayout()
+        self.projectManager(didChangedRepositoryWith: self.projectManager.repositoryType ?? .coreData)
     }
      
     // MARK: - Configure View
@@ -74,7 +74,7 @@ final class ProjectBoardViewController: UIViewController {
     private func configureSubviews() {
         self.view.addSubview(navigationBar)
         self.view.addSubview(tableStackView)
-        self.view.addSubview(dataSourceSettingButton)
+        self.view.addSubview(repositorySettingButton)
     }
     
     private func configureNavigationItem() {
@@ -105,13 +105,13 @@ final class ProjectBoardViewController: UIViewController {
         ])
     }
     
-    private func configureDataSourceSettingButtonLayout() {
+    private func configureRepositorySettingButtonLayout() {
         let safeArea = self.view.safeAreaLayoutGuide
         let tabHeiht = self.view.bounds.height * 0.05
         let margin = tabHeiht * 0.4
         NSLayoutConstraint.activate([
-            dataSourceSettingButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -margin),
-            dataSourceSettingButton.topAnchor.constraint(equalTo: tableStackView.bottomAnchor, constant: margin)])
+            repositorySettingButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -margin),
+            repositorySettingButton.topAnchor.constraint(equalTo: tableStackView.bottomAnchor, constant: margin)])
     }
     
     // MARK: - Configure Controller
@@ -125,22 +125,22 @@ final class ProjectBoardViewController: UIViewController {
     }
     
     // MARK: - Method
-    private func updateDataSourceSettingButton(with color: UIColor) {
-        let currentImage = self.dataSourceSettingButton.image(for: .normal)
+    private func updateRepositorySettingButton(with color: UIColor) {
+        let currentImage = self.repositorySettingButton.image(for: .normal)
         let newImage =  currentImage?.withTintColor(color, renderingMode: .alwaysOriginal)
 
-        self.dataSourceSettingButton.setImage(newImage, for: .normal)
+        self.repositorySettingButton.setImage(newImage, for: .normal)
     }
     
-    private func presentDataSourceConfigView() {
-        let dataSourceConfigAlertVC = DataSourceConfigViewController(model: self.projectManager)
-        dataSourceConfigAlertVC.modalPresentationStyle = .popover
+    private func presentRepositoryConfigView() {
+        let repositoryConfigAlertVC = RepositotyConfigViewController(model: self.projectManager)
+        repositoryConfigAlertVC.modalPresentationStyle = .popover
         
-        if let popoverPresentationController = dataSourceConfigAlertVC.popoverPresentationController {
-            popoverPresentationController.sourceView = self.dataSourceSettingButton
-            popoverPresentationController.sourceRect = self.dataSourceSettingButton.frame(forAlignmentRect: .zero)
+        if let popoverPresentationController = repositoryConfigAlertVC.popoverPresentationController {
+            popoverPresentationController.sourceView = self.repositorySettingButton
+            popoverPresentationController.sourceRect = self.repositorySettingButton.frame(forAlignmentRect: .zero)
         }
-        self.present(dataSourceConfigAlertVC, animated: false, completion: nil)
+        self.present(repositoryConfigAlertVC, animated: false, completion: nil)
     }
     
     // MARK: - @objc Method
@@ -201,21 +201,21 @@ extension ProjectBoardViewController: ProjectListViewControllerDelegate {
 // MARK: - ProjectManagerDelegate
 extension ProjectBoardViewController: ProjectManagerDelegate {
     
-    func projectManager(didChangedDataSource dataSource: DataSourceType) {
-        switch dataSource {
+    func projectManager(didChangedRepositoryWith repository: Repository) {
+        switch repository {
         case .inMemory:
-            self.updateDataSourceSettingButton(with: .gray)
+            self.updateRepositorySettingButton(with: .gray)
         case .coreData:
-            self.updateDataSourceSettingButton(with: .gray)
+            self.updateRepositorySettingButton(with: .gray)
         case .firestore:
-            self.updateDataSourceSettingButton(with: .blue)
+            self.updateRepositorySettingButton(with: .blue)
         }
         self.todoViewController.updateView()
         self.doingViewController.updateView()
         self.doneViewController.updateView()
     }
     
-    func projectManager(didChangedNetworkStatus with: NetworkStatus) {
+    func projectManager(didChangedNetworkStatusWith with: NetworkStatus) {
         // TODO: - 네트워크 상태 변화에 따른 버튼 이미지 변경
     }
     

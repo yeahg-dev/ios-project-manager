@@ -1,5 +1,5 @@
 //
-//  ProjectInMemoryManager.swift
+//  ProjectInMemoryRepository.swift
 //  ProjectManager
 //
 //  Created by 1 on 2022/03/06.
@@ -7,17 +7,17 @@
 
 import Foundation
 
-final class ProjectInMemoryManager {
+final class ProjectInMemoryRepository {
 
     // MARK: - Property
     private var projects: [String: Project] = [:]
     private var historyStorage = HistoryStorage()
 }
 
-// MARK: - DataSource
-extension ProjectInMemoryManager: DataSource {
+// MARK: - ProjectRepository
+extension ProjectInMemoryRepository: ProjectRepository {
     
-    var type: DataSourceType {
+    var type: Repository {
         get {
             return .inMemory
         }
