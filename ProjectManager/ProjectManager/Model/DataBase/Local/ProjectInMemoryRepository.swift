@@ -11,7 +11,7 @@ final class ProjectInMemoryRepository {
 
     // MARK: - Property
     private var projects: [String: Project] = [:]
-    private var historyStorage = HistoryStorage()
+    private var historyStorage = HistoryRepository()
 }
 
 // MARK: - ProjectRepository

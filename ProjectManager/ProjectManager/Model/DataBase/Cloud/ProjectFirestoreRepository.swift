@@ -23,7 +23,7 @@ final class ProjectFirestoreRepository {
     
     // MARK: - Property
     private let db = Firestore.firestore()
-    private var historyStorage = HistoryStorage()
+     private var historyStorage = HistoryFirestoreRepository()
     
     // MARK: - Method
     func readAll(completion: @escaping (Result<[[String: Any]?], FirestoreError>) -> Void) {
@@ -78,7 +78,7 @@ extension ProjectFirestoreRepository: ProjectRepository {
                 print("☠️Error writing document: \(err)")
             } else {
                 print("Document successfully written!")
-                self?.historyStorage.makeHistory(type: .add,
+                self?.historyStorage.createHistory(type: OperationType.add,
                                                  of: identifier,
                                                  title: project.title,
                                                  status: project.status)
@@ -192,7 +192,7 @@ extension ProjectFirestoreRepository: ProjectRepository {
                 print("Error removing document: \(err)")
             } else {
                 print("Document successfully removed!")
-                self.historyStorage.makeHistory(type: .remove,
+                self.historyStorage.createHistory(type: .remove,
                                                  of: identifier,
                                                  title: project.title,
                                                  status: project.status)
