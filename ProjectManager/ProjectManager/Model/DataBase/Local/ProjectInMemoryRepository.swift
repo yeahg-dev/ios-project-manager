@@ -28,10 +28,8 @@ extension ProjectInMemoryRepository: ProjectRepository {
             return
         }
         self.projects.updateValue(project, forKey: identifier)
-        self.historyStorage.makeHistory(type: .add,
-                                        of: identifier,
-                                        title: project.title,
-                                        status: project.status)
+        
+        self.makeHistory(of: project, type: .add)
     }
     
     func read(of identifier: String, completion: @escaping (Result<Project?, Error>) -> Void) {
@@ -56,28 +54,27 @@ extension ProjectInMemoryRepository: ProjectRepository {
               var updatingProject = projects[identifier] else {
             return
         }
-        let currentStatus = updatingProject.status
         
         updatingProject.updateStatus(with: status)
         self.projects.updateValue(updatingProject, forKey: identifier)
         
-        self.historyStorage.makeHistory(type: .move(status),
-                                        of: identifier,
-                                        title: updatingProject.title,
-                                        status: currentStatus)
+        self.makeHistory(of: project, type: .move(status))
     }
    
     func delete(_ project: Project) {
-        guard let identifier = project.identifier,
-              let deletingProject = projects[identifier] else {
+        guard let identifier = project.identifier else {
             return
         }
         
         self.projects.removeValue(forKey: identifier)
         
-        self.historyStorage.makeHistory(type: .remove,
-                                        of: identifier,
-                                        title: deletingProject.title,
-                                        status: deletingProject.status)
+        self.makeHistory(of: project, type: .remove)
+    }
+    
+    private func makeHistory(of project: Project, type: OperationType) {
+        self.historyStorage.makeHistory(type: type,
+                                        of: project.identifier,
+                                        title: project.title,
+                                        status: project.status)
     }
 }

@@ -24,8 +24,4 @@ struct HistoryStorage {
         historys.append(newHistory)
         print(newHistory.historyDescription + newHistory.dateDescription)
     }
-    
-    mutating func deleteHistory(of index: Int) {
-        historys.remove(at: index)
-    }
 }
