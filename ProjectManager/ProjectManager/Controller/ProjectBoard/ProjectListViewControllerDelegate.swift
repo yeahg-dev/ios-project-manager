@@ -11,9 +11,9 @@ protocol ProjectListViewControllerDelegate: AnyObject {
     
     func readProject(of status: Status, completion: @escaping (Result<[Project]?, Error>) -> Void)
     
-    func updateProject(of identifier: String, with content: [String: Any])
+    func updateProject(of project: Project, with content: [String: Any])
     
-    func updateProjectStatus(of identifier: String, with status: Status)
+    func updateProjectStatus(of project: Project, with status: Status)
     
-    func deleteProject(of identifier: String)
+    func deleteProject(_ project: Project)
 }

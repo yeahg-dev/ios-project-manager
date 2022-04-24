@@ -7,6 +7,7 @@
 
 import CoreData
 import UIKit
+import AVFoundation
 
 final class ProjectCoreDataRepository {
     
@@ -74,13 +75,13 @@ extension ProjectCoreDataRepository: ProjectRepository {
         }
     }
     
-    func create(with content: [String : Any]) {
-        let project = CDProject(context: context)
-        project.identifier = content[ProjectKey.identifier.rawValue] as? String
-        project.title = content[ProjectKey.title.rawValue] as? String
-        project.descriptions = content[ProjectKey.description.rawValue] as? String
-        project.deadline = content[ProjectKey.deadline.rawValue] as? Date
-        project.status = content[ProjectKey.status.rawValue] as? Status
+    func create(_ project: Project) {
+        let cdProject = CDProject(context: context)
+        cdProject.identifier = project.identifier
+        cdProject.title = project.title
+        cdProject.descriptions = project.description
+        cdProject.deadline = project.deadline
+        cdProject.status = project.status
         
         self.save()
         
@@ -112,17 +113,23 @@ extension ProjectCoreDataRepository: ProjectRepository {
         completion(.success(projects))
     }
     
-    func updateContent(of identifier: String, with content: [String: Any]) {
+    func updateContent(of project: Project, with modifiedProject: Project) {
+        guard let identifier = project.identifier else {
+            return
+        }
         let project = self.fetch(of: identifier)
-        project?.title = content[ProjectKey.title.rawValue] as? String
-        project?.descriptions = content[ProjectKey.description.rawValue] as? String
-        project?.deadline = content[ProjectKey.deadline.rawValue] as? Date
-        project?.status = content[ProjectKey.status.rawValue] as? Status
+        project?.title = modifiedProject.title
+        project?.descriptions = modifiedProject.description
+        project?.deadline = modifiedProject.deadline
+        project?.status = modifiedProject.status
         
         self.save()
     }
     
-    func updateStatus(of identifier: String, with status: Status) {
+    func updateStatus(of project: Project, with status: Status) {
+        guard let identifier = project.identifier else {
+            return
+        }
         let project = self.fetch(of: identifier)
         let currentStatus = project?.status
         project?.status = status
@@ -134,8 +141,9 @@ extension ProjectCoreDataRepository: ProjectRepository {
                                         status: currentStatus)
     }
     
-    func delete(of identifier: String) {
-        guard let project = self.fetch(of: identifier),
+    func delete(_ project: Project) {
+        guard let identifier = project.identifier,
+              let project = self.fetch(of: identifier),
               let title = project.title,
               let status = project.status else {
                   return

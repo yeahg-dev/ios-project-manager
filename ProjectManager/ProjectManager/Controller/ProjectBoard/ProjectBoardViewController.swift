@@ -179,22 +179,22 @@ extension ProjectBoardViewController: ProjectListViewControllerDelegate {
         self.projectManager.readProject(of: status, completion: completion)
     }
     
-    func updateProjectStatus(of identifier: String, with status: Status) {
-        self.projectManager.updateProjectStatus(of: identifier, with: status)
+    func updateProjectStatus(of project: Project, with status: Status) {
+        self.projectManager.updateProjectStatus(of: project, with: status)
         self.todoViewController.updateView()
         self.doingViewController.updateView()
         self.doneViewController.updateView()
     }
     
-    func updateProject(of identifier: String, with content: [String : Any]) {
-        self.projectManager.updateProjectContent(of: identifier, with: content)
+    func updateProject(of project: Project, with content: [String : Any]) {
+        self.projectManager.updateProjectContent(of: project, with: content)
         self.todoViewController.updateView()
         self.doingViewController.updateView()
         self.doneViewController.updateView()
     }
     
-    func deleteProject(of identifier: String) {
-        self.projectManager.delete(of: identifier)
+    func deleteProject(_ project: Project) {
+        self.projectManager.delete(project)
     }
 }
 

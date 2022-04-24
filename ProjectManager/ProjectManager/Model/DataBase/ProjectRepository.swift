@@ -11,7 +11,7 @@ protocol ProjectRepository: AnyObject {
     
     var type: Repository { get }
 
-    func create(with content: [String: Any])
+    func create(_ project: Project)
         
     func read(
         of identifier: String,
@@ -23,10 +23,10 @@ protocol ProjectRepository: AnyObject {
         completion: @escaping (Result<[Project]?, Error>) -> Void
     )
     
-    func updateContent(of identifier: String, with content: [String: Any])
+    func updateContent(of project: Project, with modifiedProject: Project)
     
-    func updateStatus(of identifier: String, with status: Status)
+    func updateStatus(of project: Project, with status: Status)
         
-    func delete(of identifier: String)
+    func delete(_ project: Project)
 }
 

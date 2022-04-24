@@ -23,20 +23,15 @@ extension ProjectInMemoryRepository: ProjectRepository {
         }
     }
     
-    func create(with content: [String: Any]) {
-        guard let identifier = content[ProjectKey.identifier.rawValue] as? String else {
+    func create(_ project: Project) {
+        guard let identifier = project.identifier else {
             return
         }
-        let newProject = Project(identifier: identifier,
-                                 title: content[ProjectKey.title.rawValue] as? String,
-                                 deadline: content[ProjectKey.deadline.rawValue] as? Date,
-                                 description: content[ProjectKey.description.rawValue] as? String,
-                                 status: content[ProjectKey.status.rawValue] as? Status)
-        self.projects.updateValue(newProject, forKey: identifier)
+        self.projects.updateValue(project, forKey: identifier)
         self.historyStorage.makeHistory(type: .add,
                                         of: identifier,
-                                        title: content[ProjectKey.title.rawValue] as? String,
-                                        status: content[ProjectKey.status.rawValue] as? Status)
+                                        title: project.title,
+                                        status: project.status)
     }
     
     func read(of identifier: String, completion: @escaping (Result<Project?, Error>) -> Void) {
@@ -48,17 +43,17 @@ extension ProjectInMemoryRepository: ProjectRepository {
         completion(.success(projects))
     }
     
-    func updateContent(of identifier: String, with content: [String : Any]) {
-        guard var updatingProject = projects[identifier] else {
+    func updateContent(of project: Project, with modifiedProject: Project) {
+        guard let identifier = project.identifier else {
             return
         }
         
-        updatingProject.updateContent(with: content)
-        self.projects.updateValue(updatingProject, forKey: identifier)
+        self.projects.updateValue(modifiedProject, forKey: identifier)
     }
     
-    func updateStatus(of identifier: String, with status: Status) {
-        guard var updatingProject = projects[identifier] else {
+    func updateStatus(of project: Project, with status: Status) {
+        guard let identifier = project.identifier,
+              var updatingProject = projects[identifier] else {
             return
         }
         let currentStatus = updatingProject.status
@@ -72,8 +67,9 @@ extension ProjectInMemoryRepository: ProjectRepository {
                                         status: currentStatus)
     }
    
-    func delete(of identifier: String) {
-        guard let deletingProject = projects[identifier] else {
+    func delete(_ project: Project) {
+        guard let identifier = project.identifier,
+              let deletingProject = projects[identifier] else {
             return
         }
         

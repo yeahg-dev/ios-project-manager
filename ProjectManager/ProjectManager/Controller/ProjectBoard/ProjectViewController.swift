@@ -16,7 +16,7 @@ protocol ProjectCreationDelegate: AnyObject {
 // MARK: - ProjectEditDelegate
 protocol ProjectEditDelegate: AnyObject {
     
-    func updateProject(of identifier: String, with content: [String: Any])
+    func updateProject(of project: Project, with content: [String: Any])
 }
 
 // MARK: - ProjectViewController
@@ -249,10 +249,10 @@ final class ProjectViewController: UIViewController {
         content.updateValue(project?.status as Any, forKey: ProjectKey.status.rawValue)
         guard let projectTableViewController = presentingViewController as?
                 ProjectEditDelegate,
-              let identifier = self.project?.identifier else {
+              let project = self.project else {
             return
         }
-        projectTableViewController.updateProject(of: identifier, with: content)
+        projectTableViewController.updateProject(of: project, with: content)
         dismiss(animated: false, completion: nil)
     }
 }

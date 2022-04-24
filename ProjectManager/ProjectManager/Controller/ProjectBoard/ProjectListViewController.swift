@@ -154,17 +154,14 @@ final class ProjectListViewController: UIViewController {
     
     @objc func presentStatusMovePopover() {
         let location = longPressGestureRecognizer.location(in: projectTableView)
-        guard let project = longPressedProject(at: location),
-              let identifier = project.identifier else {
+        guard let project = longPressedProject(at: location) else {
                   return
               }
         
-        let actionSheetController = UIAlertController(title: nil,
+        let actionSheetController = UIAlertController(title: "프로젝트 상태 변경",
                                                       message: nil,
                                                       preferredStyle: .actionSheet)
-        let actions = projectStatusMoveUIAlertActionsForCurrentStatus(
-            currentStatus: self.projectStatus,
-            identifier: identifier)
+        let actions = projectStatusMoveUIAlertActionsForCurrentStatus(currentProject: project)
         for action in actions {
             actionSheetController.addAction(action)
         }
@@ -187,51 +184,53 @@ final class ProjectListViewController: UIViewController {
     }
     
     private func projectStatusMoveUIAlertActionsForCurrentStatus(
-        currentStatus: Status,
-        identifier: String
+        currentProject: Project
     ) -> [UIAlertAction] {
+        let currentStatus = currentProject.status
         switch currentStatus {
         case .todo:
             let firstAction = projectStatusMoveUIAlertAction(
-                identifier: identifier,
+                currentProject: currentProject,
                 title: ProjectBoardScene.statusModification.doing.rawValue,
                 targetStatus: .doing,
                 viewController: self)
             let secondAction = projectStatusMoveUIAlertAction(
-                identifier: identifier,
+                currentProject: currentProject,
                 title: ProjectBoardScene.statusModification.done.rawValue,
                 targetStatus: .done,
                 viewController: self)
             return [firstAction, secondAction]
         case .doing:
             let firstAction = projectStatusMoveUIAlertAction(
-                identifier: identifier,
+                currentProject: currentProject,
                 title: ProjectBoardScene.statusModification.todo.rawValue,
                 targetStatus: .todo,
                 viewController: self)
             let secondAction = projectStatusMoveUIAlertAction(
-                identifier: identifier,
+                currentProject: currentProject,
                 title: ProjectBoardScene.statusModification.done.rawValue,
                 targetStatus: .done,
                 viewController: self)
             return [firstAction, secondAction]
         case .done:
             let firstAction = projectStatusMoveUIAlertAction(
-                identifier: identifier,
+                currentProject: currentProject,
                 title: ProjectBoardScene.statusModification.todo.rawValue,
                 targetStatus: .todo,
                 viewController: self)
             let secondAction = projectStatusMoveUIAlertAction(
-                identifier: identifier,
+                currentProject: currentProject,
                 title: ProjectBoardScene.statusModification.doing.rawValue,
                 targetStatus: .doing,
                 viewController: self)
             return [firstAction, secondAction]
+        case .none:
+            return []
         }
     }
     
     private func projectStatusMoveUIAlertAction(
-        identifier: String,
+        currentProject: Project,
         title: String,
         targetStatus: Status,
         viewController: ProjectListViewController
@@ -239,7 +238,7 @@ final class ProjectListViewController: UIViewController {
         let action = UIAlertAction(
             title: title,
             style: .default) { [weak viewController] _ in
-                viewController?.delegate?.updateProjectStatus(of: identifier, with: targetStatus)
+                viewController?.delegate?.updateProjectStatus(of: currentProject, with: targetStatus)
                 viewController?.updateView()
             }
         return action
@@ -272,11 +271,10 @@ extension ProjectListViewController: UITableViewDelegate {
             style: .destructive,
             title: nil
         ) {  [weak self] _, _, _ in
-            guard let project = self?.dataSource.itemIdentifier(for: indexPath),
-                  let identifier = project.identifier else {
+            guard let project = self?.dataSource.itemIdentifier(for: indexPath) else {
                       return
                   }
-            self?.delegate?.deleteProject(of: identifier)
+            self?.delegate?.deleteProject(project)
             self?.updateView()
         }
         deleteAction.image = UIImage(systemName: "trash.fill")
@@ -298,7 +296,7 @@ extension ProjectListViewController: UITableViewDelegate {
 // MARK: - ProjectEditViewControllerDelegate
 extension ProjectListViewController: ProjectEditDelegate {
     
-    func updateProject(of identifier: String, with content: [String: Any]) {
-        delegate?.updateProject(of: identifier, with: content)
+    func updateProject(of project: Project, with content: [String: Any]) {
+        delegate?.updateProject(of: project, with: content)
     }
 }

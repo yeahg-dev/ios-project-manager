@@ -64,26 +64,24 @@ extension ProjectFirestoreRepository: ProjectRepository {
     }
     
     // MARK: - Method
-    func create(with content: [String : Any]) {
-        guard let identifeir = content[ProjectKey.identifier.rawValue] as? String,
-              let deadline = content[ProjectKey.deadline.rawValue] as? Date,
-              let title = content[ProjectKey.title.rawValue] as? String,
-              let status = content[ProjectKey.status.rawValue] as? Status else {
+    func create(_ project: Project) {
+        // TODO: - mapping하는 객체 만들기
+        guard let identifier = project.identifier,
+              let deadline = project.deadline else {
             return
         }
-        
-        var dict = self.formatProjectToJSONDict(with: content)
+        var dict = project.jsonObjectToDictionary(of: project)
         dict.updateValue(Timestamp(date: deadline), forKey: ProjectKey.deadline.rawValue)
         
-        db.collection(FirestorePath.collection).document(identifeir).setData(dict) { [weak self] err in
+        db.collection(FirestorePath.collection).document(identifier).setData(dict) { [weak self] err in
             if let err = err {
                 print("☠️Error writing document: \(err)")
             } else {
                 print("Document successfully written!")
                 self?.historyStorage.makeHistory(type: .add,
-                                                 of: identifeir,
-                                                 title: title,
-                                                 status: status)
+                                                 of: identifier,
+                                                 title: project.title,
+                                                 status: project.status)
             }
         }
     }
@@ -145,15 +143,15 @@ extension ProjectFirestoreRepository: ProjectRepository {
             }
     }
     
-    func updateContent(of identifier: String, with content: [String : Any]) {
-        let projectRef = db.collection(FirestorePath.collection).document(identifier)
-        
-        guard let deadlineDate = content[ProjectKey.deadline.rawValue] as? Date,
-              let status = content[ProjectKey.status.rawValue] as? Status else {
+    func updateContent(of project: Project, with modifiedProject: Project) {
+        guard let identifier = project.identifier,
+              let deadlineDate = modifiedProject.deadline,
+              let status = modifiedProject.status else {
             return
         }
+        let projectRef = db.collection(FirestorePath.collection).document(identifier)
         
-        var updatingContent = content
+        var updatingContent = modifiedProject.jsonObjectToDictionary(of: project)
         updatingContent.updateValue(Timestamp(date: deadlineDate), forKey: ProjectKey.deadline.rawValue)
         updatingContent.updateValue(status.rawValue, forKey: ProjectKey.status.rawValue)
         
@@ -166,13 +164,16 @@ extension ProjectFirestoreRepository: ProjectRepository {
         }
     }
     
-    func updateStatus(of identifier: String, with status: Status) {
+    func updateStatus(of project: Project, with status: Status) {
+        guard let identifier = project.identifier else {
+            return
+        }
         let projectRef = db.collection(FirestorePath.collection).document(identifier)
         
         var updatingContent: [String: Any] = [:]
         updatingContent.updateValue(status.rawValue, forKey: ProjectKey.status.rawValue)
         
-        projectRef.updateData(updatingContent) { [weak self] err in
+        projectRef.updateData(updatingContent) { err in
             if let err = err {
                 print("Error updating document: \(err)")
             } else {
@@ -181,25 +182,20 @@ extension ProjectFirestoreRepository: ProjectRepository {
         }
     }
     
-    func delete(of identifier: String) {
-        self.read(of: identifier) { [weak self] result in
-            switch result {
-            case.success(let project):
-                let title = project?.title
-                let status = project?.status
-                self?.db.collection(FirestorePath.collection).document(identifier).delete() { err in
-                    if let err = err {
-                        print("Error removing document: \(err)")
-                    } else {
-                        print("Document successfully removed!")
-                        self?.historyStorage.makeHistory(type: .remove,
-                                                        of: identifier,
-                                                        title: title,
-                                                        status: status)
-                    }
-                }
-            case .failure(let err):
-                print(err.localizedDescription)
+    func delete(_ project: Project) {
+        guard let identifier = project.identifier else {
+            return
+        }
+        
+        self.db.collection(FirestorePath.collection).document(identifier).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+                self.historyStorage.makeHistory(type: .remove,
+                                                 of: identifier,
+                                                 title: project.title,
+                                                 status: project.status)
             }
         }
     }

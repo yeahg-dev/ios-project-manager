@@ -67,7 +67,13 @@ final class ProjectManager {
     
     // MARK: - Method
     func create(with content: [String: Any]) {
-        self.repository?.create(with: content)
+        let project = Project(
+            identifier: content[ProjectKey.identifier.rawValue] as? String,
+            title: content[ProjectKey.title.rawValue] as? String,
+            deadline: content[ProjectKey.deadline.rawValue] as? Date,
+            description: content[ProjectKey.description.rawValue] as? String,
+            status: content[ProjectKey.status.rawValue] as? Status)
+        self.repository?.create(project)
     }
     
     func readProject(
@@ -84,16 +90,18 @@ final class ProjectManager {
         self.repository?.read(of: status, completion: completion)
     }
     
-    func updateProjectContent(of identifier: String, with content: [String: Any]) {
-        self.repository?.updateContent(of: identifier, with: content)
+    func updateProjectContent(of project: Project, with content: [String: Any]) {
+        var updatingProject = project
+        updatingProject.updateContent(with: content)
+        self.repository?.updateContent(of: project, with: updatingProject)
     }
     
-    func updateProjectStatus(of identifier: String, with status: Status) {
-        self.repository?.updateStatus(of: identifier, with: status)
+    func updateProjectStatus(of project: Project, with status: Status) {
+        self.repository?.updateStatus(of: project, with: status)
     }
     
-    func delete(of identifier: String) {
-        self.repository?.delete(of: identifier)
+    func delete(_ project: Project) {
+        self.repository?.delete(project)
     }
     
     func switchProjectSource(with repository: Repository) {

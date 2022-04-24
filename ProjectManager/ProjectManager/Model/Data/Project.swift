@@ -44,10 +44,21 @@ struct Project {
     }
     
     // MARK: - Method
-    mutating func updateContent(with input: [String: Any]) {
-        self.title = input["title"] as? String
-        self.deadline = input["deadline"] as? Date
-        self.description = input["description"] as? String
+    mutating func updateContent(with content: [String: Any]) {
+        for (key, value) in content {
+            switch key {
+            case ProjectKey.title.rawValue:
+                self.title = value as? String
+            case ProjectKey.description.rawValue:
+                self.description = value as? String
+            case ProjectKey.deadline.rawValue:
+                self.deadline = value as? Date
+            case ProjectKey.status.rawValue:
+                self.status = value as? Status
+            default:
+                continue
+            }
+        }
     }
     
     mutating func updateStatus(with status: Status) {
