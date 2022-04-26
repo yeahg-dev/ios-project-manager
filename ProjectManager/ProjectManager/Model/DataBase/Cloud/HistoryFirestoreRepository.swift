@@ -8,7 +8,8 @@
 import Foundation
 
 struct HistoryFirestoreRepository: HistoryRepository {
-    var numberOfHistory: Int {
+    
+    var historyCount: Int {
         return 0
     }
     

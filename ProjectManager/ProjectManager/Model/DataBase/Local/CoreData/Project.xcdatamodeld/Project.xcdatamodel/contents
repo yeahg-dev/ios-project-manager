@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E230" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDHistory" representedClassName="CDHistory" syncable="YES" codeGenerationType="category">
+        <attribute name="date" optional="YES" attributeType="String"/>
+        <attribute name="descrption" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="CDProject" representedClassName="CDProject" syncable="YES" codeGenerationType="category">
         <attribute name="deadline" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="descriptions" optional="YES" attributeType="String"/>
@@ -9,5 +13,6 @@
     </entity>
     <elements>
         <element name="CDProject" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="CDHistory" positionX="-63" positionY="18" width="128" height="59"/>
     </elements>
 </model>

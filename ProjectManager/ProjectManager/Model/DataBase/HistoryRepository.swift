@@ -7,13 +7,13 @@
 
 import Foundation
 
-protocol HistoryRepository {
+protocol HistoryRepository: AnyObject {
     
-    var numberOfHistory: Int { get }
+    var historyCount: Int { get }
     
-    func readHistory(of inedx: Int) -> OperationHistory?
+    func readHistory(of inedx: Int) -> [String?: String?]?
     
-    mutating func createHistory(type: OperationType,
+    func createHistory(type: OperationType,
                               of projectIdentifier: String?,
                               title: String?,
                               status: Status?)

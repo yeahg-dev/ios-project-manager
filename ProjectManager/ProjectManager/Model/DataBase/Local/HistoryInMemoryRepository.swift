@@ -7,19 +7,19 @@
 
 import Foundation
 
-struct HistoryInMemoryRepository {
+class HistoryInMemoryRepository: HistoryRepository {
     
-    private var historys: [[String: String]] = []
+    private var historys: [[String?: String?]] = []
     
-    var numberOfHistory: Int {
+    var historyCount: Int {
         return historys.count
     }
     
-    func readHistory(of inedx: Int) -> [String: String] {
+    func readHistory(of inedx: Int) -> [String?: String?]? {
         return self.historys[inedx]
     }
     
-    mutating func makeHistory(type: OperationType, of projectIdentifier: String?, title: String?, status: Status?) {
+    func createHistory(type: OperationType, of projectIdentifier: String?, title: String?, status: Status?) {
         let newHistory = OperationHistory(type: type, projectIdentifier: projectIdentifier, projectTitle: title, projectStatus: status)
         let history = ["description": newHistory.historyDescription,
                        "date": newHistory.dateDescription]
