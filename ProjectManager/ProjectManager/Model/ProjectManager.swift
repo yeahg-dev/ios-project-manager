@@ -47,6 +47,10 @@ final class ProjectManager {
     
     // MARK: - Property
     weak var delegate: ProjectManagerDelegate?
+    // TODO: - HistoryViewController로 넘겨줄 Model이 필요(Inmemory의 경우), 아님 델리게이트
+    var historyRepository: HistoryRepository? {
+        return repository?.historyRepository
+    }
     private var repository: ProjectRepository? = ProjectCoreDataRepository()
     private (set) var repositoryType: Repository? {
         get {

@@ -23,7 +23,7 @@ class HistoryInMemoryRepository: HistoryRepository {
         let newHistory = OperationHistory(type: type, projectIdentifier: projectIdentifier, projectTitle: title, projectStatus: status)
         let history = ["description": newHistory.historyDescription,
                        "date": newHistory.dateDescription]
-        historys.append(history)
+        historys.insert(history, at: 0)
         print(newHistory.historyDescription + newHistory.dateDescription)
     }
 }

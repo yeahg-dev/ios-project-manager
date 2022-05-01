@@ -23,7 +23,6 @@ final class ProjectCoreDataRepository {
     }()
     
     private lazy var context = persistentContainer.viewContext
-    private var historyStorage = HistoryCoreDataRepository()
     
     // MARK: - Method
     private func fetch<T>(of identifier: T) -> CDProject? {
@@ -68,11 +67,15 @@ final class ProjectCoreDataRepository {
 
 // MARK: - ProjectRepository
 extension ProjectCoreDataRepository: ProjectRepository {
-    
+   
     var type: Repository {
         get {
             return .coreData
         }
+    }
+    
+    var historyRepository: HistoryRepository {
+        return HistoryCoreDataRepository()
     }
     
     func create(_ project: Project) {
@@ -85,7 +88,7 @@ extension ProjectCoreDataRepository: ProjectRepository {
         
         self.save()
         
-        self.historyStorage.createHistory(type: .add,
+        self.historyRepository.createHistory(type: .add,
                                         of: project.identifier,
                                         title: project.title,
                                         status: project.status)
@@ -135,7 +138,7 @@ extension ProjectCoreDataRepository: ProjectRepository {
         project?.status = status
         self.save()
         
-        self.historyStorage.createHistory(type: .move(status),
+        self.historyRepository.createHistory(type: .move(status),
                                         of: identifier,
                                         title: project?.title,
                                         status: currentStatus)
@@ -151,7 +154,7 @@ extension ProjectCoreDataRepository: ProjectRepository {
         context.delete(project)
         self.save()
         
-        self.historyStorage.createHistory(type: .remove,
+        self.historyRepository.createHistory(type: .remove,
                                         of: identifier,
                                         title: title,
                                         status: status)

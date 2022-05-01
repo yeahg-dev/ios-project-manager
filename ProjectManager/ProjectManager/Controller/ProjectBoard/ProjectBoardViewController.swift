@@ -84,6 +84,12 @@ final class ProjectBoardViewController: UIViewController {
                                         action: #selector(presentProjectCreatorViewController))
         navigationItem.rightBarButtonItem = addButton
         
+        let historyButton = UIBarButtonItem(title: "History",
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(presentProjectHistoryViewController))
+        navigationItem.leftBarButtonItem = historyButton
+        
         navigationBar.items = [navigationItem]
     }
     
@@ -151,6 +157,22 @@ final class ProjectBoardViewController: UIViewController {
                                                           projectEditDelegate: nil)
         creatorViewController.modalPresentationStyle = .formSheet
         present(creatorViewController, animated: false, completion: nil)
+    }
+    
+    @objc func presentProjectHistoryViewController() {
+        let historyViewController = ProjectHistoryViewController()
+        historyViewController.historyRepository = self.projectManager.historyRepository
+        
+        historyViewController.modalPresentationStyle = .popover
+        
+        guard let historyButton = self.navigationBar.items?.first?.leftBarButtonItem else {
+            return
+        }
+        
+        if let popoverPresentationController = historyViewController.popoverPresentationController {
+            popoverPresentationController.barButtonItem = historyButton
+        }
+        self.present(historyViewController, animated: false, completion: nil)
     }
 }
 

@@ -10,6 +10,8 @@ import Foundation
 protocol ProjectRepository: AnyObject {
     
     var type: Repository { get }
+    
+    var historyRepository: HistoryRepository { get }
 
     func create(_ project: Project)
         

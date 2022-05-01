@@ -7,17 +7,17 @@
 
 import Foundation
 
-struct HistoryFirestoreRepository: HistoryRepository {
-    
+class HistoryFirestoreRepository: HistoryRepository {
+ 
     var historyCount: Int {
         return 0
     }
     
-    func readHistory(of inedx: Int) -> OperationHistory? {
-        <#code#>
+    func readHistory(of inedx: Int) -> [String? : String?]? {
+        return nil
     }
     
-    mutating func createHistory(type: OperationType, of projectIdentifier: String?, title: String?, status: Status?) {
-        <#code#>
+    func createHistory(type: OperationType, of projectIdentifier: String?, title: String?, status: Status?) {
+        //
     }
 }

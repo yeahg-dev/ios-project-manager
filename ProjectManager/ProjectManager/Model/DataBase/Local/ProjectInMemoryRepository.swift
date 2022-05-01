@@ -11,16 +11,20 @@ final class ProjectInMemoryRepository {
 
     // MARK: - Property
     private var projects: [String: Project] = [:]
-    private var historyStorage = HistoryRepository()
+    let history = HistoryInMemoryRepository()
 }
 
 // MARK: - ProjectRepository
 extension ProjectInMemoryRepository: ProjectRepository {
-    
+ 
     var type: Repository {
         get {
             return .inMemory
         }
+    }
+    
+    var historyRepository: HistoryRepository {
+        return history
     }
     
     func create(_ project: Project) {
@@ -72,7 +76,7 @@ extension ProjectInMemoryRepository: ProjectRepository {
     }
     
     private func makeHistory(of project: Project, type: OperationType) {
-        self.historyStorage.makeHistory(type: type,
+        self.historyRepository.createHistory(type: type,
                                         of: project.identifier,
                                         title: project.title,
                                         status: project.status)
