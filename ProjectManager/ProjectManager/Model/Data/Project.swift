@@ -36,7 +36,7 @@ struct Project {
                 return .black
             }
             if isExpired == true {
-                return .red
+                return .systemRed
             } else {
                 return .black
             }

@@ -133,7 +133,7 @@ final class ProjectBoardViewController: UIViewController {
     // MARK: - Method
     private func updateRepositorySettingButton(with color: UIColor) {
         let currentImage = self.repositorySettingButton.image(for: .normal)
-        let newImage =  currentImage?.withTintColor(color, renderingMode: .alwaysOriginal)
+        let newImage = currentImage?.withTintColor(color, renderingMode: .alwaysOriginal)
 
         self.repositorySettingButton.setImage(newImage, for: .normal)
     }
@@ -226,11 +226,11 @@ extension ProjectBoardViewController: ProjectManagerDelegate {
     func projectManager(didChangedRepositoryWith repository: Repository) {
         switch repository {
         case .inMemory:
-            self.updateRepositorySettingButton(with: .gray)
+            self.updateRepositorySettingButton(with: .systemGray)
         case .coreData:
-            self.updateRepositorySettingButton(with: .gray)
+            self.updateRepositorySettingButton(with: .systemGray)
         case .firestore:
-            self.updateRepositorySettingButton(with: .blue)
+            self.updateRepositorySettingButton(with: .systemBlue)
         }
         self.todoViewController.updateView()
         self.doingViewController.updateView()

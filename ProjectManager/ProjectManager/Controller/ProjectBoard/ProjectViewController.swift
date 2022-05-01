@@ -46,7 +46,9 @@ final class ProjectViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.backgroundColor = .white
         textField.borderStyle = .roundedRect
+        textField.backgroundColor = .systemBackground
         textField.font = .preferredFont(forTextStyle: .body, compatibleWith: nil)
+        textField.textColor = .label
         textField.placeholder = "Title"
         textField.layer.shadowOffset = CGSize(width: 3, height: 3)
         textField.layer.shadowOpacity = 0.3
@@ -83,6 +85,7 @@ final class ProjectViewController: UIViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = .systemGray6
         textView.font = .preferredFont(forTextStyle: .body)
+        textView.textColor = .label
         textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         textView.layer.masksToBounds = true
         return textView
@@ -126,7 +129,7 @@ final class ProjectViewController: UIViewController {
     
     // MARK: - Configure View
     private func configureView() {
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .systemBackground
     }
     
     private func configureNavigationBarLayout() {

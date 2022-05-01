@@ -14,6 +14,7 @@ class ProjectTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .headline)
+        label.textColor = .label
         label.textAlignment = .left
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
@@ -78,7 +79,7 @@ class ProjectTableViewCell: UITableViewCell {
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
         self.selectionStyle = .none
-        self.cellContainerView.backgroundColor = .white
+        self.cellContainerView.backgroundColor = UIColor(named: "projectCellColor")
     }
     
     private func configureLayout() {

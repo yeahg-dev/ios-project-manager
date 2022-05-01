@@ -72,7 +72,7 @@ final class RepositotyConfigViewController: UIViewController {
     // MARK: - Method
     private func configureView() {
         self.view.translatesAutoresizingMaskIntoConstraints = false
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .systemBackground
         self.preferredContentSize = CGSize(width: 300, height: 150)
     }
     
