@@ -48,7 +48,7 @@ class HistoryCoreDataRepository: HistoryRepository {
     
     private func fetch() {
         let fetchRequest = CDHistory.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
+        let sortDescriptor = NSSortDescriptor(key: "date", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         do {
