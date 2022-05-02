@@ -12,7 +12,7 @@
         <attribute name="title" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="CDProject" positionX="-63" positionY="-18" width="128" height="104"/>
         <element name="CDHistory" positionX="-63" positionY="18" width="128" height="59"/>
+        <element name="CDProject" positionX="-63" positionY="-18" width="128" height="104"/>
     </elements>
 </model>
