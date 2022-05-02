@@ -9,6 +9,8 @@ import Foundation
 import CoreData
 
 class HistoryCoreDataRepository: HistoryRepository {
+    
+    var updateUI: (() -> Void) = {}
 
     private var historys: [CDHistory] = []
     private let persistentContainer: NSPersistentContainer = {
@@ -24,12 +26,14 @@ class HistoryCoreDataRepository: HistoryRepository {
     private lazy var context = persistentContainer.viewContext
     
     var historyCount: Int {
-        self.fetch()
         return historys.count
     }
-   
-    func readHistory(of inedx: Int) -> [String?: String?]? {
+    
+    func fetchHistorys() {
         self.fetch()
+    }
+    
+    func readHistory(of inedx: Int) -> [String?: String?]? {
         return ["description": historys[inedx].descrption,
                 "date": historys[inedx].date]
     }
@@ -45,7 +49,7 @@ class HistoryCoreDataRepository: HistoryRepository {
         
         self.save()
     }
-    
+   
     private func fetch() {
         let fetchRequest = CDHistory.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "date", ascending: false)

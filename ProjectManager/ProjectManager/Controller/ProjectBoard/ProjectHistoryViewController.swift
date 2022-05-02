@@ -49,7 +49,10 @@ class ProjectHistoryViewController: UIViewController {
                                             bundle: nil)
         self.historyTableView.register(historyTableViewCellNib,
                                        forCellReuseIdentifier: "HistoryTableViewCell")
-        
+        self.historyRepository?.updateUI = { [weak self] in
+                                        self?.historyTableView.reloadData()
+        }
+        self.historyRepository?.fetchHistorys()
         self.historyTableView.dataSource = self
     }
 

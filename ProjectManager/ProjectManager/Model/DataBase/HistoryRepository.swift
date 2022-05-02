@@ -9,7 +9,11 @@ import Foundation
 
 protocol HistoryRepository: AnyObject {
     
+    var updateUI: (() -> Void) { get set }
+    
     var historyCount: Int { get }
+    
+    func fetchHistorys()
     
     func readHistory(of inedx: Int) -> [String?: String?]?
     

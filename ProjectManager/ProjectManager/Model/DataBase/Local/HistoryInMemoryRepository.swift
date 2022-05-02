@@ -9,10 +9,16 @@ import Foundation
 
 class HistoryInMemoryRepository: HistoryRepository {
     
+    var updateUI: (() -> Void) = {}
+    
     private var historys: [[String?: String?]] = []
     
     var historyCount: Int {
         return historys.count
+    }
+    
+    func fetchHistorys() {
+        //
     }
     
     func readHistory(of inedx: Int) -> [String?: String?]? {
