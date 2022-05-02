@@ -44,12 +44,12 @@ final class ProjectViewController: UIViewController {
     private var titleTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .white
         textField.borderStyle = .roundedRect
         textField.backgroundColor = .systemBackground
         textField.font = .preferredFont(forTextStyle: .body, compatibleWith: nil)
         textField.textColor = .label
         textField.placeholder = "Title"
+        textField.layer.shadowColor = UIColor.shadowColor.cgColor
         textField.layer.shadowOffset = CGSize(width: 3, height: 3)
         textField.layer.shadowOpacity = 0.3
         textField.layer.shadowRadius = 3
@@ -73,6 +73,7 @@ final class ProjectViewController: UIViewController {
     
     private var descriptionTextViewContainer: UIView = {
         let view = UIView(frame: .zero)
+        view.layer.shadowColor = UIColor.shadowColor.cgColor
         view.layer.shadowOffset = CGSize(width: 3, height: 3)
         view.layer.shadowOpacity = 0.3
         view.layer.shadowRadius = 3
@@ -163,6 +164,16 @@ final class ProjectViewController: UIViewController {
             stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 15),
             stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -15)
         ])
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard #available(iOS 13, *) else { return }
+
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else { return }
+        titleTextField.layer.shadowColor = UIColor.shadowColor.cgColor
+        descriptionTextView.layer.shadowColor = UIColor.shadowColor.cgColor
     }
     
     // MARK: - Configure Mode
