@@ -23,14 +23,9 @@ class ProjectHistoryViewController: UIViewController {
         self.configureHistoryTableView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.view.sizeToFit()
-        print(self.historyTableView.contentSize)
-    }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        self.preferredContentSize.height = self.historyTableView.contentSize.height + CGFloat(14)
     }
     
     private func configureViewLayout() {
@@ -50,7 +45,7 @@ class ProjectHistoryViewController: UIViewController {
         self.historyTableView.register(historyTableViewCellNib,
                                        forCellReuseIdentifier: "HistoryTableViewCell")
         self.historyRepository?.updateUI = { [weak self] in
-                                        self?.historyTableView.reloadData()
+            self?.historyTableView.reloadData()
         }
         self.historyRepository?.fetchHistorys()
         self.historyTableView.dataSource = self
@@ -73,9 +68,7 @@ extension ProjectHistoryViewController: UITableViewDataSource {
         let date = history?["date"] ?? ""
         historyTableViewCell.configureContentWith(description: description, date: date)
         
-        // FIXME: - 비효율적인 레이아웃 계산같아보임, 위치 수정
-        // preferredContentSize를 결정할 때마다 layout을 재 설정함. viewDidLayoutSubviews가 호출됨
-        self.preferredContentSize = self.historyTableView.contentSize
+        self.view.setNeedsLayout()
         
         return historyTableViewCell
     }
