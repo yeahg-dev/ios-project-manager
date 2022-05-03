@@ -33,7 +33,7 @@ class HistoryFirestoreRepository: HistoryRepository {
                     print("\(document.documentID) => \(document.data())")
                     datas.append(document.data())
                 }
-                // FIXME: - sorting 
+                // FIXME: - sorting
                 self.historys = datas.sorted(by: { lhs, rhs in
                     (lhs["date"] as! String) < (rhs["date"] as! String)
                 })
@@ -67,5 +67,4 @@ class HistoryFirestoreRepository: HistoryRepository {
             }
         }
     }
-    
 }

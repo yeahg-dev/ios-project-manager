@@ -58,6 +58,7 @@ class ProjectTableViewCell: UITableViewCell {
     private var cellContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(named: "projectCellColor")
         return view
     }()
     
@@ -79,7 +80,6 @@ class ProjectTableViewCell: UITableViewCell {
         self.backgroundColor = .clear
         self.contentView.backgroundColor = .clear
         self.selectionStyle = .none
-        self.cellContainerView.backgroundColor = UIColor(named: "projectCellColor")
     }
     
     private func configureLayout() {
@@ -123,11 +123,8 @@ class ProjectTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.cellContainerView.backgroundColor = .white
-        self.titleLabel.textColor = .black
-        if self.deadlineLabel.textColor == .white {
-            self.deadlineLabel.textColor = .black
-        }
+        self.cellContainerView.backgroundColor = UIColor(named: "projectCellColor")
+        self.titleLabel.textColor = .label
     }
     
 }
