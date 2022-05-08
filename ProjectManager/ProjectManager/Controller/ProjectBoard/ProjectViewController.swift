@@ -126,8 +126,19 @@ final class ProjectViewController: UIViewController {
         self.configureStackViewLayout()
         self.configureMode()
         self.descriptionTextView.delegate = self
+        self.titleTextField.delegate = self
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.addKeyboardNotificationObserver()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.removeKeyboardNotificationObserver()
+    }
+
     // MARK: - Configure View
     private func configureView() {
         self.view.backgroundColor = .systemBackground
@@ -269,8 +280,53 @@ final class ProjectViewController: UIViewController {
         projectTableViewController.updateProject(of: project, with: content)
         dismiss(animated: false, completion: nil)
     }
+    
+    // MARK: - Keyboard Method
+    private func addKeyboardNotificationObserver() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow(_:)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide(_:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
+    private func removeKeyboardNotificationObserver() {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIResponder.keyboardWillShowNotification,
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIResponder.keyboardWillHideNotification,
+                                                  object: nil)
+    }
+    
+    @objc private func keyboardWillShow(_ sender: Notification) {
+        self.boundsOriginWillIncreaseByKeyboardHeight(sender)
+    }
+    
+    private func boundsOriginWillIncreaseByKeyboardHeight(_ sender: Notification) {
+        if descriptionTextView.isFirstResponder {
+            if let keyboardFrame: NSValue = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+                let keyboardRectangle = keyboardFrame.cgRectValue
+                let keyboardHeight = keyboardRectangle.height
+                self.view.bounds.origin.y += keyboardHeight * 0.5
+            }
+        }
+    }
+    
+    @objc private func keyboardWillHide(_ sender: Notification) {
+        self.boundsOriginWillReturnToZero()
+    }
+    
+    private func boundsOriginWillReturnToZero() {
+        self.view.bounds.origin = .zero
+    }
+
 }
 
+// MARK: - UITextViewDelegate
 extension ProjectViewController: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -285,5 +341,15 @@ extension ProjectViewController: UITextViewDelegate {
         let changedText = currentText.replacingCharacters(in: rangeToUpdate, with: text)
         
         return changedText.count <= limitedCharacterCount
+    }
+    
+}
+
+// MARK: - UITextFieldDelegate
+extension ProjectViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.titleTextField.resignFirstResponder()
+        return true
     }
 }
