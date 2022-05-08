@@ -59,10 +59,14 @@ class ProjectTableViewCell: UITableViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor(named: "projectCellColor")
+        view.layer.shadowColor = UIColor.shadowColor.cgColor
+        view.layer.shadowOpacity = 1
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowRadius = 0.5
         return view
     }()
     
-    // MARK: - Intiailizer
+    // MARK: - Intiailizerr
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -73,6 +77,15 @@ class ProjectTableViewCell: UITableViewCell {
         self.cellContainerView.addSubview(stackView)
         self.configureCellUI()
         self.configureLayout()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard #available(iOS 13, *) else { return }
+
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else { return }
+        self.cellContainerView.layer.shadowColor = UIColor.shadowColor.cgColor
     }
     
     // MARK: - Configure View

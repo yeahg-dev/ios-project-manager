@@ -26,7 +26,6 @@
 		63B96DAB27E0262800144F7C /* ProjectDetailScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B96DAA27E0262800144F7C /* ProjectDetailScene.swift */; };
 		63B96DAD27E028CF00144F7C /* ProjectListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B96DAC27E028CF00144F7C /* ProjectListViewController.swift */; };
 		63B96DAF27E067F600144F7C /* ProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B96DAE27E067F600144F7C /* ProjectViewController.swift */; };
-		63B96DE527E0BF7300144F7C /* CALayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B96DE427E0BF7300144F7C /* CALayer+Extension.swift */; };
 		63BE38D3281EE1A5000FD27A /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BE38D2281EE1A5000FD27A /* UIColor+Extension.swift */; };
 		63D21E5E27D4691700E35D3B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D21E5D27D4691700E35D3B /* Project.swift */; };
 		63D21E6027D4AC2E00E35D3B /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63D21E5F27D4AC2E00E35D3B /* Status.swift */; };
@@ -70,7 +69,6 @@
 		63B96DAA27E0262800144F7C /* ProjectDetailScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailScene.swift; sourceTree = "<group>"; };
 		63B96DAC27E028CF00144F7C /* ProjectListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListViewController.swift; sourceTree = "<group>"; };
 		63B96DAE27E067F600144F7C /* ProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectViewController.swift; sourceTree = "<group>"; };
-		63B96DE427E0BF7300144F7C /* CALayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extension.swift"; sourceTree = "<group>"; };
 		63BE38D2281EE1A5000FD27A /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		63D21E5D27D4691700E35D3B /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		63D21E5F27D4AC2E00E35D3B /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
@@ -243,7 +241,6 @@
 			children = (
 				63D21E9227D6604500E35D3B /* UITableVeiwCell+Extension.swift */,
 				63D21E9827D7618300E35D3B /* Date+Extension.swift */,
-				63B96DE427E0BF7300144F7C /* CALayer+Extension.swift */,
 				63E164B327E9AD69004E3D2E /* Encodable+Extension.swift */,
 				63BE38D2281EE1A5000FD27A /* UIColor+Extension.swift */,
 			);
@@ -377,7 +374,6 @@
 				63D21E8B27D634FD00E35D3B /* ProjectTableViewCell.swift in Sources */,
 				C7431F0625F51E1D0094C4CF /* AppDelegate.swift in Sources */,
 				63B96DAF27E067F600144F7C /* ProjectViewController.swift in Sources */,
-				63B96DE527E0BF7300144F7C /* CALayer+Extension.swift in Sources */,
 				636B231227EB770F00478751 /* NetworkChecker.swift in Sources */,
 				634A508F27E457310097303B /* ProjectFirestoreRepository.swift in Sources */,
 				6365151E27FC86F400581C29 /* HistoryRepository.swift in Sources */,
