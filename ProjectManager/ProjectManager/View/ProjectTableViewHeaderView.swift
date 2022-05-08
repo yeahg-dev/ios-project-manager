@@ -45,6 +45,14 @@ class ProjectTableViewHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let seperator = CALayer()
+        seperator.frame = CGRect(x: 0, y: self.bounds.height - 0.5, width: self.bounds.width, height: 1)
+        seperator.backgroundColor = UIColor.gray.cgColor
+        self.layer.addSublayer(seperator)
+    }
+    
     // MARK: - Configure Layout
     private func configureLayout() {
         NSLayoutConstraint.activate([
