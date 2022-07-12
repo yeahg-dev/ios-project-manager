@@ -5,6 +5,8 @@
 // 
 
 import UIKit
+import UserNotifications
+
 import Firebase
 
 @main
@@ -15,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         NetworkChecker.shared.start()
+        self.requestAuthorization()
         return true
     }
 
@@ -32,6 +35,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
-
 }
 
+extension AppDelegate {
+    
+    func requestAuthorization() {
+        UNUserNotificationCenter.current()
+            .requestAuthorization(options: [.alert, .sound, .badge]) {
+                (granted, error) in
+                if granted {
+                    print("Permission granted: \(granted)")
+                }
+            }
+    }
+}

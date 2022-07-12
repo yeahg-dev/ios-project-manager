@@ -151,6 +151,7 @@ final class MainViewController: UIViewController {
     
     // MARK: - @objc Method
     @objc func presentProjectCreatorViewController() {
+        self.sendNotification(seconds: 10)
         let creatorViewController = ProjectDetailViewController(mode: .creation,
                                                           project: nil,
                                                           projectCreationDelegate: self,
