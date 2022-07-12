@@ -47,7 +47,7 @@ final class ProjectFirestoreRepository {
 //                              deadline: dict[ProjectKey.deadline.rawValue] as? Date,
 //                              description: dict[ProjectKey.description.rawValue] as? String,
 //                              status: dict[ProjectKey.status.rawValue] as? Status)
-//        
+//
 //        let dict = project.jsonObjectToDictionary(of: project)
 //        return dict
 //    }
@@ -105,7 +105,8 @@ extension ProjectFirestoreRepository: ProjectRepository {
                                           title: dict[ProjectKey.title.rawValue] as? String,
                                           deadline: deadlineDate,
                                           description: dict[ProjectKey.description.rawValue] as? String,
-                                          status: dict[ProjectKey.status.rawValue] as? Status)
+                                          status: dict[ProjectKey.status.rawValue] as? Status,
+                    hasUserNotification: dict[ProjectKey.hasUserNotification.rawValue] as? Bool)
                     completion(.success(project))
                 }
             } else if let err = error {
@@ -139,7 +140,8 @@ extension ProjectFirestoreRepository: ProjectRepository {
                                        title: dict[ProjectKey.title.rawValue] as? String,
                                        deadline: deadlineDate,
                                        description: dict[ProjectKey.description.rawValue] as? String,
-                                       status: Status(rawValue: status))
+                                       status: Status(rawValue: status),
+                                       hasUserNotification: dict[ProjectKey.hasUserNotification.rawValue] as? Bool)
                     }
                     completion(.success(projects))
                 }

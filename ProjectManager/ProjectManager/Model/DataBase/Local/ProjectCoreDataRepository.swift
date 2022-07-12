@@ -100,7 +100,8 @@ extension ProjectCoreDataRepository: ProjectRepository {
                               title: result?.title,
                               deadline: result?.deadline,
                               description: result?.descriptions,
-                              status: result?.status)
+                              status: result?.status,
+                              hasUserNotification: result?.hasUSerNotification)
         completion(.success(project))
     }
     
@@ -111,7 +112,8 @@ extension ProjectCoreDataRepository: ProjectRepository {
                            title: project.title,
                            deadline: project.deadline,
                            description: project.descriptions,
-                           status: project.status)
+                           status: project.status,
+                           hasUserNotification: project.hasUSerNotification)
         })
         completion(.success(projects))
     }

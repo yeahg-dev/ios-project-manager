@@ -10,7 +10,7 @@ import UIKit
 
 enum ProjectKey: String {
     
-    case identifier, title, description, deadline, status
+    case identifier, title, description, deadline, status, hasUserNotification
 }
 
 struct Project {
@@ -21,6 +21,7 @@ struct Project {
     private (set) var deadline: Date?
     private (set) var description: String?
     private (set) var status: Status?
+    private (set) var hasUserNotification: Bool? = false
     
     var isExpired: Bool {
         let currentDate = Date()
@@ -55,6 +56,8 @@ struct Project {
                 self.deadline = value as? Date
             case ProjectKey.status.rawValue:
                 self.status = value as? Status
+            case ProjectKey.hasUserNotification.rawValue:
+                self.hasUserNotification = value as? Bool
             default:
                 continue
             }
@@ -78,6 +81,6 @@ extension Project: Hashable {
 extension Project: Codable {
     
     enum CodingKeys: String, CodingKey {
-        case identifier, title, description, deadline, status
+        case identifier, title, description, deadline, status, hasUserNotification
     }
 }
