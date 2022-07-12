@@ -24,3 +24,15 @@ public class CDProject: NSManagedObject {
         }
     }
 }
+
+extension CDProject {
+    
+    func toDomain() -> Project {
+        return Project(identifier: self.identifier,
+                       title: self.title,
+                       deadline: self.deadline,
+                       description: self.descriptions,
+                       status: self.status,
+                       hasUserNotification: self.hasUSerNotification)
+    }
+}

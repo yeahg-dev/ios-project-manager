@@ -96,24 +96,14 @@ extension ProjectCoreDataRepository: ProjectRepository {
     
     func read(of identifier: String, completion: @escaping (Result<Project?, Error>) -> Void) {
         let result = self.fetch(of: identifier)
-        let project = Project(identifier: result?.identifier,
-                              title: result?.title,
-                              deadline: result?.deadline,
-                              description: result?.descriptions,
-                              status: result?.status,
-                              hasUserNotification: result?.hasUSerNotification)
+        let project = result?.toDomain()
         completion(.success(project))
     }
     
     func read(of group: Status, completion: @escaping (Result<[Project]?, Error>) -> Void) {
         let results = self.fetch(of: group)
         let projects = results?.compactMap({ project in
-            return Project(identifier: project.identifier ,
-                           title: project.title,
-                           deadline: project.deadline,
-                           description: project.descriptions,
-                           status: project.status,
-                           hasUserNotification: project.hasUSerNotification)
+            project.toDomain()
         })
         completion(.success(projects))
     }
