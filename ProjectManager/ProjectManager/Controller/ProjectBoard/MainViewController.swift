@@ -6,8 +6,8 @@
 
 import UIKit
 
-// MARK: - ProjectBoardViewController
-final class ProjectBoardViewController: UIViewController {
+// MARK: - MainViewController
+final class MainViewController: UIViewController {
     
     // MARK: - Property
     private let projectManager = ProjectManager()
@@ -151,7 +151,7 @@ final class ProjectBoardViewController: UIViewController {
     
     // MARK: - @objc Method
     @objc func presentProjectCreatorViewController() {
-        let creatorViewController = ProjectViewController(mode: .creation,
+        let creatorViewController = ProjectDetailViewController(mode: .creation,
                                                           project: nil,
                                                           projectCreationDelegate: self,
                                                           projectEditDelegate: nil)
@@ -177,7 +177,7 @@ final class ProjectBoardViewController: UIViewController {
 }
 
 // MARK: - UINavigationBarDelegate
-extension ProjectBoardViewController: UINavigationBarDelegate {
+extension MainViewController: UINavigationBarDelegate {
     
     func position(for bar: UIBarPositioning) -> UIBarPosition {
         return UIBarPosition.topAttached
@@ -185,7 +185,7 @@ extension ProjectBoardViewController: UINavigationBarDelegate {
 }
 
 // MARK: - ProjectCreationViewControllerDelegate
-extension ProjectBoardViewController: ProjectCreationDelegate {
+extension MainViewController: ProjectCreationDelegate {
     
     func createProject(with content: [String : Any]) {
         self.projectManager.create(with: content)
@@ -195,7 +195,7 @@ extension ProjectBoardViewController: ProjectCreationDelegate {
 }
 
 // MARK: - ProjectListViewControllerDelegate
-extension ProjectBoardViewController: ProjectListViewControllerDelegate {
+extension MainViewController: ProjectListViewControllerDelegate {
     
     func readProject(of status: Status, completion: @escaping (Result<[Project]?, Error>) -> Void) {
         self.projectManager.readProject(of: status, completion: completion)
@@ -221,7 +221,7 @@ extension ProjectBoardViewController: ProjectListViewControllerDelegate {
 }
 
 // MARK: - ProjectManagerDelegate
-extension ProjectBoardViewController: ProjectManagerDelegate {
+extension MainViewController: ProjectManagerDelegate {
     
     func projectManager(didChangedRepositoryWith repository: Repository) {
         switch repository {

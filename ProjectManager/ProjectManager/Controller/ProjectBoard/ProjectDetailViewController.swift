@@ -1,5 +1,5 @@
 //
-//  ProjectViewController.swift
+//  ProjectDetailViewController.swift
 //  ProjectManager
 //
 //  Created by 1 on 2022/03/15.
@@ -19,8 +19,8 @@ protocol ProjectEditDelegate: AnyObject {
     func updateProject(of project: Project, with content: [String: Any])
 }
 
-// MARK: - ProjectViewController
-final class ProjectViewController: UIViewController {
+// MARK: - ProjectDetailViewController
+final class ProjectDetailViewController: UIViewController {
     
     // MARK: - Mode
     enum Mode {
@@ -327,7 +327,7 @@ final class ProjectViewController: UIViewController {
 }
 
 // MARK: - UITextViewDelegate
-extension ProjectViewController: UITextViewDelegate {
+extension ProjectDetailViewController: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let limitedCharacterCount = 1000
@@ -346,7 +346,7 @@ extension ProjectViewController: UITextViewDelegate {
 }
 
 // MARK: - UITextFieldDelegate
-extension ProjectViewController: UITextFieldDelegate {
+extension ProjectDetailViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.titleTextField.resignFirstResponder()

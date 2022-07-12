@@ -252,7 +252,7 @@ extension ProjectListViewController: UITableViewDelegate {
             return
         }
         
-        let detailViewController = ProjectViewController(mode: .edit,
+        let detailViewController = ProjectDetailViewController(mode: .edit,
                                                          project: selectedProject,
                                                          projectCreationDelegate: nil,
                                                          projectEditDelegate: self)
