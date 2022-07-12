@@ -41,16 +41,16 @@ final class ProjectFirestoreRepository {
         }
     }
     
-    private func formatProjectToJSONDict(with dict: [String: Any]) -> [String: Any] {
-        let project = Project(identifier: dict[ProjectKey.identifier.rawValue] as? String,
-                              title: dict[ProjectKey.title.rawValue] as? String,
-                              deadline: dict[ProjectKey.deadline.rawValue] as? Date,
-                              description: dict[ProjectKey.description.rawValue] as? String,
-                              status: dict[ProjectKey.status.rawValue] as? Status)
-        
-        let dict = project.jsonObjectToDictionary(of: project)
-        return dict
-    }
+//    private func formatProjectToJSONDict(with dict: [String: Any]) -> [String: Any] {
+//        let project = Project(identifier: dict[ProjectKey.identifier.rawValue] as? String,
+//                              title: dict[ProjectKey.title.rawValue] as? String,
+//                              deadline: dict[ProjectKey.deadline.rawValue] as? Date,
+//                              description: dict[ProjectKey.description.rawValue] as? String,
+//                              status: dict[ProjectKey.status.rawValue] as? Status)
+//        
+//        let dict = project.jsonObjectToDictionary(of: project)
+//        return dict
+//    }
 }
 
 // MARK: - ProjectRepository
