@@ -18,7 +18,6 @@ class ProjectTableViewHeaderView: UIView {
         return label
     }()
     
-    // TODO: - 동그라미 레이블로 수정
     private let projectCountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
