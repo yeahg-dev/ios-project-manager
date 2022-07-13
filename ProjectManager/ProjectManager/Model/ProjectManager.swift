@@ -46,6 +46,7 @@ protocol ProjectManagerDelegate: AnyObject {
 final class ProjectManager {
     
     // MARK: - Property
+    private let userNotificationHandler = UserNotificationHandler()
     weak var delegate: ProjectManagerDelegate?
     // TODO: - HistoryViewController로 넘겨줄 Model이 필요(Inmemory의 경우), 아님 델리게이트
     var historyRepository: HistoryRepository? {
@@ -112,4 +113,30 @@ final class ProjectManager {
         self.repositoryType = repository
         self.delegate?.projectManager(didChangedRepositoryWith: repository)
     }
+    
+    func registerUserNotification(of project: Project) {
+        guard let identifier = project.identifier,
+              let deadline = project.deadline else {
+            return
+        }
+        
+        let content = userNotificationContent(project: project)
+        let dateComponent = Calendar.current.dateComponents(in: .current,
+                                                            from: deadline)
+        
+        self.userNotificationHandler.requestNotification(of: content,
+                                                         when: dateComponent,
+                                                         identifier: identifier)
+    }
+    
+    private func userNotificationContent(project: Project) -> UserNotificationContent {
+        let title = project.title ?? "이름없음 프로젝트"
+        let body = "오늘까지 완료해야 할 프로젝트입니다🚀 화이팅!💪"
+        return UserNotificationContent(title: title, body: body)
+    }
+    
+    func removeUserNotification(of identifier: String) {
+        self.userNotificationHandler.removeNotification(of: identifier)
+    }
+
 }
