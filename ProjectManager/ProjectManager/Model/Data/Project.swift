@@ -84,3 +84,4 @@ extension Project: Codable {
         case identifier, title, description, deadline, status, hasUserNotification
     }
 }
+

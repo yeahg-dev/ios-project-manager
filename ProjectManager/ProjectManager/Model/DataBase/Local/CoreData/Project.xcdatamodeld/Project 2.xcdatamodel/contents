@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E230" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDHistory" representedClassName="CDHistory" syncable="YES" codeGenerationType="category">
+        <attribute name="date" optional="YES" attributeType="String"/>
+        <attribute name="descrption" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="CDProject" representedClassName="CDProject" syncable="YES" codeGenerationType="category">
+        <attribute name="deadline" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="descriptions" optional="YES" attributeType="String"/>
+        <attribute name="hasUSerNotification" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String"/>
+        <attribute name="statusString" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="CDHistory" positionX="-63" positionY="18" width="128" height="59"/>
+        <element name="CDProject" positionX="-63" positionY="-18" width="128" height="119"/>
+    </elements>
+</model>

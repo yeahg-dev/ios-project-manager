@@ -84,12 +84,11 @@ extension ProjectFirestoreRepository: ProjectRepository {
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 if let dict = document.data() {
-                    guard let projectDTO = ProjectDTO(dict: dict) else {
+                    guard let project = ProjectDTO(dict: dict).toDomain() else {
                         completion(.failure(FirestoreError.invalidDeadline))
                         return
                     }
-                    
-                    let project = projectDTO.toDomain()
+
                     completion(.success(project))
                 }
             } else if let err = error {
@@ -112,11 +111,11 @@ extension ProjectFirestoreRepository: ProjectRepository {
                         dicts.append(document.data())
                     }
                     let projects = dicts.compactMap { (dict: [String: Any]) -> Project? in
-                        guard let projectDTO = ProjectDTO(dict: dict) else {
+                        guard let project = ProjectDTO(dict: dict).toDomain() else {
                             return nil
                         }
                         
-                        return projectDTO.toDomain()
+                        return project
                     }
                     completion(.success(projects))
                 }
@@ -124,18 +123,17 @@ extension ProjectFirestoreRepository: ProjectRepository {
     }
     
     func updateContent(of project: Project, with modifiedProject: Project) {
-        guard let identifier = project.identifier,
-              let deadlineDate = modifiedProject.deadline,
-              let status = modifiedProject.status else {
+        guard let identifier = modifiedProject.identifier else {
+            return
+        }
+        
+        guard let projectEntity = modifiedProject.toDTO()?.toEntity() else {
+            print("entity transform failed")
             return
         }
         let projectRef = db.collection(FirestorePath.projects).document(identifier)
-        
-        var updatingContent = modifiedProject.jsonObjectToDictionary(of: project)
-        updatingContent.updateValue(Timestamp(date: deadlineDate), forKey: ProjectKey.deadline.rawValue)
-        updatingContent.updateValue(status.rawValue, forKey: ProjectKey.status.rawValue)
-        
-        projectRef.updateData(updatingContent) { err in
+    
+        projectRef.updateData(projectEntity) { err in
             if let err = err {
                 print("Error updating document: \(err)")
             } else {
