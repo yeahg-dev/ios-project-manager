@@ -100,6 +100,7 @@ final class ProjectManager {
         var updatingProject = project
         updatingProject.updateContent(with: content)
         self.repository?.updateContent(of: project, with: updatingProject)
+        self.modifyUserNotificationDate(of: updatingProject)
     }
     
     func updateProjectStatus(of project: Project, with status: Status) {
@@ -144,6 +145,11 @@ final class ProjectManager {
         }
         self.userNotificationHandler.removeNotification(of: identifier)
         self.updateProjectContent(of: project, with: [ProjectKey.hasUserNotification.rawValue: false])
+    }
+    
+    func modifyUserNotificationDate(of modifiedProject: Project) {
+        self.removeUserNotification(of: modifiedProject)
+        self.registerUserNotification(of: modifiedProject)
     }
 
 }
