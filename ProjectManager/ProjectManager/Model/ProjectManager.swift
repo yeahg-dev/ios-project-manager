@@ -144,7 +144,6 @@ final class ProjectManager {
             return 
         }
         self.userNotificationHandler.removeNotification(of: identifier)
-        self.updateProjectContent(of: project, with: [ProjectKey.hasUserNotification.rawValue: false])
     }
     
     func modifyUserNotificationDate(of modifiedProject: Project) {
