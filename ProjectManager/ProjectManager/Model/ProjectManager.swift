@@ -108,6 +108,7 @@ final class ProjectManager {
     
     func delete(_ project: Project) {
         self.repository?.delete(project)
+        self.removeUserNotification(of: project)
     }
     
     func switchProjectSource(with repository: Repository) {
