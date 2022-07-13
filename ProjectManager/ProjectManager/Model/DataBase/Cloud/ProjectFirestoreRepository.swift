@@ -40,17 +40,7 @@ final class ProjectFirestoreRepository {
             }
         }
     }
-    
-//    private func formatProjectToJSONDict(with dict: [String: Any]) -> [String: Any] {
-//        let project = Project(identifier: dict[ProjectKey.identifier.rawValue] as? String,
-//                              title: dict[ProjectKey.title.rawValue] as? String,
-//                              deadline: dict[ProjectKey.deadline.rawValue] as? Date,
-//                              description: dict[ProjectKey.description.rawValue] as? String,
-//                              status: dict[ProjectKey.status.rawValue] as? Status)
-//
-//        let dict = project.jsonObjectToDictionary(of: project)
-//        return dict
-//    }
+  
 }
 
 // MARK: - ProjectRepository
@@ -68,7 +58,6 @@ extension ProjectFirestoreRepository: ProjectRepository {
     
     // MARK: - Method
     func create(_ project: Project) {
-        // TODO: - mapping하는 객체 만들기
         guard let identifier = project.identifier,
               let deadline = project.deadline else {
             return
@@ -95,18 +84,12 @@ extension ProjectFirestoreRepository: ProjectRepository {
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
                 if let dict = document.data() {
-                    guard let deadline = dict[ProjectKey.deadline.rawValue] as? Timestamp else {
+                    guard let projectDTO = ProjectDTO(dict: dict) else {
                         completion(.failure(FirestoreError.invalidDeadline))
                         return
                     }
                     
-                    let deadlineDate = Date(timeIntervalSince1970: TimeInterval(deadline.seconds))
-                    let project = Project(identifier: dict[ProjectKey.identifier.rawValue] as? String,
-                                          title: dict[ProjectKey.title.rawValue] as? String,
-                                          deadline: deadlineDate,
-                                          description: dict[ProjectKey.description.rawValue] as? String,
-                                          status: dict[ProjectKey.status.rawValue] as? Status,
-                    hasUserNotification: dict[ProjectKey.hasUserNotification.rawValue] as? Bool)
+                    let project = projectDTO.toDomain()
                     completion(.success(project))
                 }
             } else if let err = error {
@@ -129,19 +112,11 @@ extension ProjectFirestoreRepository: ProjectRepository {
                         dicts.append(document.data())
                     }
                     let projects = dicts.compactMap { (dict: [String: Any]) -> Project? in
-                        guard let deadline = dict[ProjectKey.deadline.rawValue] as? Timestamp,
-                              let status = dict[ProjectKey.status.rawValue] as? String else {
-                            completion(.failure(FirestoreError.invalidDeadline))
+                        guard let projectDTO = ProjectDTO(dict: dict) else {
                             return nil
                         }
                         
-                        let deadlineDate = Date(timeIntervalSince1970: TimeInterval(deadline.seconds))
-                        return Project(identifier: dict[ProjectKey.identifier.rawValue] as? String,
-                                       title: dict[ProjectKey.title.rawValue] as? String,
-                                       deadline: deadlineDate,
-                                       description: dict[ProjectKey.description.rawValue] as? String,
-                                       status: Status(rawValue: status),
-                                       hasUserNotification: dict[ProjectKey.hasUserNotification.rawValue] as? Bool)
+                        return projectDTO.toDomain()
                     }
                     completion(.success(projects))
                 }

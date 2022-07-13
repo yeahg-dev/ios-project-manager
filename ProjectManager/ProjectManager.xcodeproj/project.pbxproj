@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		634A508F27E457310097303B /* ProjectFirestoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634A508E27E457310097303B /* ProjectFirestoreRepository.swift */; };
+		634D8987287E9CB3005B3661 /* ProjectDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634D8986287E9CB3005B3661 /* ProjectDTO.swift */; };
 		635862B827E32546005E2A2B /* Project.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 635862B627E32546005E2A2B /* Project.xcdatamodeld */; };
 		635862CE27E35D84005E2A2B /* ProjectCoreDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635862CD27E35D84005E2A2B /* ProjectCoreDataRepository.swift */; };
 		635862D127E392DB005E2A2B /* CDProject+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635862CF27E392DB005E2A2B /* CDProject+CoreDataClass.swift */; };
@@ -51,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		634A508E27E457310097303B /* ProjectFirestoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFirestoreRepository.swift; sourceTree = "<group>"; };
+		634D8986287E9CB3005B3661 /* ProjectDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDTO.swift; sourceTree = "<group>"; };
 		635862B727E32546005E2A2B /* Project.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Project.xcdatamodel; sourceTree = "<group>"; };
 		635862CD27E35D84005E2A2B /* ProjectCoreDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCoreDataRepository.swift; sourceTree = "<group>"; };
 		635862CF27E392DB005E2A2B /* CDProject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDProject+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -105,6 +107,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		634D8985287E9CA0005B3661 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				634D8986287E9CB3005B3661 /* ProjectDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
 		635862B527E30C58005E2A2B /* ProjectBoard */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +143,7 @@
 		635862BA27E34DA6005E2A2B /* Cloud */ = {
 			isa = PBXGroup;
 			children = (
+				634D8985287E9CA0005B3661 /* DTO */,
 				634A508E27E457310097303B /* ProjectFirestoreRepository.swift */,
 				6389CA9628158B2300E980F0 /* HistoryFirestoreRepository.swift */,
 			);
@@ -381,6 +392,7 @@
 				6389CAA2281590F900E980F0 /* CDHistory+CoreDataClass.swift in Sources */,
 				63E164B227E99688004E3D2E /* ProjectRepository.swift in Sources */,
 				6365151C27FC7B5300581C29 /* OperationHistory.swift in Sources */,
+				634D8987287E9CB3005B3661 /* ProjectDTO.swift in Sources */,
 				63B96DAD27E028CF00144F7C /* ProjectListViewController.swift in Sources */,
 				C7431F0825F51E1D0094C4CF /* SceneDelegate.swift in Sources */,
 				635862CE27E35D84005E2A2B /* ProjectCoreDataRepository.swift in Sources */,
