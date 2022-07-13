@@ -218,6 +218,15 @@ extension MainViewController: ProjectListViewControllerDelegate {
     func deleteProject(_ project: Project) {
         self.projectManager.delete(project)
     }
+    
+    func registerUserNotification(of project: Project) {
+        self.projectManager.registerUserNotification(of: project)
+    }
+    
+    func removeUserNotification(of project: Project) {
+        self.projectManager.removeUserNotification(of: project)
+    }
+    
 }
 
 // MARK: - ProjectManagerDelegate

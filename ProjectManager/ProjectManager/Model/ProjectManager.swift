@@ -77,7 +77,8 @@ final class ProjectManager {
             title: content[ProjectKey.title.rawValue] as? String,
             deadline: content[ProjectKey.deadline.rawValue] as? Date,
             description: content[ProjectKey.description.rawValue] as? String,
-            status: content[ProjectKey.status.rawValue] as? Status)
+            status: content[ProjectKey.status.rawValue] as? Status,
+            hasUserNotification: false)
         self.repository?.create(project)
     }
     
@@ -121,12 +122,13 @@ final class ProjectManager {
         }
         
         let content = userNotificationContent(project: project)
-        let dateComponent = Calendar.current.dateComponents(in: .current,
+        var dateComponent = Calendar.current.dateComponents(in: .current,
                                                             from: deadline)
-        
+
         self.userNotificationHandler.requestNotification(of: content,
                                                          when: dateComponent,
                                                          identifier: identifier)
+        self.updateProjectContent(of: project, with: [ProjectKey.hasUserNotification.rawValue: true])
     }
     
     private func userNotificationContent(project: Project) -> UserNotificationContent {
@@ -135,8 +137,12 @@ final class ProjectManager {
         return UserNotificationContent(title: title, body: body)
     }
     
-    func removeUserNotification(of identifier: String) {
+    func removeUserNotification(of project: Project) {
+        guard let identifier = project.identifier else {
+            return 
+        }
         self.userNotificationHandler.removeNotification(of: identifier)
+        self.updateProjectContent(of: project, with: [ProjectKey.hasUserNotification.rawValue: false])
     }
 
 }

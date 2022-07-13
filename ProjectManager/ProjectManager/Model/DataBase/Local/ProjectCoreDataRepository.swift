@@ -7,7 +7,6 @@
 
 import CoreData
 import UIKit
-import AVFoundation
 
 final class ProjectCoreDataRepository {
     
@@ -85,6 +84,7 @@ extension ProjectCoreDataRepository: ProjectRepository {
         cdProject.descriptions = project.description
         cdProject.deadline = project.deadline
         cdProject.status = project.status
+        cdProject.hasUSerNotification = project.hasUserNotification ?? false
         
         self.save()
         
@@ -117,6 +117,7 @@ extension ProjectCoreDataRepository: ProjectRepository {
         project?.descriptions = modifiedProject.description
         project?.deadline = modifiedProject.deadline
         project?.status = modifiedProject.status
+        project?.hasUSerNotification = modifiedProject.hasUserNotification ?? false
         
         self.save()
     }

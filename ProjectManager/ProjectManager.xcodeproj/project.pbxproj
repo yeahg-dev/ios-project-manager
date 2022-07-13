@@ -55,6 +55,7 @@
 		634A508E27E457310097303B /* ProjectFirestoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFirestoreRepository.swift; sourceTree = "<group>"; };
 		634D8986287E9CB3005B3661 /* ProjectDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDTO.swift; sourceTree = "<group>"; };
 		634D8989287EA23F005B3661 /* UserNotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationHandler.swift; sourceTree = "<group>"; };
+		634D898B287EC900005B3661 /* Project 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Project 2.xcdatamodel"; sourceTree = "<group>"; };
 		635862B727E32546005E2A2B /* Project.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Project.xcdatamodel; sourceTree = "<group>"; };
 		635862CD27E35D84005E2A2B /* ProjectCoreDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCoreDataRepository.swift; sourceTree = "<group>"; };
 		635862CF27E392DB005E2A2B /* CDProject+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDProject+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -624,6 +625,7 @@
 		635862B627E32546005E2A2B /* Project.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				634D898B287EC900005B3661 /* Project 2.xcdatamodel */,
 				635862B727E32546005E2A2B /* Project.xcdatamodel */,
 			);
 			currentVersion = 635862B727E32546005E2A2B /* Project.xcdatamodel */;

@@ -16,4 +16,8 @@ protocol ProjectListViewControllerDelegate: AnyObject {
     func updateProjectStatus(of project: Project, with status: Status)
     
     func deleteProject(_ project: Project)
+    
+    func registerUserNotification(of project: Project)
+    
+    func removeUserNotification(of project: Project)
 }

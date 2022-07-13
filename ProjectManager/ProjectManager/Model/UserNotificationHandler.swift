@@ -27,6 +27,7 @@ struct UserNotificationHandler {
 
         userNotificationCenter.add(request) { (error) in
            if error != nil {
+               print("노티 등록 실패")
               // Handle any errors.
            }
         }

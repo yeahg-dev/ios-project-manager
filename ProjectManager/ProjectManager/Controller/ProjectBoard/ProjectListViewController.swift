@@ -281,6 +281,55 @@ extension ProjectListViewController: UITableViewDelegate {
         let actionConfigurations = UISwipeActionsConfiguration(actions: [deleteAction])
         return actionConfigurations
     }
+    
+    func tableView(_ tableView: UITableView,
+                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let project = self.dataSource.itemIdentifier(for: indexPath) else {
+                  return  UISwipeActionsConfiguration(actions: [])
+              }
+        
+        let cellRect = self.projectTableView.rectForRow(at: indexPath)
+        let title = project.hasUserNotification ?? false ? "🔔" : "🔕"
+        let notificationConfigurationAction = UIContextualAction(
+            style: .normal,
+            title: title
+        ) {  [weak self] _, _, _ in
+            self?.presentNotificationConfigurationAlert(of: project, at: cellRect)
+        }
+        
+        let actionConfigurations = UISwipeActionsConfiguration(actions: [notificationConfigurationAction])
+        return actionConfigurations
+    }
+    
+    private func presentNotificationConfigurationAlert(of project: Project, at cellRect: CGRect) {
+        let actionSheet = UIAlertController(title: "알림 설정", message: nil, preferredStyle: .actionSheet)
+        let notConfiguratoinAction = UIAlertAction(title: "없음", style: .destructive) { [weak self] _ in
+            self?.delegate?.removeUserNotification(of: project)
+            self?.updateView()
+            actionSheet.dismiss(animated: false)
+        }
+        let configurationAction = UIAlertAction(title: "당일(오전 9시)", style: .default) { [weak self] _ in
+            self?.delegate?.registerUserNotification(of: project)
+            self?.updateView()
+            actionSheet.dismiss(animated: false)
+        }
+        actionSheet.addAction(notConfiguratoinAction)
+        actionSheet.addAction(configurationAction)
+        actionSheet.modalPresentationStyle = .popover
+     
+        let cellHeight = cellRect.height
+        let cellWidth = cellRect.width
+        let sourceRect = CGRect(origin: cellRect.origin, size: CGSize(width: cellWidth/2, height: cellHeight/2))
+        
+        if let popoverPresentationController = actionSheet.popoverPresentationController {
+            popoverPresentationController.sourceView = self.projectTableView
+            popoverPresentationController.sourceRect = sourceRect
+            popoverPresentationController.canOverlapSourceViewRect = true
+            popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection.left
+        }
+        self.present(actionSheet, animated: false, completion: nil)
+        
+    }
 
     func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
         if let swipeContainerView = tableView.subviews.first(where: { String(describing: type(of: $0)) == "_UITableViewCellSwipeContainerView" }) {
