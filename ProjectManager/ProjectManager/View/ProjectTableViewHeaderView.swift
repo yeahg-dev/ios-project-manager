@@ -60,7 +60,7 @@ class ProjectTableViewHeaderView: UIView {
     private func configureLayout() {
         NSLayoutConstraint.activate([
             statusLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            statusLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 7)
+            statusLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10)
         ])
         NSLayoutConstraint.activate([
             projectCountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
