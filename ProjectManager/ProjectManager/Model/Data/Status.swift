@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum Status: String, Codable {
     
@@ -20,11 +21,33 @@ extension Status: CustomStringConvertible {
     var description: String {
         switch self {
         case .todo:
-            return "TODO"
+            return "할 일🌅"
         case .doing:
-            return "DOING"
+            return "하는 중🌞"
         case .done:
-            return "DONE"
+            return "했음🌄"
+        }
+    }
+    
+    var cellBackgroundColor: UIColor? {
+        switch self {
+        case .todo:
+            return ColorPallete.todoCellBackgroundColor
+        case .doing:
+            return ColorPallete.doingCellBackgroundColor
+        case .done:
+            return ColorPallete.doneCellBackgroundColor
+        }
+    }
+    
+    var signatureColor: UIColor? {
+        switch self {
+        case .todo:
+            return ColorPallete.todoColor
+        case .doing:
+            return ColorPallete.doingColor
+        case .done:
+            return ColorPallete.doneColor
         }
     }
 }

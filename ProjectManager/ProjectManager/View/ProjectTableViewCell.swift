@@ -25,7 +25,7 @@ class ProjectTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .systemGray3
+        label.textColor = .systemGray2
         label.textAlignment = .left
         label.numberOfLines = 3
         label.lineBreakMode = .byWordWrapping
@@ -63,6 +63,7 @@ class ProjectTableViewCell: UITableViewCell {
         view.layer.shadowOpacity = 1
         view.layer.shadowOffset = CGSize(width: 0, height: 1)
         view.layer.shadowRadius = 0.5
+        view.layer.cornerRadius = 7
         return view
     }()
     
@@ -121,10 +122,13 @@ class ProjectTableViewCell: UITableViewCell {
         self.deadlineLabel.textColor = DeadlineTextColor
         self.deadlineLabel.text = deadline
     }
+    
+    func setBackgroundColor(color: UIColor?) {
+        self.cellContainerView.backgroundColor = color
+    }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.cellContainerView.backgroundColor = UIColor(named: "projectCellColor")
         self.titleLabel.textColor = .label
     }
     

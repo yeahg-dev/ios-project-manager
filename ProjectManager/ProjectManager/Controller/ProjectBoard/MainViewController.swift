@@ -27,7 +27,7 @@ final class MainViewController: UIViewController {
                                                        doingViewController.view,
                                                        doneViewController.view])
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .systemGray4
+        stackView.backgroundColor = .systemBackground
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.alignment = .fill
@@ -87,12 +87,14 @@ final class MainViewController: UIViewController {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add,
                                         target: self,
                                         action: #selector(presentProjectCreatorViewController))
+        addButton.tintColor = ColorPallete.buttonColor
         navigationItem.rightBarButtonItem = addButton
         
         let historyButton = UIBarButtonItem(title: "History",
                                             style: .plain,
                                             target: self,
                                             action: #selector(presentProjectHistoryViewController))
+        historyButton.tintColor = ColorPallete.buttonColor
         navigationItem.leftBarButtonItem = historyButton
         
         navigationBar.items = [navigationItem]
@@ -152,7 +154,10 @@ final class MainViewController: UIViewController {
     }
     
     // MARK: - Method
-    private func updateRepositorySettingButton(with color: UIColor) {
+    private func updateRepositorySettingButton(with color: UIColor?) {
+        guard let color = color else {
+            return
+        }
         let currentImage = self.repositorySettingButton.image(for: .normal)
         let newImage = currentImage?.withTintColor(color, renderingMode: .alwaysOriginal)
 
@@ -262,7 +267,7 @@ extension MainViewController: ProjectManagerDelegate {
         case .coreData:
             self.updateRepositorySettingButton(with: .systemGray)
         case .firestore:
-            self.updateRepositorySettingButton(with: .systemBlue)
+            self.updateRepositorySettingButton(with: ColorPallete.buttonColor)
         }
         self.todoViewController.updateView()
         self.doingViewController.updateView()

@@ -26,6 +26,7 @@ class HistoryTableViewCell: UITableViewCell {
     func configureContentWith(description: String?, date: String?) {
         self.descriptionLabel?.text = description
         self.dateLabel?.text = date
+        self.descriptionLabel?.textColor = ColorPallete.buttonColor
     }
     
 }

@@ -84,7 +84,7 @@ final class ProjectDetailViewController: UIViewController {
     private var descriptionTextView: UITextView = {
         let textView = UITextView(frame: .zero)
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = .systemGray6
+        textView.backgroundColor = ColorPallete.backgroundColor
         textView.font = .preferredFont(forTextStyle: .body)
         textView.textColor = .label
         textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
@@ -206,9 +206,11 @@ final class ProjectDetailViewController: UIViewController {
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
                                          target: self,
                                          action: #selector(dismissWithCreation))
+        doneButton.tintColor = ColorPallete.buttonColor
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
                                            target: self,
                                            action: #selector(dismissWithoutCreation))
+        cancelButton.tintColor = ColorPallete.buttonColor
         navigationItem.rightBarButtonItem = doneButton
         navigationItem.leftBarButtonItem = cancelButton
         
@@ -220,9 +222,11 @@ final class ProjectDetailViewController: UIViewController {
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
                                          target: self,
                                          action: #selector(dismissWithUpdate))
+        doneButton.tintColor = ColorPallete.buttonColor
         let editButton = UIBarButtonItem(barButtonSystemItem: .edit,
                                            target: self,
                                            action: #selector(enableEdit))
+        editButton.tintColor = ColorPallete.buttonColor
         navigationItem.rightBarButtonItem = doneButton
         navigationItem.leftBarButtonItem = editButton
         

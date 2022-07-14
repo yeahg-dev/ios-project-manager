@@ -49,7 +49,7 @@ final class ProjectListViewController: UIViewController {
     
     // MARK: - Configure View
     private func configureView() {
-        self.view.backgroundColor = .systemGray5
+        self.view.backgroundColor = ColorPallete.backgroundColor
         self.view.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -62,6 +62,7 @@ final class ProjectListViewController: UIViewController {
     }
     
     private func configureLayout() {
+        self.headerView.setLabelColor(with: self.projectStatus.signatureColor)
         self.view.addSubview(headerView)
         self.view.addSubview(projectTableView)
         let safeArea = self.view.safeAreaLayoutGuide
@@ -102,6 +103,8 @@ final class ProjectListViewController: UIViewController {
                 withClass: ProjectTableViewCell.self,
                 for: indexPath
             )
+            let backgroundColor = self.projectStatus.cellBackgroundColor
+            projectCell.setBackgroundColor(color: backgroundColor)
             projectCell.updateContent(title: project.title,
                                       description: project.description,
                                       deadline: project.deadline?.localeString(),
@@ -157,7 +160,7 @@ final class ProjectListViewController: UIViewController {
                   return
               }
         
-        let actionSheetController = UIAlertController(title: "프로젝트 상태 변경",
+        let actionSheetController = UIAlertController(title: "진도 변경",
                                                       message: nil,
                                                       preferredStyle: .actionSheet)
         let actions = projectStatusMoveUIAlertActionsForCurrentStatus(currentProject: project)
@@ -169,7 +172,6 @@ final class ProjectListViewController: UIViewController {
             popoverController.sourceView = self.projectTableView
             popoverController.sourceRect = CGRect(origin: location, size: .zero)
         }
-        
         self.present(actionSheetController, animated: true, completion: nil)
     }
     
@@ -269,7 +271,7 @@ extension ProjectListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
         if let cell = projectTableView.cellForRow(at: indexPath) as? ProjectTableViewCell{
-            cell.cellContainerView.backgroundColor = UIColor(named: "projectCellColor")
+            cell.cellContainerView.backgroundColor = self.projectStatus.cellBackgroundColor
             }
     }
     

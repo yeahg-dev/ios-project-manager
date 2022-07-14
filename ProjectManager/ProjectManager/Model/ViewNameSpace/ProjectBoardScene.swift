@@ -9,12 +9,12 @@ import Foundation
 
 enum ProjectBoardScene: String {
     
-    case mainTitle =  "Project Manager"
+    case mainTitle =  "해"
     
     enum statusModification: String {
         
-        case todo = "move to TODO"
-        case doing = "move to DOING"
-        case done = "move to DONE"
+        case todo = "곧 할 거에요"
+        case doing = "하는 중이에요"
+        case done = "다 했어요"
     }
 }

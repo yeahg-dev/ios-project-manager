@@ -21,8 +21,7 @@ class ProjectTableViewHeaderView: UIView {
     private let projectCountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .black
-        label.font = .preferredFont(forTextStyle: .caption1)
+        label.font = .preferredFont(forTextStyle: .callout)
         label.textColor = .white
         label.textAlignment = .center
         label.layer.cornerRadius = 9
@@ -30,6 +29,14 @@ class ProjectTableViewHeaderView: UIView {
         label.layer.masksToBounds = true
         return label
     }()
+    
+    private lazy var seperator: CALayer = {
+        let seperator = CALayer()
+        seperator.frame = CGRect(x: 0, y: self.bounds.height - 0.5, width: self.bounds.width, height: 1)
+        seperator.backgroundColor = ColorPallete.tableViewSeperatorColor?.cgColor
+        return seperator
+    }()
+    
     
     // MARK: - Initializer
     override init(frame: CGRect) {
@@ -46,10 +53,7 @@ class ProjectTableViewHeaderView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let seperator = CALayer()
-        seperator.frame = CGRect(x: 0, y: self.bounds.height - 0.5, width: self.bounds.width, height: 1)
-        seperator.backgroundColor = UIColor.gray.cgColor
-        self.layer.addSublayer(seperator)
+        self.layer.addSublayer(self.seperator)
     }
     
     // MARK: - Configure Layout
@@ -59,15 +63,20 @@ class ProjectTableViewHeaderView: UIView {
             statusLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 7)
         ])
         NSLayoutConstraint.activate([
-            projectCountLabel.leadingAnchor.constraint(equalTo: statusLabel.trailingAnchor, constant: 7),
+            projectCountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             projectCountLabel.centerYAnchor.constraint(equalTo: statusLabel.centerYAnchor)
         ])
         NSLayoutConstraint.activate([
-            projectCountLabel.heightAnchor.constraint(equalToConstant: 18),
-            projectCountLabel.widthAnchor.constraint(equalToConstant: 18)])
+            projectCountLabel.heightAnchor.constraint(equalToConstant: 20),
+            projectCountLabel.widthAnchor.constraint(equalToConstant: 20)])
     }
     
     // MARK: - API
+    func setLabelColor(with color: UIColor?) {
+        self.statusLabel.textColor = color
+        self.projectCountLabel.backgroundColor = color
+
+    }
     func configureContent(status: String?, projectCount: Int ) {
         self.statusLabel.text = status
         self.projectCountLabel.text = String(projectCount)

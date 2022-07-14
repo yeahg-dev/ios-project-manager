@@ -9,6 +9,6 @@ import Foundation
 
 enum RepositoryConfigScene: String {
     
-    case title = "프로젝트 저장소를 선택해주세요☝️"
+    case title = "할 일 저장소를 선택해주세요☝️"
  
 }

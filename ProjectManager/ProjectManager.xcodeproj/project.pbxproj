@@ -16,6 +16,7 @@
 		6365151C27FC7B5300581C29 /* OperationHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6365151B27FC7B5300581C29 /* OperationHistory.swift */; };
 		6365151E27FC86F400581C29 /* HistoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6365151D27FC86F400581C29 /* HistoryRepository.swift */; };
 		636B231227EB770F00478751 /* NetworkChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 636B231127EB770F00478751 /* NetworkChecker.swift */; };
+		63775DD728802559001A55BC /* ColorPallete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63775DD628802559001A55BC /* ColorPallete.swift */; };
 		6389CA93281588F200E980F0 /* HistoryInMemoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA92281588F200E980F0 /* HistoryInMemoryRepository.swift */; };
 		6389CA9528158B0100E980F0 /* HistoryCoreDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA9428158B0100E980F0 /* HistoryCoreDataRepository.swift */; };
 		6389CA9728158B2300E980F0 /* HistoryFirestoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA9628158B2300E980F0 /* HistoryFirestoreRepository.swift */; };
@@ -62,6 +63,7 @@
 		6365151B27FC7B5300581C29 /* OperationHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationHistory.swift; sourceTree = "<group>"; };
 		6365151D27FC86F400581C29 /* HistoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRepository.swift; sourceTree = "<group>"; };
 		636B231127EB770F00478751 /* NetworkChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkChecker.swift; sourceTree = "<group>"; };
+		63775DD628802559001A55BC /* ColorPallete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPallete.swift; sourceTree = "<group>"; };
 		6389CA92281588F200E980F0 /* HistoryInMemoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryInMemoryRepository.swift; sourceTree = "<group>"; };
 		6389CA9428158B0100E980F0 /* HistoryCoreDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCoreDataRepository.swift; sourceTree = "<group>"; };
 		6389CA9628158B2300E980F0 /* HistoryFirestoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFirestoreRepository.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				C7431F0E25F51E1E0094C4CF /* Assets.xcassets */,
+				63775DD628802559001A55BC /* ColorPallete.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 				63E164B827EA2662004E3D2E /* RepositoryConfigScene.swift in Sources */,
 				63E164B427E9AD69004E3D2E /* Encodable+Extension.swift in Sources */,
 				63D21E6727D4F9B900E35D3B /* ProjectManager.swift in Sources */,
+				63775DD728802559001A55BC /* ColorPallete.swift in Sources */,
 				63D21E9327D6604500E35D3B /* UITableVeiwCell+Extension.swift in Sources */,
 				63D21E6027D4AC2E00E35D3B /* Status.swift in Sources */,
 				635862D127E392DB005E2A2B /* CDProject+CoreDataClass.swift in Sources */,

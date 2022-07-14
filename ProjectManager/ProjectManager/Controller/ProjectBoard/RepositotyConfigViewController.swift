@@ -29,7 +29,7 @@ final class RepositotyConfigViewController: UIViewController {
         }
         let segmentedControl = UISegmentedControl(items: dataSourceTypeDescriptions)
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        segmentedControl.selectedSegmentTintColor = .black
+        segmentedControl.selectedSegmentTintColor = ColorPallete.buttonColor
         segmentedControl.setTitleTextAttributes(
             [.foregroundColor: UIColor.white],
             for: .selected
