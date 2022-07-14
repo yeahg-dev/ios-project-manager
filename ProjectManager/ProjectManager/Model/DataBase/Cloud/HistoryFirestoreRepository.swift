@@ -30,10 +30,8 @@ class HistoryFirestoreRepository: HistoryRepository {
             } else {
                 var datas: [[String: Any]] = []
                 for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
                     datas.append(document.data())
                 }
-                // FIXME: - sorting
                 self.historys = datas.sorted(by: { lhs, rhs in
                     (lhs["date"] as! String) < (rhs["date"] as! String)
                 })
