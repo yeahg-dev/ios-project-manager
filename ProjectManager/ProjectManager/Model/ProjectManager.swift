@@ -100,7 +100,11 @@ final class ProjectManager {
         var updatingProject = project
         updatingProject.updateContent(with: content)
         self.repository?.updateContent(of: project, with: updatingProject)
-        self.modifyUserNotificationDate(of: updatingProject)
+        if let _ = content[ProjectKey.deadline.rawValue],
+           let hasUserNotification = content[ProjectKey.hasUserNotification.rawValue] as? Bool,
+            hasUserNotification == true {
+            self.modifyUserNotificationDate(of: updatingProject)
+        }
     }
     
     func updateProjectStatus(of project: Project, with status: Status) {
@@ -117,6 +121,11 @@ final class ProjectManager {
         self.delegate?.projectManager(didChangedRepositoryWith: repository)
     }
     
+    func registerNewUserNotification(of project: Project) {
+        self.updateProjectContent(of: project, with: [ProjectKey.hasUserNotification.rawValue: true])
+        self.registerUserNotification(of: project)
+    }
+    
     func registerUserNotification(of project: Project) {
         guard let identifier = project.identifier,
               let deadline = project.deadline else {
@@ -130,7 +139,6 @@ final class ProjectManager {
         self.userNotificationHandler.requestNotification(of: content,
                                                          when: dateComponent,
                                                          identifier: identifier)
-        self.updateProjectContent(of: project, with: [ProjectKey.hasUserNotification.rawValue: true])
     }
     
     private func userNotificationContent(project: Project) -> UserNotificationContent {
@@ -140,6 +148,7 @@ final class ProjectManager {
     }
     
     func removeUserNotification(of project: Project) {
+        self.updateProjectContent(of: project, with: [ProjectKey.hasUserNotification.rawValue: false])
         guard let identifier = project.identifier else {
             return 
         }

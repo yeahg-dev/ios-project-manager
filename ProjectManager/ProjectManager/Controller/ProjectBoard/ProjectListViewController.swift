@@ -284,12 +284,10 @@ extension ProjectListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView,
                    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let project = self.dataSource.itemIdentifier(for: indexPath) else {
-                  return  UISwipeActionsConfiguration(actions: [])
-              }
-        
+        let project = self.dataSource.itemIdentifier(for: indexPath)
         let cellRect = self.projectTableView.rectForRow(at: indexPath)
-        let title = project.hasUserNotification ?? false ? "🔔" : "🔕"
+        let title = project?.hasUserNotification ?? false ? "🔔" : "🔕"
+        
         let notificationConfigurationAction = UIContextualAction(
             style: .normal,
             title: title
@@ -301,7 +299,11 @@ extension ProjectListViewController: UITableViewDelegate {
         return actionConfigurations
     }
     
-    private func presentNotificationConfigurationAlert(of project: Project, at cellRect: CGRect) {
+    private func presentNotificationConfigurationAlert(of project: Project?, at cellRect: CGRect) {
+        guard let project = project else {
+            return
+        }
+
         let actionSheet = UIAlertController(title: "알림 설정", message: nil, preferredStyle: .actionSheet)
         let notConfiguratoinAction = UIAlertAction(title: "없음", style: .destructive) { [weak self] _ in
             self?.delegate?.removeUserNotification(of: project)
@@ -324,11 +326,9 @@ extension ProjectListViewController: UITableViewDelegate {
         if let popoverPresentationController = actionSheet.popoverPresentationController {
             popoverPresentationController.sourceView = self.projectTableView
             popoverPresentationController.sourceRect = sourceRect
-            popoverPresentationController.canOverlapSourceViewRect = true
             popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection.left
         }
         self.present(actionSheet, animated: false, completion: nil)
-        
     }
 
     func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {

@@ -220,7 +220,9 @@ extension MainViewController: ProjectListViewControllerDelegate {
     }
     
     func registerUserNotification(of project: Project) {
-        self.projectManager.registerUserNotification(of: project)
+        if project.hasUserNotification == false {
+            self.projectManager.registerNewUserNotification(of: project)
+        }
     }
     
     func removeUserNotification(of project: Project) {
