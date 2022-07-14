@@ -35,6 +35,12 @@ final class MainViewController: UIViewController {
         return stackView
     }()
     
+    private lazy var bottomBar: UIView = {
+        let bottomBar = UIView()
+        bottomBar.translatesAutoresizingMaskIntoConstraints = false
+        return bottomBar
+    }()
+    
     private lazy var repositorySettingButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -59,9 +65,7 @@ final class MainViewController: UIViewController {
         self.configureDelegate()
         self.configureSubviews()
         self.configureNavigationItem()
-        self.configureNavigationBarLayout()
-        self.configureTableStackViewLayout()
-        self.configureRepositorySettingButtonLayout()
+        self.configureLayout()
         self.projectManager(didChangedRepositoryWith: self.projectManager.repositoryType ?? .coreData)
     }
      
@@ -74,7 +78,8 @@ final class MainViewController: UIViewController {
     private func configureSubviews() {
         self.view.addSubview(navigationBar)
         self.view.addSubview(tableStackView)
-        self.view.addSubview(repositorySettingButton)
+        self.view.addSubview(bottomBar)
+        self.bottomBar.addSubview(repositorySettingButton)
     }
     
     private func configureNavigationItem() {
@@ -91,6 +96,13 @@ final class MainViewController: UIViewController {
         navigationItem.leftBarButtonItem = historyButton
         
         navigationBar.items = [navigationItem]
+    }
+    
+    private func configureLayout() {
+        self.configureNavigationBarLayout()
+        self.configureTableStackViewLayout()
+        self.configureBottomBarLayout()
+        self.configureRepositorySettingButtonLayout()
     }
     
     private func configureNavigationBarLayout() {
@@ -111,16 +123,19 @@ final class MainViewController: UIViewController {
         ])
     }
     
+    private func configureBottomBarLayout() {
+        let safeArea = self.view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            self.bottomBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            self.bottomBar.topAnchor.constraint(equalTo: tableStackView.bottomAnchor),
+            self.bottomBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            self.bottomBar.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+        ])
+    }
+    
     private func configureRepositorySettingButtonLayout() {
         let safeArea = self.view.safeAreaLayoutGuide
-        let bottomBar = UIView()
-        bottomBar.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(bottomBar)
         NSLayoutConstraint.activate([
-            bottomBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            bottomBar.topAnchor.constraint(equalTo: tableStackView.bottomAnchor),
-            bottomBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            bottomBar.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
             self.repositorySettingButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
             self.repositorySettingButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10)
         ])
