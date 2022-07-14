@@ -259,7 +259,18 @@ extension ProjectListViewController: UITableViewDelegate {
         detailViewController.modalPresentationStyle = .formSheet
         
         self.present(detailViewController, animated: false, completion: nil)
-        self.projectTableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        if let cell = projectTableView.cellForRow(at: indexPath) as? ProjectTableViewCell{
+            cell.cellContainerView.backgroundColor = UIColor(named: "highlightedProjectCellColor")
+            }
+    }
+    
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        if let cell = projectTableView.cellForRow(at: indexPath) as? ProjectTableViewCell{
+            cell.cellContainerView.backgroundColor = UIColor(named: "projectCellColor")
+            }
     }
     
     func tableView(

@@ -55,7 +55,7 @@ class ProjectTableViewCell: UITableViewCell {
         return stackView
     }()
     
-    private var cellContainerView: UIView = {
+    var cellContainerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor(named: "projectCellColor")
@@ -120,18 +120,6 @@ class ProjectTableViewCell: UITableViewCell {
         self.descpritionLabel.text = description
         self.deadlineLabel.textColor = DeadlineTextColor
         self.deadlineLabel.text = deadline
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        if selected == true {
-            self.cellContainerView.backgroundColor = .systemBlue
-            self.titleLabel.textColor = .white
-            if self.deadlineLabel.textColor == .black {
-                self.deadlineLabel.textColor = .white
-            }
-        }
     }
 
     override func prepareForReuse() {
