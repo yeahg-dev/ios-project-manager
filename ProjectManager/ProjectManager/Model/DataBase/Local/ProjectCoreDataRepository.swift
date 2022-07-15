@@ -11,17 +11,9 @@ import UIKit
 final class ProjectCoreDataRepository {
     
     // MARK: - Property
-    private let persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Project")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                print(error.localizedDescription)
-            }
-        })
-        return container
-    }()
+    private let persistentContainer = ProjectPersistentContainer.persistentContainer
     
-    private lazy var context = persistentContainer.viewContext
+    private let context = ProjectPersistentContainer.context
     
     // MARK: - Method
     private func fetch<T>(of identifier: T) -> CDProject? {

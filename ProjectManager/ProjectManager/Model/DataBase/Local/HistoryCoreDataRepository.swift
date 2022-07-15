@@ -13,17 +13,9 @@ class HistoryCoreDataRepository: HistoryRepository {
     var updateUI: (() -> Void) = {}
 
     private var historys: [CDHistory] = []
-    private let persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Project")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                print(error.localizedDescription)
-            }
-        })
-        return container
-    }()
+    private let persistentContainer = ProjectPersistentContainer.persistentContainer
     
-    private lazy var context = persistentContainer.viewContext
+    private let context = ProjectPersistentContainer.context
     
     var historyCount: Int {
         return historys.count
