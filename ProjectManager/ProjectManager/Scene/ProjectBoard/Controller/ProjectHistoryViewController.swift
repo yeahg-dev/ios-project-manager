@@ -7,15 +7,21 @@
 
 import UIKit
 
-class ProjectHistoryViewController: UIViewController {
+final class ProjectHistoryViewController: UIViewController {
 
+    // MARK: - Property
+    
     var historyRepository: HistoryRepository?
+    
+    // MARK: - UI Property
     
     private let historyTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
+    
+    // MARK: - ViewLifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +59,8 @@ class ProjectHistoryViewController: UIViewController {
 
 }
 
+// MARK: - UITableViewDataSource
+
 extension ProjectHistoryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -60,7 +68,9 @@ extension ProjectHistoryViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let historyTableViewCell = self.historyTableView.dequeueReusableCell(withIdentifier: "HistoryTableViewCell", for: indexPath) as? HistoryTableViewCell else {
+        guard let historyTableViewCell = self.historyTableView.dequeueReusableCell(
+            withIdentifier: "HistoryTableViewCell",
+            for: indexPath) as? HistoryTableViewCell else {
             return UITableViewCell(style: .subtitle, reuseIdentifier: nil) }
         
         let history = self.historyRepository?.readHistory(of: indexPath.row)

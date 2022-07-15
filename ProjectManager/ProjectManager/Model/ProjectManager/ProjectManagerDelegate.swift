@@ -11,6 +11,4 @@ protocol ProjectManagerDelegate: AnyObject {
     
     func projectManager(didChangedRepositoryWith repositoryType: Repository)
     
-    func projectManager(didChangedNetworkStatusWith status: NetworkStatus)
-    
 }

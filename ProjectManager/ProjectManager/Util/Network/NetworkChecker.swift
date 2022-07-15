@@ -9,13 +9,6 @@ import Foundation
 import Network
 import UIKit
 
-public enum ConnectionType {
-    case wifi
-    case ethernet
-    case cellular
-    case unknown
-}
-
 final class NetworkChecker {
     
     static public let shared = NetworkChecker()
@@ -44,7 +37,6 @@ final class NetworkChecker {
         
     }
     
-    
     func stop() {
         self.monitor.cancel()
     }
@@ -67,10 +59,14 @@ final class NetworkChecker {
                   let rootViewController = window.rootViewController else {
                       return
                   }
-            let alertController = UIAlertController(title: "네트워크 연결이 끊겼습니다",
-                                                    message: "Cloud에 변경사항이 정상적으로 저장되지 않을 수 있어요😢",
-                                                    preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+            let alertController = UIAlertController(
+                title: NetworkCheckerAlert.disconnectionTitle.rawValue,
+                message: NetworkCheckerAlert.disconnectionMessage.rawValue,
+                preferredStyle: .alert)
+            let okAction = UIAlertAction(
+                title: NetworkCheckerAlert.confirom.rawValue,
+                style: .default,
+                handler: nil)
             alertController.addAction(okAction)
             
             rootViewController.present(alertController, animated: false, completion: nil)

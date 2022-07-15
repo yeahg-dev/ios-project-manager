@@ -6,23 +6,24 @@
 
 import UIKit
 
-// MARK: - MainViewController
 final class MainViewController: UIViewController {
     
     // MARK: - Property
+    
     private let projectManager = ProjectManager()
     private let todoViewController = ProjectListViewController(status: .todo)
     private let doingViewController = ProjectListViewController(status: .doing)
     private let doneViewController = ProjectListViewController(status: .done)
     
     // MARK: - UI Property
+    
     private var navigationBar: UINavigationBar = {
         let navigationBar = UINavigationBar()
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
         return navigationBar
     }()
     
-    private lazy var tableStackView: UIStackView = {
+    private lazy var projectListStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [todoViewController.view,
                                                        doingViewController.view,
                                                        doneViewController.view])
@@ -59,14 +60,15 @@ final class MainViewController: UIViewController {
     }()
     
     // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureView()
         self.configureDelegate()
-        self.configureSubviews()
-        self.configureNavigationItem()
         self.configureLayout()
-        self.projectManager(didChangedRepositoryWith: self.projectManager.repositoryType ?? .coreData)
+        self.configureNavigationItem()
+        self.projectManager(
+            didChangedRepositoryWith: self.projectManager.repositoryType ?? .coreData)
     }
      
     // MARK: - Configure View
@@ -74,12 +76,52 @@ final class MainViewController: UIViewController {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.view.backgroundColor = .systemGray6
     }
+
+    private func configureLayout() {
+        self.configureNavigationBarLayout()
+        self.configureProjectListStackViewLayout()
+        self.configureBottomBarLayout()
+        self.configureRepositorySettingButtonLayout()
+    }
     
-    private func configureSubviews() {
+    private func configureNavigationBarLayout() {
         self.view.addSubview(navigationBar)
-        self.view.addSubview(tableStackView)
+        let safeArea = self.view.safeAreaLayoutGuide
+        navigationBar.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
+        navigationBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor).isActive = true
+        navigationBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor).isActive = true
+    }
+    
+    private func configureProjectListStackViewLayout() {
+        self.view.addSubview(projectListStackView)
+        let safeArea = self.view.safeAreaLayoutGuide
+        let tabHeight = self.view.bounds.height * 0.05
+        NSLayoutConstraint.activate([
+            projectListStackView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+            projectListStackView.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
+            projectListStackView.rightAnchor.constraint(equalTo: safeArea.rightAnchor),
+            projectListStackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -tabHeight)
+        ])
+    }
+    
+    private func configureBottomBarLayout() {
         self.view.addSubview(bottomBar)
+        let safeArea = self.view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            self.bottomBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            self.bottomBar.topAnchor.constraint(equalTo: projectListStackView.bottomAnchor),
+            self.bottomBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            self.bottomBar.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+        ])
+    }
+    
+    private func configureRepositorySettingButtonLayout() {
         self.bottomBar.addSubview(repositorySettingButton)
+        let safeArea = self.view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            self.repositorySettingButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
+            self.repositorySettingButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10)
+        ])
     }
     
     private func configureNavigationItem() {
@@ -90,7 +132,7 @@ final class MainViewController: UIViewController {
         addButton.tintColor = ColorPallete.buttonColor
         navigationItem.rightBarButtonItem = addButton
         
-        let historyButton = UIBarButtonItem(title: "History",
+        let historyButton = UIBarButtonItem(title: ProjectBoardScene.historyTitle.rawValue,
                                             style: .plain,
                                             target: self,
                                             action: #selector(presentProjectHistoryViewController))
@@ -100,50 +142,9 @@ final class MainViewController: UIViewController {
         navigationBar.items = [navigationItem]
     }
     
-    private func configureLayout() {
-        self.configureNavigationBarLayout()
-        self.configureTableStackViewLayout()
-        self.configureBottomBarLayout()
-        self.configureRepositorySettingButtonLayout()
-    }
-    
-    private func configureNavigationBarLayout() {
-        let safeArea = self.view.safeAreaLayoutGuide
-        navigationBar.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
-        navigationBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor).isActive = true
-        navigationBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor).isActive = true
-    }
-    
-    private func configureTableStackViewLayout() {
-        let safeArea = self.view.safeAreaLayoutGuide
-        let tabHeight = self.view.bounds.height * 0.05
-        NSLayoutConstraint.activate([
-            tableStackView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
-            tableStackView.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
-            tableStackView.rightAnchor.constraint(equalTo: safeArea.rightAnchor),
-            tableStackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -tabHeight)
-        ])
-    }
-    
-    private func configureBottomBarLayout() {
-        let safeArea = self.view.safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
-            self.bottomBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            self.bottomBar.topAnchor.constraint(equalTo: tableStackView.bottomAnchor),
-            self.bottomBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            self.bottomBar.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
-        ])
-    }
-    
-    private func configureRepositorySettingButtonLayout() {
-        let safeArea = self.view.safeAreaLayoutGuide
-        NSLayoutConstraint.activate([
-            self.repositorySettingButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
-            self.repositorySettingButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10)
-        ])
-    }
     
     // MARK: - Configure Controller
+    
     private func configureDelegate() {
         self.todoViewController.delegate = self
         self.doingViewController.delegate = self
@@ -154,6 +155,18 @@ final class MainViewController: UIViewController {
     }
     
     // MARK: - Method
+    
+    private func presentRepositoryConfigView() {
+        let repositoryConfigAlertVC = RepositotyConfigViewController(projectManager: self.projectManager)
+        repositoryConfigAlertVC.modalPresentationStyle = .popover
+        
+        if let popoverPresentationController = repositoryConfigAlertVC.popoverPresentationController {
+            popoverPresentationController.sourceView = self.repositorySettingButton
+            popoverPresentationController.sourceRect = self.repositorySettingButton.frame(forAlignmentRect: .zero)
+        }
+        self.present(repositoryConfigAlertVC, animated: false, completion: nil)
+    }
+
     private func updateRepositorySettingButton(with color: UIColor?) {
         guard let color = color else {
             return
@@ -164,18 +177,15 @@ final class MainViewController: UIViewController {
         self.repositorySettingButton.setImage(newImage, for: .normal)
     }
     
-    private func presentRepositoryConfigView() {
-        let repositoryConfigAlertVC = RepositotyConfigViewController(model: self.projectManager)
-        repositoryConfigAlertVC.modalPresentationStyle = .popover
-        
-        if let popoverPresentationController = repositoryConfigAlertVC.popoverPresentationController {
-            popoverPresentationController.sourceView = self.repositorySettingButton
-            popoverPresentationController.sourceRect = self.repositorySettingButton.frame(forAlignmentRect: .zero)
-        }
-        self.present(repositoryConfigAlertVC, animated: false, completion: nil)
+    private func updateProjectListViews() {
+        self.todoViewController.updateView()
+        self.doingViewController.updateView()
+        self.doneViewController.updateView()
     }
     
+ 
     // MARK: - @objc Method
+    
     @objc func presentProjectCreatorViewController() {
         let creatorViewController = ProjectDetailViewController(mode: .creation,
                                                           project: nil,
@@ -202,6 +212,7 @@ final class MainViewController: UIViewController {
 }
 
 // MARK: - UINavigationBarDelegate
+
 extension MainViewController: UINavigationBarDelegate {
     
     func position(for bar: UIBarPositioning) -> UIBarPosition {
@@ -209,7 +220,8 @@ extension MainViewController: UINavigationBarDelegate {
     }
 }
 
-// MARK: - ProjectCreationViewControllerDelegate
+// MARK: - ProjectCreationDelegate
+
 extension MainViewController: ProjectCreationDelegate {
     
     func barTitle() -> String {
@@ -232,6 +244,7 @@ extension MainViewController: ProjectCreationDelegate {
 }
 
 // MARK: - ProjectListViewControllerDelegate
+
 extension MainViewController: ProjectListViewControllerDelegate {
     
     func readProject(of status: Status, completion: @escaping (Result<[Project]?, Error>) -> Void) {
@@ -240,16 +253,12 @@ extension MainViewController: ProjectListViewControllerDelegate {
     
     func updateProjectStatus(of project: Project, with status: Status) {
         self.projectManager.updateProjectStatus(of: project, with: status)
-        self.todoViewController.updateView()
-        self.doingViewController.updateView()
-        self.doneViewController.updateView()
+        self.updateProjectListViews()
     }
     
     func updateProject(of project: Project, with content: [String : Any]) {
         self.projectManager.updateProjectContent(of: project, with: content)
-        self.todoViewController.updateView()
-        self.doingViewController.updateView()
-        self.doneViewController.updateView()
+        self.updateProjectListViews()
     }
     
     func deleteProject(_ project: Project) {
@@ -269,24 +278,20 @@ extension MainViewController: ProjectListViewControllerDelegate {
 }
 
 // MARK: - ProjectManagerDelegate
+
 extension MainViewController: ProjectManagerDelegate {
     
     func projectManager(didChangedRepositoryWith repository: Repository) {
         switch repository {
         case .inMemory:
-            self.updateRepositorySettingButton(with: .systemGray)
+            self.updateRepositorySettingButton(with: ColorPallete.inMemoryButtonColor)
         case .coreData:
-            self.updateRepositorySettingButton(with: .systemGray)
+            self.updateRepositorySettingButton(with: ColorPallete.coreDataButtonColor)
         case .firestore:
-            self.updateRepositorySettingButton(with: ColorPallete.buttonColor)
+            self.updateRepositorySettingButton(with: ColorPallete.firestoreButtonColor)
         }
-        self.todoViewController.updateView()
-        self.doingViewController.updateView()
-        self.doneViewController.updateView()
-    }
-    
-    func projectManager(didChangedNetworkStatusWith with: NetworkStatus) {
-        // TODO: - 네트워크 상태 변화에 따른 버튼 이미지 변경
+        
+        self.updateProjectListViews()
     }
     
 }

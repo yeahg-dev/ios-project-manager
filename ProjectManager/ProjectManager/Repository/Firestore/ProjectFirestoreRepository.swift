@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 import Firebase
 
 enum FirestoreError: Error {
@@ -17,14 +18,18 @@ enum FirestoreError: Error {
 final class ProjectFirestoreRepository {
     
     // MARK: - FirestorePath Namespace
+    
     struct FirestorePath {
+        
         static let projects = "projects"
     }
     
     // MARK: - Property
+    
     private let db = Firestore.firestore()
     
     // MARK: - Method
+    
     func readAll(completion: @escaping (Result<[[String: Any]?], FirestoreError>) -> Void) {
         db.collection(FirestorePath.projects).getDocuments() { (querySnapshot, err) in
             if let err = err {
@@ -44,6 +49,7 @@ final class ProjectFirestoreRepository {
 }
 
 // MARK: - ProjectRepository
+
 extension ProjectFirestoreRepository: ProjectRepository {
     
     var type: Repository {
@@ -56,7 +62,8 @@ extension ProjectFirestoreRepository: ProjectRepository {
         return HistoryFirestoreRepository()
     }
     
-    // MARK: - Method
+    // MARK: - CRUD
+    
     func create(_ project: Project) {
         guard let identifier = project.identifier,
               let deadline = project.deadline else {
@@ -78,7 +85,8 @@ extension ProjectFirestoreRepository: ProjectRepository {
         }
     }
     
-    func read(of identifier: String, completion: @escaping (Result<Project?, Error>) -> Void) {
+    func read(of identifier: String,
+              completion: @escaping (Result<Project?, Error>) -> Void) {
         let docRef = db.collection(FirestorePath.projects).document(identifier)
         
         docRef.getDocument { (document, error) in
@@ -99,7 +107,8 @@ extension ProjectFirestoreRepository: ProjectRepository {
         }
     }
     
-    func read(of group: Status, completion: @escaping (Result<[Project]?, Error>) -> Void) {
+    func read(of group: Status,
+              completion: @escaping (Result<[Project]?, Error>) -> Void) {
         db.collection(FirestorePath.projects).whereField(ProjectKey.status.rawValue, isEqualTo: group.rawValue)
             .getDocuments() { (querySnapshot, err) in
                 if let err = err {

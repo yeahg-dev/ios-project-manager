@@ -30,7 +30,10 @@ class HistoryCoreDataRepository: HistoryRepository {
                 "date": historys[inedx].date]
     }
     
-    func createHistory(type: OperationType, of projectIdentifier: String?, title: String?, status: Status?) {
+    func createHistory(type: OperationType,
+                       of projectIdentifier: String?,
+                       title: String?,
+                       status: Status?) {
         let newHistory = OperationHistory(type: type,
                                           projectIdentifier: projectIdentifier,
                                           projectTitle: title,
@@ -54,7 +57,6 @@ class HistoryCoreDataRepository: HistoryRepository {
         }
     }
     
-    // TODO: - 코어데이터 관련 중복 코드 제거
     private func save() {
         if self.context.hasChanges {
             do {

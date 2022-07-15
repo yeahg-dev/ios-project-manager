@@ -12,6 +12,7 @@ enum ColorPallete {
     static let backgroundColor = UIColor(named: "backgroundColor")
     static let buttonColor = UIColor(named: "buttonColor")
     static let tableViewSeperatorColor = UIColor(named: "tableViewSeperatorColor")
+    static let higlightedCellColor = UIColor(named: "highlightedProjectCellColor")
     
     static let todoColor = UIColor(named: "todoColor")
     static let doingColor = UIColor(named: "doingColor")
@@ -19,5 +20,9 @@ enum ColorPallete {
     static let todoCellBackgroundColor = UIColor(named: "todoCellBackgroundColor")
     static let doingCellBackgroundColor = UIColor(named: "doingCellBackgroundColor")
     static let doneCellBackgroundColor = UIColor(named: "doneCellBackgroundColor")
+    
+    static let inMemoryButtonColor = UIColor(named: "inMemoryButtonColor")
+    static let coreDataButtonColor = UIColor(named: "coreDataButtonColor")
+    static let firestoreButtonColor = UIColor(named: "firestoreButtonColor")
     
 }

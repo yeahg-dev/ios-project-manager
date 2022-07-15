@@ -49,7 +49,10 @@ class HistoryFirestoreRepository: HistoryRepository {
         return history
     }
     
-    func createHistory(type: OperationType, of projectIdentifier: String?, title: String?, status: Status?) {
+    func createHistory(type: OperationType,
+                       of projectIdentifier: String?,
+                       title: String?,
+                       status: Status?) {
         let newHistory = OperationHistory(type: type,
                                           projectIdentifier: projectIdentifier,
                                           projectTitle: title,

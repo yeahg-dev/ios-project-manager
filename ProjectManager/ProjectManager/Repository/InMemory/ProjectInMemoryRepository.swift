@@ -10,11 +10,13 @@ import Foundation
 final class ProjectInMemoryRepository {
 
     // MARK: - Property
+    
     private var projects: [String: Project] = [:]
     let history = HistoryInMemoryRepository()
 }
 
 // MARK: - ProjectRepository
+
 extension ProjectInMemoryRepository: ProjectRepository {
  
     var type: Repository {
@@ -27,6 +29,8 @@ extension ProjectInMemoryRepository: ProjectRepository {
         return history
     }
     
+    // MARK: - CRUD
+    
     func create(_ project: Project) {
         guard let identifier = project.identifier else {
             return
@@ -36,11 +40,13 @@ extension ProjectInMemoryRepository: ProjectRepository {
         self.makeHistory(of: project, type: .add)
     }
     
-    func read(of identifier: String, completion: @escaping (Result<Project?, Error>) -> Void) {
+    func read(of identifier: String,
+              completion: @escaping (Result<Project?, Error>) -> Void) {
         completion(.success(projects[identifier]))
     }
     
-    func read(of group: Status, completion: @escaping (Result<[Project]?, Error>) -> Void) {
+    func read(of group: Status,
+              completion: @escaping (Result<[Project]?, Error>) -> Void) {
         let projects = projects.values.filter { project in project.status == group }
         completion(.success(projects))
     }
@@ -81,4 +87,5 @@ extension ProjectInMemoryRepository: ProjectRepository {
                                         title: project.title,
                                         status: project.status)
     }
+    
 }

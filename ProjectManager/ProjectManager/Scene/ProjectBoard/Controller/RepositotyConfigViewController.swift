@@ -11,10 +11,12 @@ import CoreData
 final class RepositotyConfigViewController: UIViewController {
     
     // MARK: - Property
+    
     weak var projectManager: ProjectManager?
     let repositoryTypes: [Repository] = [.inMemory, .coreData, .firestore]
     
     // MARK: - UIProperty
+    
     private var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -23,7 +25,7 @@ final class RepositotyConfigViewController: UIViewController {
         return label
     }()
     
-    private lazy var sourceSegmentedControl: UISegmentedControl = {
+    private lazy var repositorySegmentedControl: UISegmentedControl = {
         let dataSourceTypeDescriptions = repositoryTypes.map { dataSource in
             return dataSource.userDescription
         }
@@ -42,7 +44,7 @@ final class RepositotyConfigViewController: UIViewController {
     }()
     
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, sourceSegmentedControl])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, repositorySegmentedControl])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -51,8 +53,9 @@ final class RepositotyConfigViewController: UIViewController {
     }()
     
     // MARK: - Initializer
-    init(model: ProjectManager) {
-        self.projectManager = model
+    
+    init(projectManager: ProjectManager) {
+        self.projectManager = projectManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -61,26 +64,25 @@ final class RepositotyConfigViewController: UIViewController {
     }
     
     // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureView()
-        self.configureViewHeirachry()
-        self.configureContent()
         self.configureLayout()
+        self.configureContent()
     }
     
-    // MARK: - Method
+    // MARK: - Configure UI
+    
     private func configureView() {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.view.backgroundColor = .systemBackground
         self.preferredContentSize = CGSize(width: 300, height: 150)
     }
     
-    private func configureViewHeirachry() {
-        self.view.addSubview(contentStackView)
-    }
-    
     private func configureLayout() {
+        self.view.addSubview(contentStackView)
+        
         NSLayoutConstraint.activate([
             contentStackView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30),
             contentStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -94,11 +96,11 @@ final class RepositotyConfigViewController: UIViewController {
               let index = repositoryTypes.firstIndex(of: currentSourceType) else {
                   return
               }
-        self.sourceSegmentedControl.selectedSegmentIndex = index
+        self.repositorySegmentedControl.selectedSegmentIndex = index
     }
     
     private func switchDataSource() {
-        let selectedIndex = self.sourceSegmentedControl.selectedSegmentIndex
+        let selectedIndex = self.repositorySegmentedControl.selectedSegmentIndex
         self.projectManager?.switchProjectRepository(with: repositoryTypes[selectedIndex])
     }
 }

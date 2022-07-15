@@ -7,25 +7,28 @@
 
 import UIKit
 
-// MARK: - ProjectListViewController
 final class ProjectListViewController: UIViewController {
     
     // MARK: - DiffableDataSource Identfier
+    
     enum Section {
         case main
     }
     
     // MARK: - UI Property
+    
     private let headerView = ProjectTableViewHeaderView()
     private let projectTableView = UITableView()
+    private let longPressGestureRecognizer = UILongPressGestureRecognizer()
     
     // MARK: - Property
+    
     var projectStatus: Status!
     private var dataSource: UITableViewDiffableDataSource<Section,Project>!
-    private let longPressGestureRecognizer = UILongPressGestureRecognizer()
     weak var delegate: ProjectListViewControllerDelegate?
     
     // MARK: - Initializer
+    
     init(status: Status) {
         self.projectStatus = status
         super.init(nibName: nil, bundle: nil)
@@ -36,18 +39,19 @@ final class ProjectListViewController: UIViewController {
     }
     
     // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureView()
-        self.configureView()
         self.configureTableView()
         self.configureLayout()
+        self.setupLongGestureRecognizerOnTableView()
         self.configureDataSource()
         self.updateView()
-        self.setupLongGestureRecognizerOnTableView()
     }
     
     // MARK: - Configure View
+    
     private func configureView() {
         self.view.backgroundColor = ColorPallete.backgroundColor
         self.view.translatesAutoresizingMaskIntoConstraints = false
@@ -57,7 +61,6 @@ final class ProjectListViewController: UIViewController {
         projectTableView.delegate = self
         projectTableView.register(cellWithClass: ProjectTableViewCell.self)
         projectTableView.translatesAutoresizingMaskIntoConstraints = false
-        projectTableView.backgroundColor = .clear
         projectTableView.separatorStyle = .none
     }
     
@@ -82,6 +85,7 @@ final class ProjectListViewController: UIViewController {
     }
     
     // MARK: - Configure Controller
+    
     private func setupLongGestureRecognizerOnTableView() {
         self.longPressGestureRecognizer.minimumPressDuration = 0.5
         self.longPressGestureRecognizer.delaysTouchesBegan = true
@@ -94,6 +98,7 @@ final class ProjectListViewController: UIViewController {
     }
     
     // MARK: - TableView Method
+    
     private func configureDataSource() {
         dataSource = UITableViewDiffableDataSource<Section, Project>(
             tableView: projectTableView
@@ -113,6 +118,11 @@ final class ProjectListViewController: UIViewController {
         }
     }
     
+    func updateView() {
+        applySnapshotToCell()
+        updateHeaderView()
+    }
+    
     func applySnapshotToCell() {
         self.delegate?.readProject(of: self.projectStatus) { [weak self] result in
             switch result {
@@ -122,19 +132,14 @@ final class ProjectListViewController: UIViewController {
                     snapShot.appendSections([.main])
                     snapShot.appendItems(projects ?? [], toSection: .main)
                     
-                    self?.dataSource.apply(snapShot, animatingDifferences: true, completion: nil)
+                    self?.dataSource.apply(snapShot,
+                                           animatingDifferences: true,
+                                           completion: nil)
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
-                // TODO: - 사용자에게 알림 처리
+            case .failure(_):
+                self?.presentErrorAlert()
             }
         }
-    }
-    
-    // MARK: - Method
-    func updateView() {
-        applySnapshotToCell()
-        updateHeaderView()
     }
     
     func updateHeaderView() {
@@ -147,23 +152,38 @@ final class ProjectListViewController: UIViewController {
                         projectCount: projects?.count ?? .zero
                     )
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
-                // TODO: - 사용자에게 알림 처리
+            case .failure(_):
+                self?.presentErrorAlert()
             }
         }
     }
     
+    private func presentErrorAlert() {
+        let alert = UIAlertController(
+            title: ProjectBoardScene.ErrorAlert.title.rawValue,
+            message: nil,
+            preferredStyle: .alert)
+        let confirmAction = UIAlertAction(
+            title: ProjectBoardScene.ErrorAlert.confirm.rawValue,
+            style: .default)
+        alert.addAction(confirmAction)
+        self.present(alert, animated: false)
+    }
+    
+    // MARK: - GestureRecongizer Method
+    
     @objc func presentStatusMovePopover() {
         let location = longPressGestureRecognizer.location(in: projectTableView)
         guard let project = longPressedProject(at: location) else {
-                  return
-              }
+            return
+        }
         
-        let actionSheetController = UIAlertController(title: "진도 변경",
-                                                      message: nil,
-                                                      preferredStyle: .actionSheet)
-        let actions = projectStatusMoveUIAlertActionsForCurrentStatus(currentProject: project)
+        let actionSheetController = UIAlertController(
+            title: ProjectBoardScene.projectStatus.rawValue,
+            message: nil,
+            preferredStyle: .actionSheet)
+        let actions = projectStatusMoveUIAlertActionsForCurrentStatus(
+            currentProject: project)
         for action in actions {
             actionSheetController.addAction(action)
         }
@@ -192,36 +212,36 @@ final class ProjectListViewController: UIViewController {
         case .todo:
             let firstAction = projectStatusMoveUIAlertAction(
                 currentProject: currentProject,
-                title: ProjectBoardScene.statusModification.doing.rawValue,
+                title: ProjectBoardScene.StatusModification.doing.rawValue,
                 targetStatus: .doing,
                 viewController: self)
             let secondAction = projectStatusMoveUIAlertAction(
                 currentProject: currentProject,
-                title: ProjectBoardScene.statusModification.done.rawValue,
+                title: ProjectBoardScene.StatusModification.done.rawValue,
                 targetStatus: .done,
                 viewController: self)
             return [firstAction, secondAction]
         case .doing:
             let firstAction = projectStatusMoveUIAlertAction(
                 currentProject: currentProject,
-                title: ProjectBoardScene.statusModification.todo.rawValue,
+                title: ProjectBoardScene.StatusModification.todo.rawValue,
                 targetStatus: .todo,
                 viewController: self)
             let secondAction = projectStatusMoveUIAlertAction(
                 currentProject: currentProject,
-                title: ProjectBoardScene.statusModification.done.rawValue,
+                title: ProjectBoardScene.StatusModification.done.rawValue,
                 targetStatus: .done,
                 viewController: self)
             return [firstAction, secondAction]
         case .done:
             let firstAction = projectStatusMoveUIAlertAction(
                 currentProject: currentProject,
-                title: ProjectBoardScene.statusModification.todo.rawValue,
+                title: ProjectBoardScene.StatusModification.todo.rawValue,
                 targetStatus: .todo,
                 viewController: self)
             let secondAction = projectStatusMoveUIAlertAction(
                 currentProject: currentProject,
-                title: ProjectBoardScene.statusModification.doing.rawValue,
+                title: ProjectBoardScene.StatusModification.doing.rawValue,
                 targetStatus: .doing,
                 viewController: self)
             return [firstAction, secondAction]
@@ -239,7 +259,8 @@ final class ProjectListViewController: UIViewController {
         let action = UIAlertAction(
             title: title,
             style: .default) { [weak viewController] _ in
-                viewController?.delegate?.updateProjectStatus(of: currentProject, with: targetStatus)
+                viewController?.delegate?.updateProjectStatus(of: currentProject,
+                                                              with: targetStatus)
                 viewController?.updateView()
             }
         return action
@@ -247,6 +268,7 @@ final class ProjectListViewController: UIViewController {
 }
 
 // MARK: - UITableViewDelegate
+
 extension ProjectListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -254,24 +276,27 @@ extension ProjectListViewController: UITableViewDelegate {
             return
         }
         
-        let detailViewController = ProjectDetailViewController(mode: .edit,
-                                                         project: selectedProject,
-                                                         projectDetailDelegate: self)
+        let detailViewController = ProjectDetailViewController(
+            mode: .edit,
+            project: selectedProject,
+            projectDetailDelegate: self)
         detailViewController.modalPresentationStyle = .formSheet
         
         self.present(detailViewController, animated: false, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        if let cell = projectTableView.cellForRow(at: indexPath) as? ProjectTableViewCell{
-            cell.cellContainerView.backgroundColor = UIColor(named: "highlightedProjectCellColor")
-            }
+        if let cell = projectTableView.cellForRow(
+            at: indexPath) as? ProjectTableViewCell{
+            cell.cellContainerView.backgroundColor = ColorPallete.higlightedCellColor
+        }
     }
     
     func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        if let cell = projectTableView.cellForRow(at: indexPath) as? ProjectTableViewCell{
+        if let cell = projectTableView.cellForRow(
+            at: indexPath) as? ProjectTableViewCell{
             cell.cellContainerView.backgroundColor = self.projectStatus.cellBackgroundColor
-            }
+        }
     }
     
     func tableView(
@@ -283,8 +308,8 @@ extension ProjectListViewController: UITableViewDelegate {
             title: nil
         ) {  [weak self] _, _, _ in
             guard let project = self?.dataSource.itemIdentifier(for: indexPath) else {
-                      return
-                  }
+                return
+            }
             self?.delegate?.deleteProject(project)
             self?.updateView()
         }
@@ -295,7 +320,8 @@ extension ProjectListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView,
-                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         let project = self.dataSource.itemIdentifier(for: indexPath)
         let cellRect = self.projectTableView.rectForRow(at: indexPath)
         let title = project?.hasUserNotification ?? false ? "🔔" : "🔕"
@@ -307,22 +333,32 @@ extension ProjectListViewController: UITableViewDelegate {
             self?.presentNotificationConfigurationAlert(of: project, at: cellRect)
         }
         
-        let actionConfigurations = UISwipeActionsConfiguration(actions: [notificationConfigurationAction])
+        let actionConfigurations = UISwipeActionsConfiguration(
+            actions: [notificationConfigurationAction])
         return actionConfigurations
     }
     
-    private func presentNotificationConfigurationAlert(of project: Project?, at cellRect: CGRect) {
+    private func presentNotificationConfigurationAlert(
+        of project: Project?,
+        at cellRect: CGRect) {
         guard let project = project else {
             return
         }
-
-        let actionSheet = UIAlertController(title: "알림 설정", message: nil, preferredStyle: .actionSheet)
-        let notConfiguratoinAction = UIAlertAction(title: "없음", style: .destructive) { [weak self] _ in
+        
+        let actionSheet = UIAlertController(
+            title: ProjectBoardScene.UserNotificationConfig.title.rawValue,
+            message: nil,
+            preferredStyle: .actionSheet)
+            let notConfiguratoinAction = UIAlertAction(
+                title: ProjectBoardScene.UserNotificationConfig.none.rawValue,
+                style: .destructive) { [weak self] _ in
             self?.delegate?.removeUserNotification(of: project)
             self?.updateView()
             actionSheet.dismiss(animated: false)
         }
-        let configurationAction = UIAlertAction(title: "당일(오전 9시)", style: .default) { [weak self] _ in
+        let configurationAction = UIAlertAction(
+            title: ProjectBoardScene.UserNotificationConfig.yes.rawValue,
+            style: .default) { [weak self] _ in
             self?.delegate?.registerUserNotification(of: project)
             self?.updateView()
             actionSheet.dismiss(animated: false)
@@ -330,7 +366,7 @@ extension ProjectListViewController: UITableViewDelegate {
         actionSheet.addAction(notConfiguratoinAction)
         actionSheet.addAction(configurationAction)
         actionSheet.modalPresentationStyle = .popover
-     
+        
         let cellHeight = cellRect.height
         let cellWidth = cellRect.width
         let sourceRect = CGRect(origin: cellRect.origin, size: CGSize(width: cellWidth/2, height: cellHeight/2))
@@ -342,23 +378,28 @@ extension ProjectListViewController: UITableViewDelegate {
         }
         self.present(actionSheet, animated: false, completion: nil)
     }
-
-    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
-        if let swipeContainerView = tableView.subviews.first(where: { String(describing: type(of: $0)) == "_UITableViewCellSwipeContainerView" }) {
-            if let swipeActionPullView = swipeContainerView.subviews.first, String(describing: type(of: swipeActionPullView)) == "UISwipeActionPullView" {
-                swipeActionPullView.frame.size.height -= 10
-                swipeActionPullView.frame = swipeActionPullView.frame.offsetBy(dx: 0, dy: 5)
+    
+    func tableView(
+        _ tableView: UITableView,
+        willBeginEditingRowAt indexPath: IndexPath) {
+            if let swipeContainerView = tableView.subviews.first(
+                where: { String(describing: type(of: $0)) == "_UITableViewCellSwipeContainerView" }) {
+                if let swipeActionPullView = swipeContainerView.subviews.first,
+                   String(describing: type(of: swipeActionPullView)) == "UISwipeActionPullView" {
+                    swipeActionPullView.frame.size.height -= 10
+                    swipeActionPullView.frame = swipeActionPullView.frame.offsetBy(dx: 0, dy: 5)
+                }
             }
         }
-    }
 }
 
-// MARK: - ProjectEditViewControllerDelegate
+// MARK: - ProjectEditDelegate
+
 extension ProjectListViewController: ProjectEditDelegate {
     func barTitle() -> String {
         return ProjectDetailScene.editTitle.rawValue
     }
-
+    
     func rightBarButtonItem() -> UIBarButtonItem.SystemItem {
         return .done
     }
@@ -373,5 +414,5 @@ extension ProjectListViewController: ProjectEditDelegate {
         }
         self.delegate?.updateProject(of: project, with: projectContent)
     }
-  
+    
 }

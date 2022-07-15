@@ -7,15 +7,15 @@
 
 import Foundation
 
-class HistoryInMemoryRepository: HistoryRepository {
+final class HistoryInMemoryRepository: HistoryRepository {
     
     var updateUI: (() -> Void) = {}
-    
     private var historys: [[String?: String?]] = []
-    
     var historyCount: Int {
         return historys.count
     }
+    
+    // MARK: - CRUD
     
     func fetchHistorys() {
         //
@@ -30,6 +30,5 @@ class HistoryInMemoryRepository: HistoryRepository {
         let history = ["description": newHistory.historyDescription,
                        "date": newHistory.dateDescription]
         historys.insert(history, at: 0)
-        print(newHistory.historyDescription + newHistory.dateDescription)
     }
 }

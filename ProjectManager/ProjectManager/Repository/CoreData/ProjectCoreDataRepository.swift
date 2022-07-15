@@ -11,11 +11,12 @@ import UIKit
 final class ProjectCoreDataRepository {
     
     // MARK: - Property
-    private let persistentContainer = ProjectPersistentContainer.persistentContainer
     
+    private let persistentContainer = ProjectPersistentContainer.persistentContainer
     private let context = ProjectPersistentContainer.context
     
     // MARK: - Method
+    
     private func fetch<T>(of identifier: T) -> CDProject? {
         let fetchRequest = CDProject.fetchRequest()
         let identifierString = String(describing: identifier)
@@ -32,7 +33,8 @@ final class ProjectCoreDataRepository {
     
     private func fetch(of status: Status) -> [CDProject]? {
         let fetchRequest = CDProject.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: ProjectKey.deadline.rawValue, ascending: true)
+        let sortDescriptor = NSSortDescriptor(key: ProjectKey.deadline.rawValue,
+                                              ascending: true)
         let predicate = NSPredicate(format: "statusString = %@", status.rawValue)
         fetchRequest.sortDescriptors = [sortDescriptor]
         fetchRequest.predicate = predicate
@@ -57,6 +59,7 @@ final class ProjectCoreDataRepository {
 }
 
 // MARK: - ProjectRepository
+
 extension ProjectCoreDataRepository: ProjectRepository {
    
     var type: Repository {
@@ -68,6 +71,8 @@ extension ProjectCoreDataRepository: ProjectRepository {
     var historyRepository: HistoryRepository {
         return HistoryCoreDataRepository()
     }
+    
+    // MARK: - CRUD
     
     func create(_ project: Project) {
         let cdProject = CDProject(context: context)
@@ -86,13 +91,15 @@ extension ProjectCoreDataRepository: ProjectRepository {
                                         status: project.status)
     }
     
-    func read(of identifier: String, completion: @escaping (Result<Project?, Error>) -> Void) {
+    func read(of identifier: String,
+              completion: @escaping (Result<Project?, Error>) -> Void) {
         let result = self.fetch(of: identifier)
         let project = result?.toDomain()
         completion(.success(project))
     }
     
-    func read(of group: Status, completion: @escaping (Result<[Project]?, Error>) -> Void) {
+    func read(of group: Status,
+              completion: @escaping (Result<[Project]?, Error>) -> Void) {
         let results = self.fetch(of: group)
         let projects = results?.compactMap({ project in
             project.toDomain()
@@ -144,4 +151,5 @@ extension ProjectCoreDataRepository: ProjectRepository {
                                         title: title,
                                         status: status)
     }
+    
 }

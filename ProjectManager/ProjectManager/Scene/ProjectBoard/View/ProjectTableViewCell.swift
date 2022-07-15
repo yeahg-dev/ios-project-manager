@@ -7,9 +7,10 @@
 
 import UIKit
 
-class ProjectTableViewCell: UITableViewCell {
+final class ProjectTableViewCell: UITableViewCell {
     
     // MARK: - UI Property
+    
     private var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -68,17 +69,18 @@ class ProjectTableViewCell: UITableViewCell {
     }()
     
     // MARK: - Intiailizerr
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.contentView.addSubview(cellContainerView)
-        self.cellContainerView.addSubview(stackView)
         self.configureCellUI()
         self.configureLayout()
     }
+    
+    // MARK: - Configure View
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
@@ -89,14 +91,20 @@ class ProjectTableViewCell: UITableViewCell {
         self.cellContainerView.layer.shadowColor = UIColor.shadowColor.cgColor
     }
     
-    // MARK: - Configure View
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.titleLabel.textColor = .label
+    }
+    
     private func configureCellUI() {
         self.backgroundColor = .clear
-        self.contentView.backgroundColor = .clear
         self.selectionStyle = .none
     }
     
     private func configureLayout() {
+        self.contentView.addSubview(cellContainerView)
+        self.cellContainerView.addSubview(stackView)
+    
         NSLayoutConstraint.activate([
             cellContainerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             cellContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -113,6 +121,8 @@ class ProjectTableViewCell: UITableViewCell {
         ])
     }
     
+    // MARK: - API
+    
     func updateContent(title: String?,
                        description: String?,
                        deadline: String?,
@@ -126,10 +136,5 @@ class ProjectTableViewCell: UITableViewCell {
     func setBackgroundColor(color: UIColor?) {
         self.cellContainerView.backgroundColor = color
     }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.titleLabel.textColor = .label
-    }
-    
+   
 }
