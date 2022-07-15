@@ -38,6 +38,7 @@ final class ProjectDetailViewController: UIViewController {
     private var navigationBar: UINavigationBar = {
         let navigationBar = UINavigationBar()
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        navigationBar.isTranslucent = false
         return navigationBar
     }()
     
@@ -89,6 +90,7 @@ final class ProjectDetailViewController: UIViewController {
         textView.textColor = .label
         textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         textView.layer.masksToBounds = true
+        textView.autocorrectionType = .no
         return textView
     }()
     
@@ -146,16 +148,14 @@ final class ProjectDetailViewController: UIViewController {
     
     private func configureNavigationBarLayout() {
         self.view.addSubview(navigationBar)
-        let safeArea = self.view.safeAreaLayoutGuide
-        navigationBar.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
-        navigationBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor).isActive = true
-        navigationBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor).isActive = true
+        navigationBar.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        navigationBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        navigationBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
     }
     
     private func configureStackViewLayout() {
         self.descriptionTextViewContainer.addSubview(descriptionTextView)
         self.view.addSubview(stackView)
-        let safeArea = self.view.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([titleTextField.heightAnchor.constraint(equalToConstant: 45)])
         
@@ -171,9 +171,9 @@ final class ProjectDetailViewController: UIViewController {
         ])
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 15),
-            stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -15),
-            stackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 15),
-            stackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -15)
+            stackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -15),
+            stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15),
+            stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15)
         ])
     }
     
