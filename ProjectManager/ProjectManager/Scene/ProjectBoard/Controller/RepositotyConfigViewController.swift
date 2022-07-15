@@ -99,6 +99,6 @@ final class RepositotyConfigViewController: UIViewController {
     
     private func switchDataSource() {
         let selectedIndex = self.sourceSegmentedControl.selectedSegmentIndex
-        self.projectManager?.switchProjectSource(with: repositoryTypes[selectedIndex])
+        self.projectManager?.switchProjectRepository(with: repositoryTypes[selectedIndex])
     }
 }

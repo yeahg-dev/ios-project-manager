@@ -5,17 +5,21 @@
 //  Created by 1 on 2022/03/06.
 //
 
-import Foundation
 import UIKit
+
+// MARK: - ProjectKey
 
 enum ProjectKey: String {
     
     case identifier, title, description, deadline, status, hasUserNotification
 }
 
+// MARK: - Project
+
 struct Project {
     
     // MARK: - Property
+    
     let identifier: String?
     private (set) var title: String?
     private (set) var deadline: Date?
@@ -45,6 +49,7 @@ struct Project {
     }
     
     // MARK: - Method
+    
     mutating func updateContent(with content: [String: Any]) {
         for (key, value) in content {
             switch key {
@@ -70,18 +75,21 @@ struct Project {
 }
 
 // MARK: - Hashable
+
 extension Project: Hashable {
     
     func hash(into hasher: inout Hasher) {
            hasher.combine(identifier)
        }
+    
 }
 
 // MARK: - Codable
+
 extension Project: Codable {
     
     enum CodingKeys: String, CodingKey {
         case identifier, title, description, deadline, status, hasUserNotification
     }
+    
 }
-

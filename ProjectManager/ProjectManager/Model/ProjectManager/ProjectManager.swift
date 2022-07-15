@@ -7,52 +7,17 @@
 
 import Foundation
 
-// MARK: - Repository 
-enum Repository {
-    
-    case inMemory
-    case coreData
-    case firestore
-    
-    var userDescription: String {
-        switch self {
-        case .inMemory:
-            return "휘발성"
-        case .coreData:
-            return "앱"
-        case .firestore:
-            return "Cloud"
-        }
-    }
-}
-
-// MARK: - NetworkStatus
-enum NetworkStatus {
-    
-    case online
-    case offline
-    
-}
-
-// MARK: - ProjectManagerDelegate
-protocol ProjectManagerDelegate: AnyObject {
-    
-    func projectManager(didChangedRepositoryWith repositoryType: Repository)
-    
-    func projectManager(didChangedNetworkStatusWith status: NetworkStatus)
-}
-
-// MARK: - ProjectManager
 final class ProjectManager {
     
     // MARK: - Property
+    
     private let userNotificationHandler = UserNotificationHandler()
     weak var delegate: ProjectManagerDelegate?
-    // TODO: - HistoryViewController로 넘겨줄 Model이 필요(Inmemory의 경우), 아님 델리게이트
+   
+    private var repository: ProjectRepository? = ProjectCoreDataRepository()
     var historyRepository: HistoryRepository? {
         return repository?.historyRepository
     }
-    private var repository: ProjectRepository? = ProjectCoreDataRepository()
     private (set) var repositoryType: Repository? {
         get {
             return self.repository?.type
@@ -70,7 +35,8 @@ final class ProjectManager {
         }
     }
     
-    // MARK: - Method
+    // MARK: - CRUD Method
+    
     func create(with content: [String: Any]) {
         let project = Project(
             identifier: content[ProjectKey.identifier.rawValue] as? String,
@@ -116,10 +82,14 @@ final class ProjectManager {
         self.removeUserNotification(of: project)
     }
     
-    func switchProjectSource(with repository: Repository) {
+    // MARK: - ProjectRepository Config Method
+    
+    func switchProjectRepository(with repository: Repository) {
         self.repositoryType = repository
         self.delegate?.projectManager(didChangedRepositoryWith: repository)
     }
+    
+    // MARK: - UserNotification Method
     
     func registerNewUserNotification(of project: Project) {
         self.updateProjectContent(of: project, with: [ProjectKey.hasUserNotification.rawValue: true])
@@ -133,7 +103,7 @@ final class ProjectManager {
         }
         
         let content = userNotificationContent(project: project)
-        var dateComponent = Calendar.current.dateComponents(in: .current,
+        let dateComponent = Calendar.current.dateComponents(in: .current,
                                                             from: deadline)
 
         self.userNotificationHandler.requestNotification(of: content,
@@ -142,8 +112,8 @@ final class ProjectManager {
     }
     
     private func userNotificationContent(project: Project) -> UserNotificationContent {
-        let title = project.title ?? "이름없음 프로젝트"
-        let body = "오늘까지 완료해야 할 프로젝트입니다🚀 화이팅!💪"
+        let title = project.title ?? UserNotification.titlePlaceHodler.rawValue
+        let body = UserNotification.body.rawValue
         return UserNotificationContent(title: title, body: body)
     }
     

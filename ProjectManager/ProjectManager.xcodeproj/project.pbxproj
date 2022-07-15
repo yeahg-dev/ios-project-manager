@@ -21,6 +21,11 @@
 		6387F9BC28812A5F0079D584 /* ProjectPersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9BB28812A5F0079D584 /* ProjectPersistentContainer.swift */; };
 		6387F9BE288166BD0079D584 /* ProjectDetailDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9BD288166BD0079D584 /* ProjectDetailDelegate.swift */; };
 		6387F9CC28816CA70079D584 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6387F9CB28816CA70079D584 /* Launch Screen.storyboard */; };
+		6387F9D028816F030079D584 /* ProjectManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9CF28816F030079D584 /* ProjectManagerDelegate.swift */; };
+		6387F9D228816F240079D584 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9D128816F240079D584 /* Repository.swift */; };
+		6387F9D428816F3E0079D584 /* NetworkStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9D328816F3E0079D584 /* NetworkStatus.swift */; };
+		6387F9D6288172750079D584 /* UserNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9D5288172750079D584 /* UserNotification.swift */; };
+		6387F9D9288173230079D584 /* UserNotificationContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9D8288173230079D584 /* UserNotificationContent.swift */; };
 		6389CA93281588F200E980F0 /* HistoryInMemoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA92281588F200E980F0 /* HistoryInMemoryRepository.swift */; };
 		6389CA9528158B0100E980F0 /* HistoryCoreDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA9428158B0100E980F0 /* HistoryCoreDataRepository.swift */; };
 		6389CA9728158B2300E980F0 /* HistoryFirestoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA9628158B2300E980F0 /* HistoryFirestoreRepository.swift */; };
@@ -71,6 +76,11 @@
 		6387F9BB28812A5F0079D584 /* ProjectPersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPersistentContainer.swift; sourceTree = "<group>"; };
 		6387F9BD288166BD0079D584 /* ProjectDetailDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailDelegate.swift; sourceTree = "<group>"; };
 		6387F9CB28816CA70079D584 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		6387F9CF28816F030079D584 /* ProjectManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectManagerDelegate.swift; sourceTree = "<group>"; };
+		6387F9D128816F240079D584 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		6387F9D328816F3E0079D584 /* NetworkStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkStatus.swift; sourceTree = "<group>"; };
+		6387F9D5288172750079D584 /* UserNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotification.swift; sourceTree = "<group>"; };
+		6387F9D8288173230079D584 /* UserNotificationContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationContent.swift; sourceTree = "<group>"; };
 		6389CA92281588F200E980F0 /* HistoryInMemoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryInMemoryRepository.swift; sourceTree = "<group>"; };
 		6389CA9428158B0100E980F0 /* HistoryCoreDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCoreDataRepository.swift; sourceTree = "<group>"; };
 		6389CA9628158B2300E980F0 /* HistoryFirestoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFirestoreRepository.swift; sourceTree = "<group>"; };
@@ -255,12 +265,41 @@
 			path = InMemory;
 			sourceTree = "<group>";
 		};
+		6387F9CD28816E710079D584 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				636B231127EB770F00478751 /* NetworkChecker.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		6387F9CE28816EED0079D584 /* ProjectManager */ = {
+			isa = PBXGroup;
+			children = (
+				63D21E6627D4F9B900E35D3B /* ProjectManager.swift */,
+				6387F9CF28816F030079D584 /* ProjectManagerDelegate.swift */,
+				6387F9D128816F240079D584 /* Repository.swift */,
+				6387F9D328816F3E0079D584 /* NetworkStatus.swift */,
+			);
+			path = ProjectManager;
+			sourceTree = "<group>";
+		};
+		6387F9D7288172FF0079D584 /* UserNotification */ = {
+			isa = PBXGroup;
+			children = (
+				634D8989287EA23F005B3661 /* UserNotificationHandler.swift */,
+				6387F9D8288173230079D584 /* UserNotificationContent.swift */,
+			);
+			path = UserNotification;
+			sourceTree = "<group>";
+		};
 		63B96DA727E0249000144F7C /* ViewNameSpace */ = {
 			isa = PBXGroup;
 			children = (
 				63B96DA827E024AF00144F7C /* ProjectBoardScene.swift */,
 				63B96DAA27E0262800144F7C /* ProjectDetailScene.swift */,
 				63E164B727EA2662004E3D2E /* RepositoryConfigScene.swift */,
+				6387F9D5288172750079D584 /* UserNotification.swift */,
 			);
 			path = ViewNameSpace;
 			sourceTree = "<group>";
@@ -277,8 +316,8 @@
 		63D21E5927D464C300E35D3B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				634D8989287EA23F005B3661 /* UserNotificationHandler.swift */,
-				63D21E6627D4F9B900E35D3B /* ProjectManager.swift */,
+				6387F9CE28816EED0079D584 /* ProjectManager */,
+				6387F9D7288172FF0079D584 /* UserNotification */,
 				63B96DA727E0249000144F7C /* ViewNameSpace */,
 				635862BB27E34DEF005E2A2B /* Data */,
 			);
@@ -297,8 +336,8 @@
 		63D21E9027D6601C00E35D3B /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				6387F9CD28816E710079D584 /* Network */,
 				63D21E9127D6602C00E35D3B /* Extension */,
-				636B231127EB770F00478751 /* NetworkChecker.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -428,14 +467,18 @@
 				C7431F0A25F51E1D0094C4CF /* MainViewController.swift in Sources */,
 				6389CA93281588F200E980F0 /* HistoryInMemoryRepository.swift in Sources */,
 				63E164B827EA2662004E3D2E /* RepositoryConfigScene.swift in Sources */,
+				6387F9D228816F240079D584 /* Repository.swift in Sources */,
 				6387F9BC28812A5F0079D584 /* ProjectPersistentContainer.swift in Sources */,
 				63E164B427E9AD69004E3D2E /* Encodable+Extension.swift in Sources */,
 				63D21E6727D4F9B900E35D3B /* ProjectManager.swift in Sources */,
 				63775DD728802559001A55BC /* ColorPallete.swift in Sources */,
+				6387F9D9288173230079D584 /* UserNotificationContent.swift in Sources */,
+				6387F9D6288172750079D584 /* UserNotification.swift in Sources */,
 				63D21E9327D6604500E35D3B /* UITableVeiwCell+Extension.swift in Sources */,
 				63D21E6027D4AC2E00E35D3B /* Status.swift in Sources */,
 				635862D127E392DB005E2A2B /* CDProject+CoreDataClass.swift in Sources */,
 				63D21E6427D4B61F00E35D3B /* ProjectInMemoryRepository.swift in Sources */,
+				6387F9D028816F030079D584 /* ProjectManagerDelegate.swift in Sources */,
 				63A1231F2819842000944B9E /* ProjectHistoryViewController.swift in Sources */,
 				63E164B627E9D45B004E3D2E /* RepositotyConfigViewController.swift in Sources */,
 				635862B827E32546005E2A2B /* Project.xcdatamodeld in Sources */,
@@ -456,6 +499,7 @@
 				634D8987287E9CB3005B3661 /* ProjectDTO.swift in Sources */,
 				63B96DAD27E028CF00144F7C /* ProjectListViewController.swift in Sources */,
 				C7431F0825F51E1D0094C4CF /* SceneDelegate.swift in Sources */,
+				6387F9D428816F3E0079D584 /* NetworkStatus.swift in Sources */,
 				635862CE27E35D84005E2A2B /* ProjectCoreDataRepository.swift in Sources */,
 				63974A4527D8D5F600523B16 /* ProjectListViewControllerDelegate.swift in Sources */,
 				63D21E9927D7618300E35D3B /* Date+Extension.swift in Sources */,

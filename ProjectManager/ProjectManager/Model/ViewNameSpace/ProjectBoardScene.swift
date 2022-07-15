@@ -17,4 +17,5 @@ enum ProjectBoardScene: String {
         case doing = "하는 중이에요"
         case done = "다 했어요"
     }
+    
 }

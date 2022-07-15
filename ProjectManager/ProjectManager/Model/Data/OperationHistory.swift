@@ -8,29 +8,26 @@
 import Foundation
 
 // MARK: - OperationType
+
 enum OperationType {
     
     case add
     case move(Status)
     case remove
+    
 }
 
 // MARK: - OperationHistory
+
 struct OperationHistory {
+    
+    // MARK: - Property
     
     private let type: OperationType
     private let projectIdentifier: String?
     private let projectTitle: String?
     private let projectStatus: Status?
     private let date: Date
-    
-    init(type: OperationType, projectIdentifier: String?, projectTitle: String?, projectStatus: Status?) {
-        self.type = type
-        self.projectIdentifier = projectIdentifier
-        self.projectTitle = projectTitle
-        self.projectStatus = projectStatus
-        self.date = Date()
-    }
     
     var historyDescription: String {
         guard let projectTitle = self.projectTitle,
@@ -51,5 +48,15 @@ struct OperationHistory {
     var dateDescription: String {
         return "\(date.localeString()) \(self.date.formattedTimeString)"
     }
+    
+    // MARK: - Initializer
+    
+    init(type: OperationType, projectIdentifier: String?, projectTitle: String?, projectStatus: Status?) {
+        self.type = type
+        self.projectIdentifier = projectIdentifier
+        self.projectTitle = projectTitle
+        self.projectStatus = projectStatus
+        self.date = Date()
+    }
+    
 }
-

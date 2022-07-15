@@ -5,7 +5,6 @@
 //  Created by 1 on 2022/03/06.
 //
 
-import Foundation
 import UIKit
 
 enum Status: String, Codable {
@@ -16,6 +15,7 @@ enum Status: String, Codable {
 }
 
 // MARK: - CustomStringConvertible
+
 extension Status: CustomStringConvertible {
     
     var description: String {
@@ -28,6 +28,12 @@ extension Status: CustomStringConvertible {
             return "했음🌄"
         }
     }
+   
+}
+
+// MARK: - associated UI Property
+
+extension Status {
     
     var cellBackgroundColor: UIColor? {
         switch self {
@@ -50,4 +56,5 @@ extension Status: CustomStringConvertible {
             return ColorPallete.doneColor
         }
     }
+    
 }

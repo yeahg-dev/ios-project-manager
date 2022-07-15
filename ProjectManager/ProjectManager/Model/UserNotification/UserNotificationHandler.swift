@@ -37,10 +37,5 @@ struct UserNotificationHandler {
     func removeNotification(of identifier: String) {
         userNotificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
     }
-}
-
-struct UserNotificationContent {
     
-    let title: String?
-    let body: String?
 }
