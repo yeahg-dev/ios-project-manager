@@ -19,6 +19,7 @@
 		63775DD728802559001A55BC /* ColorPallete.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63775DD628802559001A55BC /* ColorPallete.swift */; };
 		6387F9B9288126730079D584 /* CDHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9B7288126730079D584 /* CDHistory+CoreDataClass.swift */; };
 		6387F9BC28812A5F0079D584 /* ProjectPersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9BB28812A5F0079D584 /* ProjectPersistentContainer.swift */; };
+		6387F9BE288166BD0079D584 /* ProjectDetailDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9BD288166BD0079D584 /* ProjectDetailDelegate.swift */; };
 		6389CA93281588F200E980F0 /* HistoryInMemoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA92281588F200E980F0 /* HistoryInMemoryRepository.swift */; };
 		6389CA9528158B0100E980F0 /* HistoryCoreDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA9428158B0100E980F0 /* HistoryCoreDataRepository.swift */; };
 		6389CA9728158B2300E980F0 /* HistoryFirestoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA9628158B2300E980F0 /* HistoryFirestoreRepository.swift */; };
@@ -67,6 +68,7 @@
 		63775DD628802559001A55BC /* ColorPallete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPallete.swift; sourceTree = "<group>"; };
 		6387F9B7288126730079D584 /* CDHistory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDHistory+CoreDataClass.swift"; sourceTree = "<group>"; };
 		6387F9BB28812A5F0079D584 /* ProjectPersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPersistentContainer.swift; sourceTree = "<group>"; };
+		6387F9BD288166BD0079D584 /* ProjectDetailDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailDelegate.swift; sourceTree = "<group>"; };
 		6389CA92281588F200E980F0 /* HistoryInMemoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryInMemoryRepository.swift; sourceTree = "<group>"; };
 		6389CA9428158B0100E980F0 /* HistoryCoreDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCoreDataRepository.swift; sourceTree = "<group>"; };
 		6389CA9628158B2300E980F0 /* HistoryFirestoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFirestoreRepository.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				63974A4427D8D5F600523B16 /* ProjectListViewControllerDelegate.swift */,
 				63E164B527E9D45B004E3D2E /* RepositotyConfigViewController.swift */,
 				63A1231E2819842000944B9E /* ProjectHistoryViewController.swift */,
+				6387F9BD288166BD0079D584 /* ProjectDetailDelegate.swift */,
 			);
 			path = ProjectBoard;
 			sourceTree = "<group>";
@@ -392,6 +395,7 @@
 				63A1231F2819842000944B9E /* ProjectHistoryViewController.swift in Sources */,
 				63E164B627E9D45B004E3D2E /* RepositotyConfigViewController.swift in Sources */,
 				635862B827E32546005E2A2B /* Project.xcdatamodeld in Sources */,
+				6387F9BE288166BD0079D584 /* ProjectDetailDelegate.swift in Sources */,
 				634D898A287EA23F005B3661 /* UserNotificationHandler.swift in Sources */,
 				63B96DA927E024AF00144F7C /* ProjectBoardScene.swift in Sources */,
 				63D21E9527D73CD200E35D3B /* ProjectTableViewHeaderView.swift in Sources */,

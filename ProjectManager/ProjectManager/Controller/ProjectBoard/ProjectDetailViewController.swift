@@ -7,44 +7,23 @@
 
 import UIKit
 
-protocol ProjectDetailDelegate: AnyObject{
-    
-    func barTitle() -> String
-    
-    func rightBarButtonItem() -> UIBarButtonItem.SystemItem
-    
-    func leftBarButtonItem() -> UIBarButtonItem.SystemItem
-    
-    func didTappedrightBarButtonItem(of project: Project?, projectContent: [String: Any])
-    
-}
-
-// MARK: - ProjectCreationDelegate
-protocol ProjectCreationDelegate: ProjectDetailDelegate {
-
-}
-
-// MARK: - ProjectEditDelegate
-protocol ProjectEditDelegate: ProjectDetailDelegate {
-
-}
-
-// MARK: - ProjectDetailViewController
 final class ProjectDetailViewController: UIViewController {
     
     // MARK: - Mode
+    
     enum Mode {
         case creation
         case edit
     }
     
     // MARK: - Property
+    
     var mode: Mode?
     var project: Project?
     weak var projectDetailDelegate: ProjectDetailDelegate?
-//    weak var projectEditDelegate: ProjectEditDelegate?
     
     // MARK: - UI Property
+    
     private var navigationBar: UINavigationBar = {
         let navigationBar = UINavigationBar()
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
@@ -130,6 +109,7 @@ final class ProjectDetailViewController: UIViewController {
     }
     
     // MARK: - Initializer
+    
     init(mode: Mode,
          project: Project?,
          projectDetailDelegate: ProjectDetailDelegate?) {
@@ -144,15 +124,14 @@ final class ProjectDetailViewController: UIViewController {
     }
     
     // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configureView()
-        self.configureNavigationBarLayout()
-        self.configureStackViewLayout()
+        self.configureLayout()
+        self.configureNavigationItems()
         self.configureMode()
         self.descriptionTextView.delegate = self
         self.titleTextField.delegate = self
-        self.configureNavigationItems()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -166,6 +145,12 @@ final class ProjectDetailViewController: UIViewController {
     }
 
     // MARK: - Configure View
+    private func configureLayout() {
+        self.configureView()
+        self.configureNavigationBarLayout()
+        self.configureStackViewLayout()
+    }
+    
     private func configureView() {
         self.view.backgroundColor = .systemBackground
     }
@@ -201,38 +186,6 @@ final class ProjectDetailViewController: UIViewController {
         ])
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        guard #available(iOS 13, *) else { return }
-
-        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else { return }
-        titleTextField.layer.shadowColor = UIColor.shadowColor.cgColor
-        descriptionTextView.layer.shadowColor = UIColor.shadowColor.cgColor
-    }
-    
-    // MARK: - Configure Mode
-    private func configureMode() {
-        switch mode {
-        case .creation:
-            break
-        case .edit:
-            self.configureContentWithProject()
-            self.toggleEditMode()
-        default:
-            return
-        }
-    }
-    
-    private func fillContent(with project: Project?) {
-        guard self.project != nil else {
-            return
-        }
-        self.titleTextField.text = self.project?.title
-        self.datePicker.date = self.project?.deadline ?? Date()
-        self.descriptionTextView.text = self.project?.description
-    }
-    
     private func configureNavigationItems() {
         let navigationItem = UINavigationItem()
         guard let rightBarButtonItem = self.projectDetailDelegate?.rightBarButtonItem(),
@@ -254,7 +207,7 @@ final class ProjectDetailViewController: UIViewController {
         
         self.navigationBar.items = [navigationItem]
     }
-
+    
     @objc func didTappedRightBarButton() {
         self.projectDetailDelegate?.didTappedrightBarButtonItem(
             of: project,
@@ -271,7 +224,32 @@ final class ProjectDetailViewController: UIViewController {
         }
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard #available(iOS 13, *) else { return }
+
+        guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else { return }
+        titleTextField.layer.shadowColor = UIColor.shadowColor.cgColor
+        descriptionTextView.layer.shadowColor = UIColor.shadowColor.cgColor
+    }
+    
+    // MARK: - Configure Mode
+    
+    private func configureMode() {
+        switch mode {
+        case .creation:
+            break
+        case .edit:
+            self.configureContentWithProject()
+            self.toggleEditMode()
+        default:
+            return
+        }
+    }
+    
     // MARK: - Edit mode Method
+    
     private func configureContentWithProject() {
         guard self.project != nil else {
             return
@@ -281,18 +259,20 @@ final class ProjectDetailViewController: UIViewController {
         self.descriptionTextView.text = self.project?.description
     }
     
+    private func enableEdit() {
+        toggleEditMode()
+        titleTextField.becomeFirstResponder()
+    }
+    
     private func toggleEditMode() {
         self.titleTextField.isEnabled.toggle()
         self.datePicker.isEnabled.toggle()
         self.descriptionTextView.isEditable.toggle()
     }
     
-    @objc func enableEdit() {
-        toggleEditMode()
-        titleTextField.becomeFirstResponder()
-    }
-
+   
     // MARK: - Keyboard Method
+    
     private func addKeyboardNotificationObserver() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow(_:)),
@@ -338,11 +318,11 @@ final class ProjectDetailViewController: UIViewController {
 }
 
 // MARK: - UITextViewDelegate
+
 extension ProjectDetailViewController: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let limitedCharacterCount = 1000
-        
         let currentText = textView.text ?? ""
         
         guard let rangeToUpdate = Range(range, in: currentText) else {
@@ -357,6 +337,7 @@ extension ProjectDetailViewController: UITextViewDelegate {
 }
 
 // MARK: - UITextFieldDelegate
+
 extension ProjectDetailViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
