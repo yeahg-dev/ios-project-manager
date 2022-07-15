@@ -20,6 +20,7 @@
 		6387F9B9288126730079D584 /* CDHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9B7288126730079D584 /* CDHistory+CoreDataClass.swift */; };
 		6387F9BC28812A5F0079D584 /* ProjectPersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9BB28812A5F0079D584 /* ProjectPersistentContainer.swift */; };
 		6387F9BE288166BD0079D584 /* ProjectDetailDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6387F9BD288166BD0079D584 /* ProjectDetailDelegate.swift */; };
+		6387F9CC28816CA70079D584 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6387F9CB28816CA70079D584 /* Launch Screen.storyboard */; };
 		6389CA93281588F200E980F0 /* HistoryInMemoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA92281588F200E980F0 /* HistoryInMemoryRepository.swift */; };
 		6389CA9528158B0100E980F0 /* HistoryCoreDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA9428158B0100E980F0 /* HistoryCoreDataRepository.swift */; };
 		6389CA9728158B2300E980F0 /* HistoryFirestoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6389CA9628158B2300E980F0 /* HistoryFirestoreRepository.swift */; };
@@ -69,6 +70,7 @@
 		6387F9B7288126730079D584 /* CDHistory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDHistory+CoreDataClass.swift"; sourceTree = "<group>"; };
 		6387F9BB28812A5F0079D584 /* ProjectPersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPersistentContainer.swift; sourceTree = "<group>"; };
 		6387F9BD288166BD0079D584 /* ProjectDetailDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailDelegate.swift; sourceTree = "<group>"; };
+		6387F9CB28816CA70079D584 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		6389CA92281588F200E980F0 /* HistoryInMemoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryInMemoryRepository.swift; sourceTree = "<group>"; };
 		6389CA9428158B0100E980F0 /* HistoryCoreDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCoreDataRepository.swift; sourceTree = "<group>"; };
 		6389CA9628158B2300E980F0 /* HistoryFirestoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFirestoreRepository.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 		6387F9BF288169B30079D584 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				6387F9CB28816CA70079D584 /* Launch Screen.storyboard */,
 				6387F9C0288169B90079D584 /* ProjectBoard */,
 				6387F9C328816A060079D584 /* ProjectDetail */,
 			);
@@ -409,6 +412,7 @@
 			files = (
 				63E508A527CFAF9400A5A79A /* GoogleService-Info.plist in Resources */,
 				63A1231D28197F3B00944B9E /* HistoryTableViewCell.xib in Resources */,
+				6387F9CC28816CA70079D584 /* Launch Screen.storyboard in Resources */,
 				C7431F0F25F51E1E0094C4CF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
