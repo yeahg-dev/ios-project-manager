@@ -124,42 +124,6 @@
 			path = DTO;
 			sourceTree = "<group>";
 		};
-		635862B527E30C58005E2A2B /* ProjectBoard */ = {
-			isa = PBXGroup;
-			children = (
-				C7431F0925F51E1D0094C4CF /* MainViewController.swift */,
-				63B96DAE27E067F600144F7C /* ProjectDetailViewController.swift */,
-				63B96DAC27E028CF00144F7C /* ProjectListViewController.swift */,
-				63974A4427D8D5F600523B16 /* ProjectListViewControllerDelegate.swift */,
-				63E164B527E9D45B004E3D2E /* RepositotyConfigViewController.swift */,
-				63A1231E2819842000944B9E /* ProjectHistoryViewController.swift */,
-				6387F9BD288166BD0079D584 /* ProjectDetailDelegate.swift */,
-			);
-			path = ProjectBoard;
-			sourceTree = "<group>";
-		};
-		635862B927E34D96005E2A2B /* Local */ = {
-			isa = PBXGroup;
-			children = (
-				63D21E6327D4B61F00E35D3B /* ProjectInMemoryRepository.swift */,
-				6389CA92281588F200E980F0 /* HistoryInMemoryRepository.swift */,
-				635862BC27E34E0A005E2A2B /* CoreData */,
-				635862CD27E35D84005E2A2B /* ProjectCoreDataRepository.swift */,
-				6389CA9428158B0100E980F0 /* HistoryCoreDataRepository.swift */,
-			);
-			path = Local;
-			sourceTree = "<group>";
-		};
-		635862BA27E34DA6005E2A2B /* Cloud */ = {
-			isa = PBXGroup;
-			children = (
-				634D8985287E9CA0005B3661 /* DTO */,
-				634A508E27E457310097303B /* ProjectFirestoreRepository.swift */,
-				6389CA9628158B2300E980F0 /* HistoryFirestoreRepository.swift */,
-			);
-			path = Cloud;
-			sourceTree = "<group>";
-		};
 		635862BB27E34DEF005E2A2B /* Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -170,15 +134,122 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		635862BC27E34E0A005E2A2B /* CoreData */ = {
+		6387F9BF288169B30079D584 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				635862B627E32546005E2A2B /* Project.xcdatamodeld */,
-				635862CF27E392DB005E2A2B /* CDProject+CoreDataClass.swift */,
-				6387F9B7288126730079D584 /* CDHistory+CoreDataClass.swift */,
+				6387F9C0288169B90079D584 /* ProjectBoard */,
+				6387F9C328816A060079D584 /* ProjectDetail */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		6387F9C0288169B90079D584 /* ProjectBoard */ = {
+			isa = PBXGroup;
+			children = (
+				6387F9C1288169C10079D584 /* View */,
+				6387F9C2288169C70079D584 /* Controller */,
+			);
+			path = ProjectBoard;
+			sourceTree = "<group>";
+		};
+		6387F9C1288169C10079D584 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				63D21E8A27D634FD00E35D3B /* ProjectTableViewCell.swift */,
+				63D21E9427D73CD200E35D3B /* ProjectTableViewHeaderView.swift */,
+				63A1231B28197F3B00944B9E /* HistoryTableViewCell.xib */,
+				63A1231A28197F3B00944B9E /* HistoryTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6387F9C2288169C70079D584 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C7431F0925F51E1D0094C4CF /* MainViewController.swift */,
+				63B96DAC27E028CF00144F7C /* ProjectListViewController.swift */,
+				63974A4427D8D5F600523B16 /* ProjectListViewControllerDelegate.swift */,
+				63E164B527E9D45B004E3D2E /* RepositotyConfigViewController.swift */,
+				63A1231E2819842000944B9E /* ProjectHistoryViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6387F9C328816A060079D584 /* ProjectDetail */ = {
+			isa = PBXGroup;
+			children = (
+				6387F9C428816A170079D584 /* View */,
+				6387F9C528816A1C0079D584 /* Controller */,
+			);
+			path = ProjectDetail;
+			sourceTree = "<group>";
+		};
+		6387F9C428816A170079D584 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6387F9C528816A1C0079D584 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				63B96DAE27E067F600144F7C /* ProjectDetailViewController.swift */,
+				6387F9BD288166BD0079D584 /* ProjectDetailDelegate.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		6387F9C628816AA00079D584 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				63E164B127E99688004E3D2E /* ProjectRepository.swift */,
+				6365151D27FC86F400581C29 /* HistoryRepository.swift */,
+				6387F9CA28816B100079D584 /* InMemory */,
+				6387F9C928816AF70079D584 /* Firestore */,
+				6387F9C728816AAA0079D584 /* CoreData */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		6387F9C728816AAA0079D584 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
 				6387F9BB28812A5F0079D584 /* ProjectPersistentContainer.swift */,
+				635862CD27E35D84005E2A2B /* ProjectCoreDataRepository.swift */,
+				6389CA9428158B0100E980F0 /* HistoryCoreDataRepository.swift */,
+				6387F9C828816ABE0079D584 /* Entity */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		6387F9C828816ABE0079D584 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				635862CF27E392DB005E2A2B /* CDProject+CoreDataClass.swift */,
+				6387F9B7288126730079D584 /* CDHistory+CoreDataClass.swift */,
+				635862B627E32546005E2A2B /* Project.xcdatamodeld */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		6387F9C928816AF70079D584 /* Firestore */ = {
+			isa = PBXGroup;
+			children = (
+				634D8985287E9CA0005B3661 /* DTO */,
+				634A508E27E457310097303B /* ProjectFirestoreRepository.swift */,
+				6389CA9628158B2300E980F0 /* HistoryFirestoreRepository.swift */,
+			);
+			path = Firestore;
+			sourceTree = "<group>";
+		};
+		6387F9CA28816B100079D584 /* InMemory */ = {
+			isa = PBXGroup;
+			children = (
+				63D21E6327D4B61F00E35D3B /* ProjectInMemoryRepository.swift */,
+				6389CA92281588F200E980F0 /* HistoryInMemoryRepository.swift */,
+			);
+			path = InMemory;
 			sourceTree = "<group>";
 		};
 		63B96DA727E0249000144F7C /* ViewNameSpace */ = {
@@ -207,28 +278,8 @@
 				63D21E6627D4F9B900E35D3B /* ProjectManager.swift */,
 				63B96DA727E0249000144F7C /* ViewNameSpace */,
 				635862BB27E34DEF005E2A2B /* Data */,
-				63D21E6527D4C4FB00E35D3B /* DataBase */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		63D21E5A27D464D400E35D3B /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				635862B527E30C58005E2A2B /* ProjectBoard */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		63D21E5B27D464FA00E35D3B /* View */ = {
-			isa = PBXGroup;
-			children = (
-				63D21E8A27D634FD00E35D3B /* ProjectTableViewCell.swift */,
-				63D21E9427D73CD200E35D3B /* ProjectTableViewHeaderView.swift */,
-				63A1231A28197F3B00944B9E /* HistoryTableViewCell.swift */,
-				63A1231B28197F3B00944B9E /* HistoryTableViewCell.xib */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		63D21E5C27D4652900E35D3B /* Resource */ = {
@@ -238,17 +289,6 @@
 				63775DD628802559001A55BC /* ColorPallete.swift */,
 			);
 			path = Resource;
-			sourceTree = "<group>";
-		};
-		63D21E6527D4C4FB00E35D3B /* DataBase */ = {
-			isa = PBXGroup;
-			children = (
-				63E164B127E99688004E3D2E /* ProjectRepository.swift */,
-				6365151D27FC86F400581C29 /* HistoryRepository.swift */,
-				635862B927E34D96005E2A2B /* Local */,
-				635862BA27E34DA6005E2A2B /* Cloud */,
-			);
-			path = DataBase;
 			sourceTree = "<group>";
 		};
 		63D21E9027D6601C00E35D3B /* Util */ = {
@@ -292,8 +332,8 @@
 			children = (
 				63D21E5827D461DD00E35D3B /* App Life Cycle */,
 				63D21E5927D464C300E35D3B /* Model */,
-				63D21E5B27D464FA00E35D3B /* View */,
-				63D21E5A27D464D400E35D3B /* Controller */,
+				6387F9BF288169B30079D584 /* Scene */,
+				6387F9C628816AA00079D584 /* Repository */,
 				63D21E9027D6601C00E35D3B /* Util */,
 				63D21E5C27D4652900E35D3B /* Resource */,
 				C7431F1325F51E1E0094C4CF /* Info.plist */,
