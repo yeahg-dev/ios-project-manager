@@ -256,8 +256,7 @@ extension ProjectListViewController: UITableViewDelegate {
         
         let detailViewController = ProjectDetailViewController(mode: .edit,
                                                          project: selectedProject,
-                                                         projectCreationDelegate: nil,
-                                                         projectEditDelegate: self)
+                                                         projectDetailDelegate: self)
         detailViewController.modalPresentationStyle = .formSheet
         
         self.present(detailViewController, animated: false, completion: nil)
@@ -356,8 +355,23 @@ extension ProjectListViewController: UITableViewDelegate {
 
 // MARK: - ProjectEditViewControllerDelegate
 extension ProjectListViewController: ProjectEditDelegate {
-    
-    func updateProject(of project: Project, with content: [String: Any]) {
-        delegate?.updateProject(of: project, with: content)
+    func barTitle() -> String {
+        return ProjectDetailScene.editTitle.rawValue
     }
+
+    func rightBarButtonItem() -> UIBarButtonItem.SystemItem {
+        return .done
+    }
+    
+    func leftBarButtonItem() -> UIBarButtonItem.SystemItem {
+        return .edit
+    }
+    
+    func didTappedrightBarButtonItem(of project: Project?, projectContent: [String : Any]) {
+        guard let project = project else {
+            return
+        }
+        self.delegate?.updateProject(of: project, with: projectContent)
+    }
+  
 }

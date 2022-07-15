@@ -7,16 +7,26 @@
 
 import UIKit
 
-// MARK: - ProjectCreationDelegate
-protocol ProjectCreationDelegate: AnyObject {
+protocol ProjectDetailDelegate: AnyObject{
     
-    func createProject(with content: [String: Any])
+    func barTitle() -> String
+    
+    func rightBarButtonItem() -> UIBarButtonItem.SystemItem
+    
+    func leftBarButtonItem() -> UIBarButtonItem.SystemItem
+    
+    func didTappedrightBarButtonItem(of project: Project?, projectContent: [String: Any])
+    
+}
+
+// MARK: - ProjectCreationDelegate
+protocol ProjectCreationDelegate: ProjectDetailDelegate {
+
 }
 
 // MARK: - ProjectEditDelegate
-protocol ProjectEditDelegate: AnyObject {
-    
-    func updateProject(of project: Project, with content: [String: Any])
+protocol ProjectEditDelegate: ProjectDetailDelegate {
+
 }
 
 // MARK: - ProjectDetailViewController
@@ -31,14 +41,13 @@ final class ProjectDetailViewController: UIViewController {
     // MARK: - Property
     var mode: Mode?
     var project: Project?
-    weak var projectCreationDelegate: ProjectCreationDelegate?
-    weak var projectEditDelegate: ProjectEditDelegate?
+    weak var projectDetailDelegate: ProjectDetailDelegate?
+//    weak var projectEditDelegate: ProjectEditDelegate?
     
     // MARK: - UI Property
     private var navigationBar: UINavigationBar = {
         let navigationBar = UINavigationBar()
         navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        navigationBar.isTranslucent = false
         return navigationBar
     }()
     
@@ -104,15 +113,29 @@ final class ProjectDetailViewController: UIViewController {
         return stackView
     }()
     
+    var projectContent: [String: Any]{
+        var content: [String: Any] = [:]
+        switch self.mode {
+        case .creation:
+            content.updateValue(UUID().uuidString as Any, forKey: ProjectKey.identifier.rawValue)
+            content.updateValue(Status.todo, forKey: ProjectKey.status.rawValue)
+        default:
+            content.updateValue(self.project?.status as Any, forKey: ProjectKey.status.rawValue)
+        }
+        content.updateValue(UUID().uuidString as Any, forKey: ProjectKey.identifier.rawValue)
+        content.updateValue(titleTextField.text as Any, forKey: ProjectKey.title.rawValue)
+        content.updateValue(datePicker.date as Any, forKey: ProjectKey.deadline.rawValue)
+        content.updateValue(descriptionTextView.text as Any, forKey: ProjectKey.description.rawValue)
+        return content
+    }
+    
     // MARK: - Initializer
     init(mode: Mode,
          project: Project?,
-         projectCreationDelegate: ProjectCreationDelegate?,
-         projectEditDelegate: ProjectEditDelegate?) {
+         projectDetailDelegate: ProjectDetailDelegate?) {
         self.mode = mode
         self.project = project
-        self.projectCreationDelegate = projectCreationDelegate
-        self.projectEditDelegate = projectEditDelegate
+        self.projectDetailDelegate = projectDetailDelegate
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -129,6 +152,7 @@ final class ProjectDetailViewController: UIViewController {
         self.configureMode()
         self.descriptionTextView.delegate = self
         self.titleTextField.delegate = self
+        self.configureNavigationItems()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -191,9 +215,8 @@ final class ProjectDetailViewController: UIViewController {
     private func configureMode() {
         switch mode {
         case .creation:
-            self.configureNavigationItemWhenCreationMode()
+            break
         case .edit:
-            self.configureNavigationItemWhenEditMode()
             self.configureContentWithProject()
             self.toggleEditMode()
         default:
@@ -201,54 +224,53 @@ final class ProjectDetailViewController: UIViewController {
         }
     }
     
-    private func configureNavigationItemWhenCreationMode() {
+    private func fillContent(with project: Project?) {
+        guard self.project != nil else {
+            return
+        }
+        self.titleTextField.text = self.project?.title
+        self.datePicker.date = self.project?.deadline ?? Date()
+        self.descriptionTextView.text = self.project?.description
+    }
+    
+    private func configureNavigationItems() {
         let navigationItem = UINavigationItem()
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
-                                         target: self,
-                                         action: #selector(dismissWithCreation))
-        doneButton.tintColor = ColorPallete.buttonColor
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                           target: self,
-                                           action: #selector(dismissWithoutCreation))
-        cancelButton.tintColor = ColorPallete.buttonColor
-        navigationItem.rightBarButtonItem = doneButton
-        navigationItem.leftBarButtonItem = cancelButton
+        guard let rightBarButtonItem = self.projectDetailDelegate?.rightBarButtonItem(),
+              let leftBarButtonItem = self.projectDetailDelegate?.leftBarButtonItem(),
+              let title = self.projectDetailDelegate?.barTitle() else {
+            return
+        }
+        let rightBarButton = UIBarButtonItem(barButtonSystemItem: rightBarButtonItem,
+                                             target: self,
+                                             action: #selector(didTappedRightBarButton))
+        rightBarButton.tintColor = ColorPallete.buttonColor
+        let leftBarButton = UIBarButtonItem(barButtonSystemItem: leftBarButtonItem,
+                                            target: self,
+                                            action: #selector(didTappedLefttBarButton))
+        leftBarButton.tintColor = ColorPallete.buttonColor
+        navigationItem.rightBarButtonItem = rightBarButton
+        navigationItem.leftBarButtonItem = leftBarButton
+        navigationItem.title = title
         
-        navigationBar.items = [navigationItem]
+        self.navigationBar.items = [navigationItem]
+    }
+
+    @objc func didTappedRightBarButton() {
+        self.projectDetailDelegate?.didTappedrightBarButtonItem(
+            of: project,
+            projectContent: self.projectContent)
+        self.dismiss(animated: false)
     }
     
-    private func configureNavigationItemWhenEditMode() {
-        let navigationItem = UINavigationItem()
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done,
-                                         target: self,
-                                         action: #selector(dismissWithUpdate))
-        doneButton.tintColor = ColorPallete.buttonColor
-        let editButton = UIBarButtonItem(barButtonSystemItem: .edit,
-                                           target: self,
-                                           action: #selector(enableEdit))
-        editButton.tintColor = ColorPallete.buttonColor
-        navigationItem.rightBarButtonItem = doneButton
-        navigationItem.leftBarButtonItem = editButton
-        
-        navigationBar.items = [navigationItem]
+    @objc func didTappedLefttBarButton() {
+        switch self.mode {
+        case .edit:
+            self.enableEdit()
+        default:
+            self.dismiss(animated: false)
+        }
     }
-    
-    // MARK: - Creation mode Method
-    @objc func dismissWithoutCreation() {
-        dismiss(animated: false, completion: nil)
-    }
-    
-    @objc func dismissWithCreation() {
-        var content: [String: Any] = [:]
-        content.updateValue(UUID().uuidString as Any, forKey: ProjectKey.identifier.rawValue)
-        content.updateValue(titleTextField.text as Any, forKey: ProjectKey.title.rawValue)
-        content.updateValue(datePicker.date as Any, forKey: ProjectKey.deadline.rawValue)
-        content.updateValue(descriptionTextView.text as Any, forKey: ProjectKey.description.rawValue)
-        content.updateValue(Status.todo, forKey: ProjectKey.status.rawValue)
-        projectCreationDelegate?.createProject(with: content)
-        dismiss(animated: false, completion: nil)
-    }
-    
+
     // MARK: - Edit mode Method
     private func configureContentWithProject() {
         guard self.project != nil else {
@@ -269,22 +291,7 @@ final class ProjectDetailViewController: UIViewController {
         toggleEditMode()
         titleTextField.becomeFirstResponder()
     }
-    
-    @objc func dismissWithUpdate() {
-        var content: [String: Any] = [:]
-        content.updateValue(titleTextField.text as Any, forKey: ProjectKey.title.rawValue)
-        content.updateValue(datePicker.date as Any, forKey: ProjectKey.deadline.rawValue)
-        content.updateValue(descriptionTextView.text as Any, forKey: ProjectKey.description.rawValue)
-        content.updateValue(project?.status as Any, forKey: ProjectKey.status.rawValue)
-        guard let projectTableViewController = presentingViewController as?
-                ProjectEditDelegate,
-              let project = self.project else {
-            return
-        }
-        projectTableViewController.updateProject(of: project, with: content)
-        dismiss(animated: false, completion: nil)
-    }
-    
+
     // MARK: - Keyboard Method
     private func addKeyboardNotificationObserver() {
         NotificationCenter.default.addObserver(self,

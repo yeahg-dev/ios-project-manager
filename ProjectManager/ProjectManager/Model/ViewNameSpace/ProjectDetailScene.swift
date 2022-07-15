@@ -10,4 +10,7 @@ import Foundation
 enum ProjectDetailScene: String {
     
     case titleFieldPlaceholder = "Titile"
+    case creationTtile = "할 일 만들기"
+    case editTitle = "할 일 수정"
+    
 }

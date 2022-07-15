@@ -179,8 +179,7 @@ final class MainViewController: UIViewController {
     @objc func presentProjectCreatorViewController() {
         let creatorViewController = ProjectDetailViewController(mode: .creation,
                                                           project: nil,
-                                                          projectCreationDelegate: self,
-                                                          projectEditDelegate: nil)
+                                                          projectDetailDelegate: self)
         creatorViewController.modalPresentationStyle = .formSheet
         present(creatorViewController, animated: false, completion: nil)
     }
@@ -213,8 +212,20 @@ extension MainViewController: UINavigationBarDelegate {
 // MARK: - ProjectCreationViewControllerDelegate
 extension MainViewController: ProjectCreationDelegate {
     
-    func createProject(with content: [String : Any]) {
-        self.projectManager.create(with: content)
+    func barTitle() -> String {
+        return ProjectDetailScene.creationTtile.rawValue
+    }
+    
+    func rightBarButtonItem() -> UIBarButtonItem.SystemItem {
+        return .done
+    }
+    
+    func leftBarButtonItem() -> UIBarButtonItem.SystemItem {
+        return .cancel
+    }
+    
+    func didTappedrightBarButtonItem(of project: Project?, projectContent: [String : Any]) {
+        self.projectManager.create(with: projectContent)
         self.todoViewController.updateView()
     }
 
