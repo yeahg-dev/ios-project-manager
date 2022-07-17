@@ -59,6 +59,7 @@ final class ProjectListViewController: UIViewController {
     
     private func configureTableView() {
         projectTableView.delegate = self
+        projectTableView.backgroundColor = ColorPallete.backgroundColor
         projectTableView.register(cellWithClass: ProjectTableViewCell.self)
         projectTableView.translatesAutoresizingMaskIntoConstraints = false
         projectTableView.separatorStyle = .none
