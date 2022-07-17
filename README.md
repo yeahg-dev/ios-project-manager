@@ -7,19 +7,19 @@
 - [3. 트러블 슈팅](#3-트러블-슈팅) 
 
 # 1. 프로젝트 소개
-##  진행
+##  1) 진행
 - 개발자 : [릴리](https://github.com/yeahg-dev) (개인 프로젝트)
 - 코드 리뷰 진행 / 리뷰어 : [엘림](https://github.com/lina0322)
 
 
-##  코드 리뷰
+##  2) 코드 리뷰
 | STEP    | 구현                            | PR                                                           |
 | ------- | ------------------------------- | ------------------------------------------------------------ |
 | STEP1   | 기술 스택 선정                  | https://github.com/yagom-academy/ios-project-manager/pull/80 |
 | STEP2-1 | Model 정의, 할 일 CRUD, UI 구현 | https://github.com/yagom-academy/ios-project-manager/pull/95 |
 | STEP2-2 | Local/Remote DB구현             | https://github.com/yagom-academy/ios-project-manager/pull/112 |
 
-## 구현 기능
+## 3) 구현 기능
 
 > **`할 일` 생성 및 상태 별 `칸반 보드`로 보기**
 > - `UITableViewDiffableDataSource`의 `snapShot`을 사용해 효율적 뷰 업데이트 구현
@@ -55,13 +55,15 @@
 
 # 2. 설계 개요
 
-## 개발 환경
+## 1) 개발 환경
 - 배포 타겟: iOS 14.0
 - UIKit, Code base UI
 - Database : CoreData, Firebase
 - 의존성 관리 툴 : SPM
 
-## 프레임워크 선택 시 고려사항
+<br>
+
+## 2) 프레임워크 선택 시 고려사항
 
 ### CoreData
 - 애플의 first-party 프레임워크로 안정적으로 사용이 가능
@@ -76,27 +78,27 @@
 
 <br>
 
-## 아키텍처
+## 3) 아키텍처
 ### MVC
 <img width="717" alt="스크린샷 2022-07-17 오후 10 17 04" src="https://user-images.githubusercontent.com/81469717/179402665-01876e65-7be4-47d1-8845-89a3c7026e9e.png">
 
-## Framework에 독립적인 `Repository` 프로토콜 정의  
+## 4) Framework에 독립적인 `Repository` 프로토콜 정의  
 - InMemory, CoreData, Firestore 3개의 데이터 소스를 사용해야 함
 - 데이터 소스의 공통 프로퍼티, CRUD 메서드 명세 `ProjectRepository` 프로토콜 정의
 - 도메인은 프로토콜을 참조, 사용 (의존성 역전)
 -  프레임워크와 모델간 의존성 분리 효과를 경험
 
-<img width="700" alt="스크린샷 2022-07-17 오후 11 24 28" src="https://user-images.githubusercontent.com/81469717/179402882-fe6a55be-50fb-455d-8116-76bf2a7f4d76.png">
-
 ### ProjectDTO로 프레임워크와 도메인의 의존성 분리
 - Firebase로부터 받은 `Document`타입을 wrapping하기 위한 `ProjectDTO` 타입 정의
 - `toDomain()` 을 호출하여 앱에서 사용되는  모델 `Project` 로 변환
+
+<img width="700" alt="스크린샷 2022-07-17 오후 11 24 28" src="https://user-images.githubusercontent.com/81469717/179402882-fe6a55be-50fb-455d-8116-76bf2a7f4d76.png">
 
 <br>
 
 #  3. 트러블 슈팅
 
-## 공통 뷰 구현 및 재사용 
+## 1) 공통 뷰 구현 및 재사용 
 ### todo, doing, done 테이블뷰
 **상황**
 
@@ -120,7 +122,9 @@
 - `ProjectDetailDelegate`에 버튼의 타이틀, 탭 시 액션을 정의하여 delegate로 부터 전달받도록 구현
 - `DetailVC`를 공동 사용 가능하도록 리팩터링
 
-## adaptive한 TableView 구현
+<br>
+
+## 2) adaptive한 TableView 구현
 
 **상황**
 
