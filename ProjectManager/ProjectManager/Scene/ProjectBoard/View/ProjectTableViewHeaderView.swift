@@ -33,11 +33,14 @@ final class ProjectTableViewHeaderView: UIView {
     
     private lazy var seperator: CALayer = {
         let seperator = CALayer()
-        seperator.frame = CGRect(x: 0, y: self.bounds.height - 0.5, width: self.bounds.width, height: 3)
+        seperator.frame = CGRect(
+            x: 0,
+            y: self.bounds.height - 0.5,
+            width: self.bounds.width,
+            height: 3)
         seperator.backgroundColor = ColorPallete.tableViewSeperatorColor?.cgColor
         return seperator
     }()
-    
     
     // MARK: - Initializer
     
@@ -64,13 +67,9 @@ final class ProjectTableViewHeaderView: UIView {
         
         NSLayoutConstraint.activate([
             statusLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            statusLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10)
-        ])
-        NSLayoutConstraint.activate([
+            statusLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             projectCountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            projectCountLabel.centerYAnchor.constraint(equalTo: self.statusLabel.centerYAnchor)
-        ])
-        NSLayoutConstraint.activate([
+            projectCountLabel.centerYAnchor.constraint(equalTo: self.statusLabel.centerYAnchor),
             self.projectCountLabel.heightAnchor.constraint(equalToConstant: 20),
             self.projectCountLabel.widthAnchor.constraint(equalToConstant: 20)])
     }

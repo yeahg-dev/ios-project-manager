@@ -24,9 +24,9 @@ final class MainViewController: UIViewController {
     }()
     
     private lazy var projectListStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [todoViewController.view,
-                                                       doingViewController.view,
-                                                       doneViewController.view])
+        let stackView = UIStackView(
+            arrangedSubviews: [todoViewController.view,doingViewController.view,
+                               doneViewController.view])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .systemBackground
         stackView.axis = .horizontal
@@ -45,8 +45,9 @@ final class MainViewController: UIViewController {
     private lazy var repositorySettingButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        let cloudImage = UIImage(systemName: "cloud.fill",
-                                 withConfiguration: UIImage.SymbolConfiguration(textStyle: .title1))
+        let cloudImage = UIImage(
+            systemName: "cloud.fill",
+            withConfiguration: UIImage.SymbolConfiguration(textStyle: .title1))
         button.setImage(cloudImage, for: .normal)
         button.addAction(repository, for: .touchUpInside)
         return button
@@ -72,6 +73,7 @@ final class MainViewController: UIViewController {
     }
      
     // MARK: - Configure View
+    
     private func configureView() {
         self.view.translatesAutoresizingMaskIntoConstraints = false
         self.view.backgroundColor = .systemGray6

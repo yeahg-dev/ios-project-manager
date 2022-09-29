@@ -44,9 +44,8 @@ final class ProjectTableViewCell: UITableViewCell {
     }()
     
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel,
-                                                       descpritionLabel,
-                                                       deadlineLabel])
+        let stackView = UIStackView(
+            arrangedSubviews: [titleLabel, descpritionLabel, deadlineLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .fill

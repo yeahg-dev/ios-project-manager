@@ -19,7 +19,13 @@ struct ProjectDTO {
     private (set) var hasUserNotification: Bool? = false
     
     
-    init(identifier: String?, title: String? = nil, deadline: Timestamp? = nil, description: String? = nil, statusRawValue: String? = nil, hasUserNotification: Bool? = false) {
+    init(
+        identifier: String?,
+        title: String? = nil,
+        deadline: Timestamp? = nil,
+        description: String? = nil,
+        statusRawValue: String? = nil,
+        hasUserNotification: Bool? = false) {
         self.identifier = identifier
         self.title = title
         self.deadline = deadline
@@ -43,31 +49,40 @@ struct ProjectDTO {
             return nil
         }
         let deadline = Date(timeIntervalSince1970: TimeInterval(deadlineTimestamp.seconds))
-        return Project(identifier: self.identifier,
-                       title: self.title,
-                       deadline: deadline,
-                       description: self.description,
-                       status: Status(rawValue: statusRawValue),
-                       hasUserNotification: self.hasUserNotification)
+        return Project(
+            identifier: self.identifier,
+            title: self.title,
+            deadline: deadline,
+            description: self.description,
+            status: Status(rawValue: statusRawValue),
+            hasUserNotification: self.hasUserNotification)
     }
     
     func toEntity() -> [String: Any] {
         var dict = [String: Any]()
-        dict.updateValue(self.identifier as Any,
-                         forKey: ProjectKey.identifier.rawValue)
-        dict.updateValue(self.title as Any,
-                         forKey: ProjectKey.title.rawValue)
-        dict.updateValue(self.deadline as Any,
-                         forKey: ProjectKey.deadline.rawValue)
-        dict.updateValue(self.description as Any,
-                         forKey: ProjectKey.description.rawValue)
-        dict.updateValue(self.statusRawValue as Any,
-                         forKey: ProjectKey.status.rawValue)
-        dict.updateValue(self.hasUserNotification as Any,
-                         forKey: ProjectKey.hasUserNotification.rawValue)
+        dict.updateValue(
+            identifier as Any,
+            forKey: ProjectKey.identifier.rawValue)
+        dict.updateValue(
+            self.title as Any,
+            forKey: ProjectKey.title.rawValue)
+        dict.updateValue(
+            self.deadline as Any,
+            forKey: ProjectKey.deadline.rawValue)
+        dict.updateValue(
+            self.description as Any,
+            forKey: ProjectKey.description.rawValue)
+        dict.updateValue(
+            self.statusRawValue as Any,
+            forKey: ProjectKey.status.rawValue)
+        dict.updateValue(
+            self.hasUserNotification as Any,
+            forKey: ProjectKey.hasUserNotification.rawValue)
         return dict
     }
 }
+
+// MARK: - Extension
 
 extension Project {
     
@@ -75,11 +90,13 @@ extension Project {
         guard let deadline = self.deadline else {
             return nil
         }
-        return ProjectDTO(identifier: self.identifier,
-                          title: self.title,
-                          deadline:  Timestamp(date: deadline),
-                          description: self.description,
-                          statusRawValue: self.status?.rawValue,
-                          hasUserNotification: self.hasUserNotification)
+        
+        return ProjectDTO(
+            identifier: self.identifier,
+            title: self.title,
+            deadline:  Timestamp(date: deadline),
+            description: self.description,
+            statusRawValue: self.status?.rawValue,
+            hasUserNotification: self.hasUserNotification)
     }
 }

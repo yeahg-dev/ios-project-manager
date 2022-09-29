@@ -6,8 +6,8 @@
 //
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 @objc(CDProject)
 public class CDProject: NSManagedObject {
@@ -28,11 +28,12 @@ public class CDProject: NSManagedObject {
 extension CDProject {
     
     func toDomain() -> Project {
-        return Project(identifier: self.identifier,
-                       title: self.title,
-                       deadline: self.deadline,
-                       description: self.descriptions,
-                       status: self.status,
-                       hasUserNotification: self.hasUSerNotification)
+        return Project(
+            identifier: self.identifier,
+            title: self.title,
+            deadline: self.deadline,
+            description: self.descriptions,
+            status: self.status,
+            hasUserNotification: self.hasUSerNotification)
     }
 }

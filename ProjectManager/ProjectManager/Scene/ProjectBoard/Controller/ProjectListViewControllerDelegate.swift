@@ -9,7 +9,9 @@ import Foundation
 
 protocol ProjectListViewControllerDelegate: AnyObject {
     
-    func readProject(of status: Status, completion: @escaping (Result<[Project]?, Error>) -> Void)
+    func readProject(
+        of status: Status,
+        completion: @escaping (Result<[Project]?, Error>) -> Void)
     
     func updateProject(of project: Project, with content: [String: Any])
     

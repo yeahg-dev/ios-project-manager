@@ -9,6 +9,8 @@ import UIKit
 
 final class HistoryTableViewCell: UITableViewCell {
 
+    // MARK: - IBOutlet Property
+    
     @IBOutlet weak var descriptionLabel: UILabel?
     @IBOutlet weak var dateLabel: UILabel?
     

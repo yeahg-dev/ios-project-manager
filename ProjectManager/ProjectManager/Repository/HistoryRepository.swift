@@ -17,8 +17,9 @@ protocol HistoryRepository: AnyObject {
     
     func readHistory(of inedx: Int) -> [String?: String?]?
     
-    func createHistory(type: OperationType,
-                              of projectIdentifier: String?,
-                              title: String?,
-                              status: Status?)
+    func createHistory(
+        type: OperationType,
+        of projectIdentifier: String?,
+        title: String?,
+        status: Status?)
 }

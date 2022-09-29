@@ -175,7 +175,7 @@ final class ProjectListViewController: UIViewController {
     
     @objc func presentStatusMovePopover() {
         let location = longPressGestureRecognizer.location(in: projectTableView)
-        guard let project = longPressedProject(at: location) else {
+        guard let project = didLongPressedProject(at: location) else {
             return
         }
         
@@ -196,7 +196,7 @@ final class ProjectListViewController: UIViewController {
         self.present(actionSheetController, animated: true, completion: nil)
     }
     
-    private func longPressedProject(at point: CGPoint) -> Project? {
+    private func didLongPressedProject(at point: CGPoint) -> Project? {
         let CellIndexPath = projectTableView.indexPathForRow(at: point)
         guard let indexPath = CellIndexPath else {
             return nil
@@ -272,7 +272,9 @@ final class ProjectListViewController: UIViewController {
 
 extension ProjectListViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath) {
         guard let selectedProject = dataSource.itemIdentifier(for: indexPath) else {
             return
         }
@@ -286,14 +288,18 @@ extension ProjectListViewController: UITableViewDelegate {
         self.present(detailViewController, animated: false, completion: nil)
     }
     
-    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView,
+        didHighlightRowAt indexPath: IndexPath) {
         if let cell = projectTableView.cellForRow(
             at: indexPath) as? ProjectTableViewCell{
             cell.cellContainerView.backgroundColor = ColorPallete.higlightedCellColor
         }
     }
     
-    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+    func tableView(
+        _ tableView: UITableView,
+        didUnhighlightRowAt indexPath: IndexPath) {
         if let cell = projectTableView.cellForRow(
             at: indexPath) as? ProjectTableViewCell{
             cell.cellContainerView.backgroundColor = self.projectStatus.cellBackgroundColor
@@ -370,7 +376,9 @@ extension ProjectListViewController: UITableViewDelegate {
         
         let cellHeight = cellRect.height
         let cellWidth = cellRect.width
-        let sourceRect = CGRect(origin: cellRect.origin, size: CGSize(width: cellWidth/2, height: cellHeight/2))
+        let sourceRect = CGRect(
+            origin: cellRect.origin,
+            size: CGSize(width: cellWidth/2, height: cellHeight/2))
         
         if let popoverPresentationController = actionSheet.popoverPresentationController {
             popoverPresentationController.sourceView = self.projectTableView
@@ -397,6 +405,7 @@ extension ProjectListViewController: UITableViewDelegate {
 // MARK: - ProjectEditDelegate
 
 extension ProjectListViewController: ProjectEditDelegate {
+    
     func barTitle() -> String {
         return ProjectDetailScene.editTitle.rawValue
     }
@@ -409,10 +418,13 @@ extension ProjectListViewController: ProjectEditDelegate {
         return .edit
     }
     
-    func didTappedrightBarButtonItem(of project: Project?, projectContent: [String : Any]) {
+    func didTappedrightBarButtonItem(
+        of project: Project?,
+        projectContent: [String : Any]) {
         guard let project = project else {
             return
         }
+            
         self.delegate?.updateProject(of: project, with: projectContent)
     }
     

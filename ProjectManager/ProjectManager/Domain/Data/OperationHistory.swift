@@ -51,7 +51,11 @@ struct OperationHistory {
     
     // MARK: - Initializer
     
-    init(type: OperationType, projectIdentifier: String?, projectTitle: String?, projectStatus: Status?) {
+    init(
+        type: OperationType,
+        projectIdentifier: String?,
+        projectTitle: String?,
+        projectStatus: Status?) {
         self.type = type
         self.projectIdentifier = projectIdentifier
         self.projectTitle = projectTitle

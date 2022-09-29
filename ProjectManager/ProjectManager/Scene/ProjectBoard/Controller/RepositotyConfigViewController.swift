@@ -5,8 +5,8 @@
 //  Created by 1 on 2022/03/22.
 //
 
-import UIKit
 import CoreData
+import UIKit
 
 final class RepositotyConfigViewController: UIViewController {
     
@@ -44,7 +44,8 @@ final class RepositotyConfigViewController: UIViewController {
     }()
     
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, repositorySegmentedControl])
+        let stackView = UIStackView(
+            arrangedSubviews: [titleLabel, repositorySegmentedControl])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -82,12 +83,17 @@ final class RepositotyConfigViewController: UIViewController {
     
     private func configureLayout() {
         self.view.addSubview(contentStackView)
-        
         NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 30),
-            contentStackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            contentStackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30)
+            contentStackView.topAnchor.constraint(
+                equalTo: self.view.topAnchor,
+                constant: 30),
+            contentStackView.leadingAnchor.constraint(
+                equalTo: self.view.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(
+                equalTo: self.view.trailingAnchor),
+            contentStackView.bottomAnchor.constraint(
+                equalTo: self.view.bottomAnchor,
+                constant: -30)
         ])
     }
 
@@ -96,6 +102,7 @@ final class RepositotyConfigViewController: UIViewController {
               let index = repositoryTypes.firstIndex(of: currentSourceType) else {
                   return
               }
+        
         self.repositorySegmentedControl.selectedSegmentIndex = index
     }
     

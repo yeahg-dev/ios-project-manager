@@ -7,7 +7,7 @@
 
 import UIKit
 
-// MARK:- ProjectDetailDelegate
+// MARK: - ProjectDetailDelegate
 
 protocol ProjectDetailDelegate: AnyObject{
     
@@ -17,7 +17,9 @@ protocol ProjectDetailDelegate: AnyObject{
     
     func leftBarButtonItem() -> UIBarButtonItem.SystemItem
     
-    func didTappedrightBarButtonItem(of project: Project?, projectContent: [String: Any])
+    func didTappedrightBarButtonItem(
+        of project: Project?,
+        projectContent: [String: Any])
     
 }
 

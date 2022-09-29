@@ -6,22 +6,32 @@
 //
 
 import Foundation
+
 import Firebase
+
+// MARK: - FirestorePath Namespace
+
+private enum FirestorePath {
+    static let historys = "historys"
+}
+
+// MARK: - HistoryFirestoreRepository
 
 class HistoryFirestoreRepository: HistoryRepository {
     
+    // MARK: - Property
+    
     var updateUI: (() -> Void) = {}
     
-    struct FirestorePath {
-        static let historys = "historys"
-    }
-    
-    private let db = Firestore.firestore()
     var historys = [[String: Any]]()
  
     var historyCount: Int {
         return historys.count
     }
+    
+    private let db = Firestore.firestore()
+    
+    // MARK: - CRUD Method
     
     func fetchHistorys() {
         db.collection(FirestorePath.historys).getDocuments() { (querySnapshot, err) in
@@ -49,14 +59,16 @@ class HistoryFirestoreRepository: HistoryRepository {
         return history
     }
     
-    func createHistory(type: OperationType,
-                       of projectIdentifier: String?,
-                       title: String?,
-                       status: Status?) {
-        let newHistory = OperationHistory(type: type,
-                                          projectIdentifier: projectIdentifier,
-                                          projectTitle: title,
-                                          projectStatus: status)
+    func createHistory(
+        type: OperationType,
+        of projectIdentifier: String?,
+        title: String?,
+        status: Status?) {
+        let newHistory = OperationHistory(
+            type: type,
+            projectIdentifier: projectIdentifier,
+            projectTitle: title,
+            projectStatus: status)
         let history = ["description": newHistory.historyDescription,
                        "date": newHistory.dateDescription]
         

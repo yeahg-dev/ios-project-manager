@@ -19,8 +19,6 @@ struct UserNotificationHandler {
         content.title = content.title
         content.body = content.body
         
-//        let trigger = UNCalendarNotificationTrigger(
-//                 dateMatching: dateComponent, repeats: false)
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
         
         let request = UNNotificationRequest(identifier: identifier,
@@ -29,7 +27,6 @@ struct UserNotificationHandler {
         userNotificationCenter.add(request) { (error) in
            if error != nil {
                print("노티 등록 실패")
-              // Handle any errors.
            }
         }
     }

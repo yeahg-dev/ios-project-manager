@@ -51,7 +51,8 @@ final class ProjectDetailViewController: UIViewController {
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .wheels
         var preferredLanguage = Locale.preferredLanguages.first
-        let currentRegionIdentifier: Substring? = NSLocale.current.identifier.split(separator: "_").last
+        let currentRegionIdentifier: Substring? = NSLocale.current.identifier.split(
+            separator: "_").last
         if let languageCode = preferredLanguage, let regionCode = currentRegionIdentifier {
             let deviceLocaleIdentifier = "\(languageCode)_\(regionCode)"
             datePicker.locale = Locale(identifier: deviceLocaleIdentifier)
@@ -76,15 +77,20 @@ final class ProjectDetailViewController: UIViewController {
         textView.backgroundColor = ColorPallete.backgroundColor
         textView.font = .preferredFont(forTextStyle: .body)
         textView.textColor = .label
-        textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        textView.textContainerInset = UIEdgeInsets(
+            top: 8,
+            left: 8,
+            bottom: 8,
+            right: 8)
         textView.layer.masksToBounds = true
         textView.autocorrectionType = .no
         return textView
     }()
     
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews:
-                                        [titleTextField, datePicker, descriptionTextViewContainer])
+        let stackView = UIStackView(
+            arrangedSubviews: [titleTextField, datePicker,
+                               descriptionTextViewContainer])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .fill
@@ -96,15 +102,29 @@ final class ProjectDetailViewController: UIViewController {
         var content: [String: Any] = [:]
         switch self.mode {
         case .creation:
-            content.updateValue(UUID().uuidString as Any, forKey: ProjectKey.identifier.rawValue)
-            content.updateValue(Status.todo, forKey: ProjectKey.status.rawValue)
+            content.updateValue(
+                UUID().uuidString as Any,
+                forKey: ProjectKey.identifier.rawValue)
+            content.updateValue(
+                Status.todo,
+                forKey: ProjectKey.status.rawValue)
         default:
-            content.updateValue(self.project?.status as Any, forKey: ProjectKey.status.rawValue)
+            content.updateValue(
+                self.project?.status as Any,
+                forKey: ProjectKey.status.rawValue)
         }
-        content.updateValue(UUID().uuidString as Any, forKey: ProjectKey.identifier.rawValue)
-        content.updateValue(titleTextField.text as Any, forKey: ProjectKey.title.rawValue)
-        content.updateValue(datePicker.date as Any, forKey: ProjectKey.deadline.rawValue)
-        content.updateValue(descriptionTextView.text as Any, forKey: ProjectKey.description.rawValue)
+        content.updateValue(
+            UUID().uuidString as Any,
+            forKey: ProjectKey.identifier.rawValue)
+        content.updateValue(
+            titleTextField.text as Any,
+            forKey: ProjectKey.title.rawValue)
+        content.updateValue(
+            datePicker.date as Any,
+            forKey: ProjectKey.deadline.rawValue)
+        content.updateValue(
+            descriptionTextView.text as Any,
+            forKey: ProjectKey.description.rawValue)
         return content
     }
     
@@ -145,6 +165,7 @@ final class ProjectDetailViewController: UIViewController {
     }
 
     // MARK: - Configure View
+    
     private func configureLayout() {
         self.configureView()
         self.configureNavigationBarLayout()
@@ -157,32 +178,40 @@ final class ProjectDetailViewController: UIViewController {
     
     private func configureNavigationBarLayout() {
         self.view.addSubview(navigationBar)
-        navigationBar.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        navigationBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        navigationBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            navigationBar.topAnchor.constraint(equalTo: self.view.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        ])
     }
     
     private func configureStackViewLayout() {
         self.descriptionTextViewContainer.addSubview(descriptionTextView)
         self.view.addSubview(stackView)
         
-        NSLayoutConstraint.activate([titleTextField.heightAnchor.constraint(equalToConstant: 45)])
-        
         NSLayoutConstraint.activate([
-            descriptionTextView.topAnchor.constraint(equalTo: descriptionTextViewContainer.topAnchor),
+            titleTextField.heightAnchor.constraint(equalToConstant: 45),
+            descriptionTextView.topAnchor.constraint(
+                equalTo: descriptionTextViewContainer.topAnchor),
             descriptionTextView.bottomAnchor.constraint(equalTo: descriptionTextViewContainer.bottomAnchor),
             descriptionTextView.leadingAnchor.constraint(equalTo: descriptionTextViewContainer.leadingAnchor),
-            descriptionTextView.trailingAnchor.constraint(equalTo: descriptionTextViewContainer.trailingAnchor)
-        ])
-        NSLayoutConstraint.activate([
-            descriptionTextViewContainer.topAnchor.constraint(equalTo: datePicker.bottomAnchor),
-            descriptionTextViewContainer.bottomAnchor.constraint(equalTo: stackView.bottomAnchor)
-        ])
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: 15),
-            stackView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -15),
-            stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15),
-            stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -15)
+            descriptionTextView.trailingAnchor.constraint(equalTo: descriptionTextViewContainer.trailingAnchor),
+            descriptionTextViewContainer.topAnchor.constraint(
+                equalTo: datePicker.bottomAnchor),
+            descriptionTextViewContainer.bottomAnchor.constraint(
+                equalTo: stackView.bottomAnchor),
+            stackView.topAnchor.constraint(
+                equalTo: navigationBar.bottomAnchor,
+                constant: 15),
+            stackView.bottomAnchor.constraint(
+                equalTo: self.view.bottomAnchor,
+                constant: -15),
+            stackView.leadingAnchor.constraint(
+                equalTo: self.view.leadingAnchor,
+                constant: 15),
+            stackView.trailingAnchor.constraint(
+                equalTo: self.view.trailingAnchor,
+                constant: -15)
         ])
     }
     
@@ -193,13 +222,16 @@ final class ProjectDetailViewController: UIViewController {
               let title = self.projectDetailDelegate?.barTitle() else {
             return
         }
-        let rightBarButton = UIBarButtonItem(barButtonSystemItem: rightBarButtonItem,
-                                             target: self,
-                                             action: #selector(didTappedRightBarButton))
+        
+        let rightBarButton = UIBarButtonItem(
+            barButtonSystemItem: rightBarButtonItem,
+            target: self,
+            action: #selector(didTappedRightBarButton))
         rightBarButton.tintColor = ColorPallete.buttonColor
-        let leftBarButton = UIBarButtonItem(barButtonSystemItem: leftBarButtonItem,
-                                            target: self,
-                                            action: #selector(didTappedLefttBarButton))
+        let leftBarButton = UIBarButtonItem(
+            barButtonSystemItem: leftBarButtonItem,
+            target: self,
+            action: #selector(didTappedLefttBarButton))
         leftBarButton.tintColor = ColorPallete.buttonColor
         navigationItem.rightBarButtonItem = rightBarButton
         navigationItem.leftBarButtonItem = leftBarButton
@@ -224,7 +256,8 @@ final class ProjectDetailViewController: UIViewController {
         }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(
+        _ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         guard #available(iOS 13, *) else { return }
@@ -274,23 +307,27 @@ final class ProjectDetailViewController: UIViewController {
     // MARK: - Keyboard Method
     
     private func addKeyboardNotificationObserver() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillShow(_:)),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillHide(_:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow(_:)),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide(_:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
     }
     
     private func removeKeyboardNotificationObserver() {
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardWillShowNotification,
-                                                  object: nil)
-        NotificationCenter.default.removeObserver(self,
-                                                  name: UIResponder.keyboardWillHideNotification,
-                                                  object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
     }
     
     @objc private func keyboardWillShow(_ sender: Notification) {
@@ -321,7 +358,10 @@ final class ProjectDetailViewController: UIViewController {
 
 extension ProjectDetailViewController: UITextViewDelegate {
     
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    func textView(
+        _ textView: UITextView,
+        shouldChangeTextIn range: NSRange,
+        replacementText text: String) -> Bool {
         let limitedCharacterCount = 1000
         let currentText = textView.text ?? ""
         

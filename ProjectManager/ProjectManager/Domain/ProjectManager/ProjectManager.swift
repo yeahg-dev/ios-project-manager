@@ -11,13 +11,14 @@ final class ProjectManager {
     
     // MARK: - Property
     
-    private let userNotificationHandler = UserNotificationHandler()
     weak var delegate: ProjectManagerDelegate?
-   
-    private var repository: ProjectRepository? = ProjectCoreDataRepository()
     var historyRepository: HistoryRepository? {
         return repository?.historyRepository
     }
+    
+    private let userNotificationHandler = UserNotificationHandler()
+    private var repository: ProjectRepository? = ProjectCoreDataRepository()
+    
     private (set) var repositoryType: Repository? {
         get {
             return self.repository?.type
@@ -82,7 +83,7 @@ final class ProjectManager {
         self.removeUserNotification(of: project)
     }
     
-    // MARK: - ProjectRepository Config Method
+    // MARK: - ProjectRepository Configuration Method
     
     func switchProjectRepository(with repository: Repository) {
         self.repositoryType = repository
@@ -92,7 +93,9 @@ final class ProjectManager {
     // MARK: - UserNotification Method
     
     func registerNewUserNotification(of project: Project) {
-        self.updateProjectContent(of: project, with: [ProjectKey.hasUserNotification.rawValue: true])
+        self.updateProjectContent(
+            of: project,
+            with: [ProjectKey.hasUserNotification.rawValue: true])
         self.registerUserNotification(of: project)
     }
     
@@ -118,7 +121,9 @@ final class ProjectManager {
     }
     
     func removeUserNotification(of project: Project) {
-        self.updateProjectContent(of: project, with: [ProjectKey.hasUserNotification.rawValue: false])
+        self.updateProjectContent(
+            of: project,
+            with: [ProjectKey.hasUserNotification.rawValue: false])
         guard let identifier = project.identifier else {
             return 
         }

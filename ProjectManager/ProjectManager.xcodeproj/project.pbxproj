@@ -195,26 +195,10 @@
 		6387F9C328816A060079D584 /* ProjectDetail */ = {
 			isa = PBXGroup;
 			children = (
-				6387F9C428816A170079D584 /* View */,
-				6387F9C528816A1C0079D584 /* Controller */,
-			);
-			path = ProjectDetail;
-			sourceTree = "<group>";
-		};
-		6387F9C428816A170079D584 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		6387F9C528816A1C0079D584 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
 				63B96DAE27E067F600144F7C /* ProjectDetailViewController.swift */,
 				6387F9BD288166BD0079D584 /* ProjectDetailDelegate.swift */,
 			);
-			path = Controller;
+			path = ProjectDetail;
 			sourceTree = "<group>";
 		};
 		6387F9C628816AA00079D584 /* Repository */ = {
@@ -327,7 +311,7 @@
 			path = "App Life Cycle";
 			sourceTree = "<group>";
 		};
-		63D21E5927D464C300E35D3B /* Model */ = {
+		63D21E5927D464C300E35D3B /* Domain */ = {
 			isa = PBXGroup;
 			children = (
 				6387F9CE28816EED0079D584 /* ProjectManager */,
@@ -335,7 +319,7 @@
 				63B96DA727E0249000144F7C /* ViewNameSpace */,
 				635862BB27E34DEF005E2A2B /* Data */,
 			);
-			path = Model;
+			path = Domain;
 			sourceTree = "<group>";
 		};
 		63D21E5C27D4652900E35D3B /* Resource */ = {
@@ -387,7 +371,7 @@
 			isa = PBXGroup;
 			children = (
 				63D21E5827D461DD00E35D3B /* App Life Cycle */,
-				63D21E5927D464C300E35D3B /* Model */,
+				63D21E5927D464C300E35D3B /* Domain */,
 				6387F9BF288169B30079D584 /* Scene */,
 				6387F9C628816AA00079D584 /* Repository */,
 				63D21E9027D6601C00E35D3B /* Util */,

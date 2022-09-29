@@ -12,10 +12,12 @@ import UIKit
 final class NetworkChecker {
     
     static public let shared = NetworkChecker()
-    private var monitor: NWPathMonitor
-    private var queue = DispatchQueue.global()
+    
     var isOn: Bool = true
     var connType: ConnectionType = .wifi
+    
+    private var monitor: NWPathMonitor
+    private var queue = DispatchQueue.global()
     
     private init() {
         self.monitor = NWPathMonitor()

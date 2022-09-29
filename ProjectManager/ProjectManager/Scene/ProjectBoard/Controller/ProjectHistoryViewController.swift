@@ -63,11 +63,15 @@ final class ProjectHistoryViewController: UIViewController {
 
 extension ProjectHistoryViewController: UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int) -> Int {
        return self.historyRepository?.historyCount ?? .zero
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let historyTableViewCell = self.historyTableView.dequeueReusableCell(
             withIdentifier: "HistoryTableViewCell",
             for: indexPath) as? HistoryTableViewCell else {
