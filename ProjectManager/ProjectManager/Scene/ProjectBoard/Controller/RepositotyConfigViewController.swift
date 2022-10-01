@@ -96,12 +96,12 @@ final class RepositotyConfigViewController: UIViewController {
                 constant: -Design.bottomPadding)
         ])
     }
-
+    
     private func configureContent() {
         guard let currentSourceType = projectManager?.repositoryType,
               let index = repositoryTypes.firstIndex(of: currentSourceType) else {
-                  return
-              }
+            return
+        }
         
         self.repositorySegmentedControl.selectedSegmentIndex = index
     }

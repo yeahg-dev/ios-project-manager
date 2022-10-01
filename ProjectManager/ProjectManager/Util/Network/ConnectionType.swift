@@ -8,8 +8,10 @@
 import Foundation
 
 public enum ConnectionType {
+    
     case wifi
     case ethernet
     case cellular
     case unknown
+    
 }

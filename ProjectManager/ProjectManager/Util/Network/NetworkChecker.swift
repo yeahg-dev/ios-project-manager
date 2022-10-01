@@ -59,8 +59,8 @@ final class NetworkChecker {
         DispatchQueue.main.async {
             guard let window = UIApplication.shared.windows.first,
                   let rootViewController = window.rootViewController else {
-                      return
-                  }
+                return
+            }
             let alertController = UIAlertController(
                 title: NetworkCheckerAlert.disconnectionTitle.rawValue,
                 message: NetworkCheckerAlert.disconnectionMessage.rawValue,

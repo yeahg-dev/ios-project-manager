@@ -32,8 +32,8 @@ struct OperationHistory {
     var historyDescription: String {
         guard let projectTitle = self.projectTitle,
               let projectStatus = self.projectStatus else {
-                  return "오류 발생"
-              }
+            return "오류 발생"
+        }
         
         switch type {
         case .add:
@@ -46,7 +46,7 @@ struct OperationHistory {
     }
     
     var dateDescription: String {
-        return "\(date.localeString()) \(self.date.formattedTimeString)"
+        "\(date.localeString()) \(self.date.formattedTimeString)"
     }
     
     // MARK: - Initializer
@@ -55,7 +55,8 @@ struct OperationHistory {
         type: OperationType,
         projectIdentifier: String?,
         projectTitle: String?,
-        projectStatus: Status?) {
+        projectStatus: Status?)
+    {
         self.type = type
         self.projectIdentifier = projectIdentifier
         self.projectTitle = projectTitle

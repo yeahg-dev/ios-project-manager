@@ -8,7 +8,7 @@
 import UIKit
 
 final class ProjectTableViewHeaderView: UIView {
-
+    
     // MARK: - UI Property
     
     private let statusLabel: UILabel = {
@@ -49,24 +49,32 @@ final class ProjectTableViewHeaderView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.layer.addSublayer(self.seperator)
     }
-  
+    
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: - Configure Layout
     
     private func configureLayout() {
         self.addSubview(statusLabel)
         self.addSubview(projectCountLabel)
-        
         NSLayoutConstraint.activate([
-            statusLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            statusLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            projectCountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            projectCountLabel.centerYAnchor.constraint(equalTo: self.statusLabel.centerYAnchor),
-            self.projectCountLabel.heightAnchor.constraint(equalToConstant: 20),
-            self.projectCountLabel.widthAnchor.constraint(equalToConstant: 20)])
+            statusLabel.centerYAnchor.constraint(
+                equalTo: self.centerYAnchor),
+            statusLabel.leadingAnchor.constraint(
+                equalTo: self.leadingAnchor,
+                constant: Design.statusLabelLeadingMargin),
+            projectCountLabel.trailingAnchor.constraint(
+                equalTo: self.trailingAnchor,
+                constant: -Design.projectCountLabelTrailingMargin),
+            projectCountLabel.centerYAnchor.constraint(
+                equalTo: self.statusLabel.centerYAnchor),
+            self.projectCountLabel.heightAnchor.constraint(
+                equalToConstant: Design.projcetCountLabelDiameter),
+            self.projectCountLabel.widthAnchor.constraint(
+                equalToConstant: Design.projcetCountLabelDiameter)
+        ])
     }
     
     // MARK: - API
@@ -74,7 +82,7 @@ final class ProjectTableViewHeaderView: UIView {
     func setLabelColor(with color: UIColor?) {
         self.statusLabel.textColor = color
         self.projectCountLabel.backgroundColor = color
-
+        
     }
     
     func configureContent(status: String?, projectCount: Int ) {
@@ -90,6 +98,9 @@ private enum Design {
     
     // padding
     static let seperatorLeadingMargin: CGFloat = 0.5
+    static let statusLabelLeadingMargin: CGFloat = 10
+    static let projectCountLabelTrailingMargin: CGFloat = 10
+    static let projcetCountLabelDiameter: CGFloat = 20
     
     // size
     static let separatorHeight: CGFloat = 3

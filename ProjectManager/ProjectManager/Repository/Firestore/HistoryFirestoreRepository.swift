@@ -12,7 +12,9 @@ import Firebase
 // MARK: - FirestorePath Namespace
 
 private enum FirestorePath {
+    
     static let historys = "historys"
+    
 }
 
 // MARK: - HistoryFirestoreRepository
@@ -24,7 +26,7 @@ class HistoryFirestoreRepository: HistoryRepository {
     var updateUI: (() -> Void) = {}
     
     var historys = [[String: Any]]()
- 
+    
     var historyCount: Int {
         return historys.count
     }
@@ -63,7 +65,8 @@ class HistoryFirestoreRepository: HistoryRepository {
         type: OperationType,
         of projectIdentifier: String?,
         title: String?,
-        status: Status?) {
+        status: Status?)
+    {
         let newHistory = OperationHistory(
             type: type,
             projectIdentifier: projectIdentifier,

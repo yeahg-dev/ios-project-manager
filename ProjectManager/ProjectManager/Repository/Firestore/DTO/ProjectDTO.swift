@@ -25,7 +25,8 @@ struct ProjectDTO {
         deadline: Timestamp? = nil,
         description: String? = nil,
         statusRawValue: String? = nil,
-        hasUserNotification: Bool? = false) {
+        hasUserNotification: Bool? = false)
+    {
         self.identifier = identifier
         self.title = title
         self.deadline = deadline

@@ -8,7 +8,7 @@
 import Foundation
 
 final class ProjectInMemoryRepository {
-
+    
     // MARK: - Property
     
     private var projects: [String: Project] = [:]
@@ -18,7 +18,7 @@ final class ProjectInMemoryRepository {
 // MARK: - ProjectRepository
 
 extension ProjectInMemoryRepository: ProjectRepository {
- 
+    
     var type: Repository {
         get {
             return .inMemory
@@ -40,13 +40,17 @@ extension ProjectInMemoryRepository: ProjectRepository {
         self.makeHistory(of: project, type: .add)
     }
     
-    func read(of identifier: String,
-              completion: @escaping (Result<Project?, Error>) -> Void) {
+    func read(
+        of identifier: String,
+        completion: @escaping (Result<Project?, Error>)-> Void)
+    {
         completion(.success(projects[identifier]))
     }
     
-    func read(of group: Status,
-              completion: @escaping (Result<[Project]?, Error>) -> Void) {
+    func read(
+        of group: Status,
+        completion: @escaping (Result<[Project]?, Error>) -> Void)
+    {
         let projects = projects.values.filter { project in project.status == group }
         completion(.success(projects))
     }
@@ -70,7 +74,7 @@ extension ProjectInMemoryRepository: ProjectRepository {
         
         self.makeHistory(of: project, type: .move(status))
     }
-   
+    
     func delete(_ project: Project) {
         guard let identifier = project.identifier else {
             return
@@ -82,10 +86,11 @@ extension ProjectInMemoryRepository: ProjectRepository {
     }
     
     private func makeHistory(of project: Project, type: OperationType) {
-        self.historyRepository.createHistory(type: type,
-                                        of: project.identifier,
-                                        title: project.title,
-                                        status: project.status)
+        self.historyRepository.createHistory(
+            type: type,
+            of: project.identifier,
+            title: project.title,
+            status: project.status)
     }
     
 }

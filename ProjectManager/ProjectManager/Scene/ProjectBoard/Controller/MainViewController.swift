@@ -71,13 +71,13 @@ final class MainViewController: UIViewController {
         self.projectManager(
             didChangedRepositoryWith: self.projectManager.repositoryType ?? .coreData)
     }
-     
+    
     // MARK: - Configure View
     
     private func configureView() {
         self.view.backgroundColor = Design.backgroundColor
     }
-
+    
     private func configureLayout() {
         self.configureNavigationBarLayout()
         self.configureProjectListStackViewLayout()
@@ -187,7 +187,7 @@ final class MainViewController: UIViewController {
         }
         self.present(repositoryConfigAlertVC, animated: false, completion: nil)
     }
-
+    
     private func updateRepositorySettingButton(with color: UIColor?) {
         guard let color = color else {
             return
@@ -196,7 +196,7 @@ final class MainViewController: UIViewController {
         let newImage = currentImage?.withTintColor(
             color,
             renderingMode: .alwaysOriginal)
-
+        
         self.repositorySettingButton.setImage(newImage, for: .normal)
     }
     
@@ -206,7 +206,7 @@ final class MainViewController: UIViewController {
         self.doneViewController.updateView()
     }
     
- 
+    
     // MARK: - @objc Method
     
     @objc func presentProjectCreatorViewController() {
@@ -262,11 +262,12 @@ extension MainViewController: ProjectCreationDelegate {
     
     func didTappedrightBarButtonItem(
         of project: Project?,
-        projectContent: [String : Any]) {
+        projectContent: [String : Any])
+    {
         self.projectManager.create(with: projectContent)
         self.todoViewController.updateView()
     }
-
+    
 }
 
 // MARK: - ProjectListViewControllerDelegate
@@ -275,8 +276,9 @@ extension MainViewController: ProjectListViewControllerDelegate {
     
     func readProject(
         of status: Status,
-        completion: @escaping (Result<[Project]?, Error>
-        ) -> Void) {
+        completion: @escaping (Result<[Project]?, Error>)
+        -> Void)
+    {
         self.projectManager.readProject(of: status, completion: completion)
     }
     

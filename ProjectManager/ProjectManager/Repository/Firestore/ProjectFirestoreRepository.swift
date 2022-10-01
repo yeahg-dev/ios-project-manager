@@ -29,7 +29,7 @@ private enum FirestorePath {
 
 final class ProjectFirestoreRepository {
     
- 
+    
     // MARK: - Property
     
     private let db = Firestore.firestore()
@@ -37,7 +37,8 @@ final class ProjectFirestoreRepository {
     // MARK: - Method
     
     func readAll(
-        completion: @escaping (Result<[[String: Any]?], FirestoreError>) -> Void) {
+        completion: @escaping (Result<[[String: Any]?], FirestoreError>) -> Void)
+    {
         db.collection(FirestorePath.projects).getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
@@ -52,7 +53,7 @@ final class ProjectFirestoreRepository {
             }
         }
     }
-  
+    
 }
 
 // MARK: - ProjectRepository
@@ -85,17 +86,19 @@ extension ProjectFirestoreRepository: ProjectRepository {
                 print("☠️Error writing document: \(err)")
             } else {
                 print("Document successfully written!")
-                self?.historyRepository.createHistory(type: OperationType.add,
-                                                 of: identifier,
-                                                 title: project.title,
-                                                 status: project.status)
+                self?.historyRepository.createHistory(
+                    type: OperationType.add,
+                    of: identifier,
+                    title: project.title,
+                    status: project.status)
             }
         }
     }
     
     func read(
         of identifier: String,
-        completion: @escaping (Result<Project?, Error>) -> Void) {
+        completion: @escaping (Result<Project?, Error>) -> Void)
+    {
         let docRef = db.collection(FirestorePath.projects).document(identifier)
         
         docRef.getDocument { (document, error) in
@@ -105,7 +108,7 @@ extension ProjectFirestoreRepository: ProjectRepository {
                         completion(.failure(FirestoreError.invalidDeadline))
                         return
                     }
-
+                    
                     completion(.success(project))
                 }
             } else if let err = error {
@@ -118,29 +121,30 @@ extension ProjectFirestoreRepository: ProjectRepository {
     
     func read(
         of group: Status,
-        completion: @escaping (Result<[Project]?, Error>) -> Void) {
+        completion: @escaping (Result<[Project]?, Error>) -> Void)
+    {
         db.collection(FirestorePath.projects).whereField(
             ProjectKey.status.rawValue,
             isEqualTo: group.rawValue)
-            .getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("☠️Error getting documents: \(err)")
-                    completion(.failure(FirestoreError.readFail))
-                } else {
-                    var dicts: [[String: Any]] = []
-                    for document in querySnapshot!.documents {
-                        dicts.append(document.data())
-                    }
-                    let projects = dicts.compactMap { (dict: [String: Any]) -> Project? in
-                        guard let project = ProjectDTO(dict: dict).toDomain() else {
-                            return nil
-                        }
-                        
-                        return project
-                    }
-                    completion(.success(projects))
+        .getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("☠️Error getting documents: \(err)")
+                completion(.failure(FirestoreError.readFail))
+            } else {
+                var dicts: [[String: Any]] = []
+                for document in querySnapshot!.documents {
+                    dicts.append(document.data())
                 }
+                let projects = dicts.compactMap { (dict: [String: Any]) -> Project? in
+                    guard let project = ProjectDTO(dict: dict).toDomain() else {
+                        return nil
+                    }
+                    
+                    return project
+                }
+                completion(.success(projects))
             }
+        }
     }
     
     func updateContent(of project: Project, with modifiedProject: Project) {
@@ -154,7 +158,7 @@ extension ProjectFirestoreRepository: ProjectRepository {
         }
         
         let projectRef = db.collection(FirestorePath.projects).document(identifier)
-    
+        
         projectRef.updateData(projectEntity) { err in
             if let err = err {
                 print("Error updating document: \(err)")
@@ -180,10 +184,11 @@ extension ProjectFirestoreRepository: ProjectRepository {
                 print("Error updating document: \(err)")
             } else {
                 print("Document successfully updated")
-                self.historyRepository.createHistory(type: OperationType.move(status),
-                                                 of: identifier,
-                                                 title: project.title,
-                                                 status: project.status)
+                self.historyRepository.createHistory(
+                    type: OperationType.move(status),
+                    of: identifier,
+                    title: project.title,
+                    status: project.status)
             }
         }
     }

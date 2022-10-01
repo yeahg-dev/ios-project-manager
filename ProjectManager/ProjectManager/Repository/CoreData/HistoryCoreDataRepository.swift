@@ -11,7 +11,7 @@ import CoreData
 class HistoryCoreDataRepository: HistoryRepository {
     
     var updateUI: (() -> Void) = {}
-
+    
     private var historys: [CDHistory] = []
     private let persistentContainer = ProjectPersistentContainer.persistentContainer
     
@@ -30,21 +30,24 @@ class HistoryCoreDataRepository: HistoryRepository {
                 "date": historys[inedx].date]
     }
     
-    func createHistory(type: OperationType,
-                       of projectIdentifier: String?,
-                       title: String?,
-                       status: Status?) {
-        let newHistory = OperationHistory(type: type,
-                                          projectIdentifier: projectIdentifier,
-                                          projectTitle: title,
-                                          projectStatus: status)
+    func createHistory(
+        type: OperationType,
+        of projectIdentifier: String?,
+        title: String?,
+        status: Status?)
+    {
+        let newHistory = OperationHistory(
+            type: type,
+            projectIdentifier: projectIdentifier,
+            projectTitle: title,
+            projectStatus: status)
         let cdHistory = CDHistory(context: self.context)
         cdHistory.descrption = newHistory.historyDescription
         cdHistory.date = newHistory.dateDescription
         
         self.save()
     }
-   
+    
     private func fetch() {
         let fetchRequest = CDHistory.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "date", ascending: false)

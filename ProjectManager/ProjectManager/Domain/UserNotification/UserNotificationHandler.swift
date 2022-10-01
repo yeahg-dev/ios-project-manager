@@ -12,27 +12,34 @@ struct UserNotificationHandler {
     
     private let userNotificationCenter = UNUserNotificationCenter.current()
     
-    func requestNotification(of content: UserNotificationContent,
-                             when dateComponent: DateComponents,
-                             identifier: String) {
+    func requestNotification(
+        of content: UserNotificationContent,
+        when dateComponent: DateComponents,
+        identifier: String)
+    {
         let content = UNMutableNotificationContent()
         content.title = content.title
         content.body = content.body
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(
+            timeInterval: 10,
+            repeats: false)
         
-        let request = UNNotificationRequest(identifier: identifier,
-                    content: content, trigger: trigger)
-
+        let request = UNNotificationRequest(
+            identifier: identifier,
+            content: content,
+            trigger: trigger)
+        
         userNotificationCenter.add(request) { (error) in
-           if error != nil {
-               print("노티 등록 실패")
-           }
+            if error != nil {
+                print("노티 등록 실패")
+            }
         }
     }
     
     func removeNotification(of identifier: String) {
-        userNotificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
+        userNotificationCenter.removePendingNotificationRequests(
+            withIdentifiers: [identifier])
     }
     
 }

@@ -14,8 +14,7 @@ extension Encodable {
               let dict = try? JSONSerialization.jsonObject(
                 with: data,
                 options: []) as? [String: Any] else {
-                    return [:]
-                }
+                    return [:] }
         return dict
     }
 }

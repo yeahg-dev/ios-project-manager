@@ -70,7 +70,6 @@ final class ProjectListViewController: UIViewController {
         self.view.addSubview(headerView)
         self.view.addSubview(projectTableView)
         let safeArea = self.view.safeAreaLayoutGuide
-        
         NSLayoutConstraint.activate([
             headerView.heightAnchor.constraint(
                 equalToConstant: Design.headerViewHeight),
@@ -106,8 +105,8 @@ final class ProjectListViewController: UIViewController {
     
     private func configureDataSource() {
         dataSource = UITableViewDiffableDataSource<Section, Project>(
-            tableView: projectTableView
-        ) {
+            tableView: projectTableView)
+        {
             (tableView: UITableView, indexPath: IndexPath, project: Project) -> UITableViewCell? in
             let projectCell = self.projectTableView.dequeueReusableCell(
                 withClass: ProjectTableViewCell.self,
@@ -212,8 +211,9 @@ final class ProjectListViewController: UIViewController {
     }
     
     private func projectStatusMoveUIAlertActionsForCurrentStatus(
-        currentProject: Project
-    ) -> [UIAlertAction] {
+        currentProject: Project)
+    -> [UIAlertAction]
+    {
         let currentStatus = currentProject.status
         switch currentStatus {
         case .todo:
@@ -261,8 +261,9 @@ final class ProjectListViewController: UIViewController {
         currentProject: Project,
         title: String,
         targetStatus: Status,
-        viewController: ProjectListViewController
-    ) -> UIAlertAction {
+        viewController: ProjectListViewController)
+    -> UIAlertAction
+    {
         let action = UIAlertAction(
             title: title,
             style: .default) { [weak viewController] _ in
@@ -281,7 +282,8 @@ extension ProjectListViewController: UITableViewDelegate {
     
     func tableView(
         _ tableView: UITableView,
-        didSelectRowAt indexPath: IndexPath) {
+        didSelectRowAt indexPath: IndexPath)
+    {
         guard let selectedProject = dataSource.itemIdentifier(for: indexPath) else {
             return
         }
@@ -297,7 +299,8 @@ extension ProjectListViewController: UITableViewDelegate {
     
     func tableView(
         _ tableView: UITableView,
-        didHighlightRowAt indexPath: IndexPath) {
+        didHighlightRowAt indexPath: IndexPath)
+    {
         if let cell = projectTableView.cellForRow(
             at: indexPath) as? ProjectTableViewCell{
             cell.cellContainerView.backgroundColor = Design.highlightedCellBackgroundColor
@@ -306,7 +309,8 @@ extension ProjectListViewController: UITableViewDelegate {
     
     func tableView(
         _ tableView: UITableView,
-        didUnhighlightRowAt indexPath: IndexPath) {
+        didUnhighlightRowAt indexPath: IndexPath)
+    {
         if let cell = projectTableView.cellForRow(
             at: indexPath) as? ProjectTableViewCell{
             cell.cellContainerView.backgroundColor = self.projectStatus.cellBackgroundColor
@@ -315,8 +319,9 @@ extension ProjectListViewController: UITableViewDelegate {
     
     func tableView(
         _ tableView: UITableView,
-        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-    ) -> UISwipeActionsConfiguration? {
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
+    -> UISwipeActionsConfiguration?
+    {
         let deleteAction = UIContextualAction(
             style: .destructive,
             title: nil
@@ -335,8 +340,9 @@ extension ProjectListViewController: UITableViewDelegate {
     
     func tableView(
         _ tableView: UITableView,
-        leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-    ) -> UISwipeActionsConfiguration? {
+        leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
+    -> UISwipeActionsConfiguration?
+    {
         let project = self.dataSource.itemIdentifier(for: indexPath)
         let cellRect = self.projectTableView.rectForRow(at: indexPath)
         let title = project?.hasUserNotification ?? false ? "🔔" : "🔕"
@@ -355,7 +361,8 @@ extension ProjectListViewController: UITableViewDelegate {
     
     private func presentNotificationConfigurationAlert(
         of project: Project?,
-        at cellRect: CGRect) {
+        at cellRect: CGRect)
+    {
         guard let project = project else {
             return
         }
@@ -364,20 +371,20 @@ extension ProjectListViewController: UITableViewDelegate {
             title: ProjectBoardScene.UserNotificationConfig.title.rawValue,
             message: nil,
             preferredStyle: .actionSheet)
-            let notConfiguratoinAction = UIAlertAction(
-                title: ProjectBoardScene.UserNotificationConfig.none.rawValue,
-                style: .destructive) { [weak self] _ in
-            self?.delegate?.removeUserNotification(of: project)
-            self?.updateView()
-            actionSheet.dismiss(animated: false)
-        }
+        let notConfiguratoinAction = UIAlertAction(
+            title: ProjectBoardScene.UserNotificationConfig.none.rawValue,
+            style: .destructive) { [weak self] _ in
+                self?.delegate?.removeUserNotification(of: project)
+                self?.updateView()
+                actionSheet.dismiss(animated: false)
+            }
         let configurationAction = UIAlertAction(
             title: ProjectBoardScene.UserNotificationConfig.yes.rawValue,
             style: .default) { [weak self] _ in
-            self?.delegate?.registerUserNotification(of: project)
-            self?.updateView()
-            actionSheet.dismiss(animated: false)
-        }
+                self?.delegate?.registerUserNotification(of: project)
+                self?.updateView()
+                actionSheet.dismiss(animated: false)
+            }
         actionSheet.addAction(notConfiguratoinAction)
         actionSheet.addAction(configurationAction)
         actionSheet.modalPresentationStyle = .popover
@@ -398,16 +405,17 @@ extension ProjectListViewController: UITableViewDelegate {
     
     func tableView(
         _ tableView: UITableView,
-        willBeginEditingRowAt indexPath: IndexPath) {
-            if let swipeContainerView = tableView.subviews.first(
-                where: { String(describing: type(of: $0)) == "_UITableViewCellSwipeContainerView" }) {
-                if let swipeActionPullView = swipeContainerView.subviews.first,
-                   String(describing: type(of: swipeActionPullView)) == "UISwipeActionPullView" {
-                    swipeActionPullView.frame.size.height -= 10
-                    swipeActionPullView.frame = swipeActionPullView.frame.offsetBy(dx: 0, dy: 5)
-                }
+        willBeginEditingRowAt indexPath: IndexPath)
+    {
+        if let swipeContainerView = tableView.subviews.first(
+            where: { String(describing: type(of: $0)) == "_UITableViewCellSwipeContainerView" }) {
+            if let swipeActionPullView = swipeContainerView.subviews.first,
+               String(describing: type(of: swipeActionPullView)) == "UISwipeActionPullView" {
+                swipeActionPullView.frame.size.height -= 10
+                swipeActionPullView.frame = swipeActionPullView.frame.offsetBy(dx: 0, dy: 5)
             }
         }
+    }
 }
 
 // MARK: - ProjectEditDelegate
@@ -428,11 +436,12 @@ extension ProjectListViewController: ProjectEditDelegate {
     
     func didTappedrightBarButtonItem(
         of project: Project?,
-        projectContent: [String : Any]) {
+        projectContent: [String : Any])
+    {
         guard let project = project else {
             return
         }
-            
+        
         self.delegate?.updateProject(of: project, with: projectContent)
     }
     

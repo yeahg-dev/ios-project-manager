@@ -8,7 +8,7 @@
 import UIKit
 
 final class ProjectHistoryViewController: UIViewController {
-
+    
     // MARK: - Property
     
     var historyRepository: HistoryRepository?
@@ -66,7 +66,7 @@ final class ProjectHistoryViewController: UIViewController {
         self.historyRepository?.fetchHistorys()
         self.historyTableView.dataSource = self
     }
-
+    
 }
 
 // MARK: - UITableViewDataSource
@@ -75,13 +75,17 @@ extension ProjectHistoryViewController: UITableViewDataSource {
     
     func tableView(
         _ tableView: UITableView,
-        numberOfRowsInSection section: Int) -> Int {
-       return self.historyRepository?.historyCount ?? .zero
+        numberOfRowsInSection section: Int)
+    -> Int
+    {
+        return self.historyRepository?.historyCount ?? .zero
     }
     
     func tableView(
         _ tableView: UITableView,
-        cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        cellForRowAt indexPath: IndexPath)
+    -> UITableViewCell
+    {
         guard let historyTableViewCell = self.historyTableView.dequeueReusableCell(
             withIdentifier: "HistoryTableViewCell",
             for: indexPath) as? HistoryTableViewCell else {
@@ -96,7 +100,7 @@ extension ProjectHistoryViewController: UITableViewDataSource {
         
         return historyTableViewCell
     }
-
+    
 }
 
 // MARK: - Design

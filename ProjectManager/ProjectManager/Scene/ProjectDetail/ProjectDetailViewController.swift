@@ -133,7 +133,8 @@ final class ProjectDetailViewController: UIViewController {
     init(
         mode: Mode,
         project: Project?,
-        projectDetailDelegate: ProjectDetailDelegate?) {
+        projectDetailDelegate: ProjectDetailDelegate?)
+    {
         self.mode = mode
         self.project = project
         self.projectDetailDelegate = projectDetailDelegate
@@ -154,17 +155,17 @@ final class ProjectDetailViewController: UIViewController {
         self.descriptionTextView.delegate = self
         self.titleTextField.delegate = self
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.addKeyboardNotificationObserver()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.removeKeyboardNotificationObserver()
     }
-
+    
     // MARK: - Configure View
     
     private func configureLayout() {
@@ -193,7 +194,8 @@ final class ProjectDetailViewController: UIViewController {
         self.descriptionTextViewContainer.addSubview(descriptionTextView)
         self.view.addSubview(stackView)
         NSLayoutConstraint.activate([
-            titleTextField.heightAnchor.constraint(equalToConstant: Design.titleTextFieldHeight),
+            titleTextField.heightAnchor.constraint(
+                equalToConstant: Design.titleTextFieldHeight),
             descriptionTextView.topAnchor.constraint(
                 equalTo: descriptionTextViewContainer.topAnchor),
             descriptionTextView.bottomAnchor.constraint(
@@ -261,16 +263,17 @@ final class ProjectDetailViewController: UIViewController {
             self.dismiss(animated: false)
         }
     }
-
+    
     override func traitCollectionDidChange(
-        _ previousTraitCollection: UITraitCollection?) {
+        _ previousTraitCollection: UITraitCollection?)
+    {
         super.traitCollectionDidChange(previousTraitCollection)
-
+        
         guard #available(iOS 13, *) else { return }
-
+        
         guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else { return }
-            titleTextField.layer.shadowColor = Design.titleTextFieldShadowColor
-            descriptionTextView.layer.shadowColor = Design.descriptionTextViewShadowColor
+        titleTextField.layer.shadowColor = Design.titleTextFieldShadowColor
+        descriptionTextView.layer.shadowColor = Design.descriptionTextViewShadowColor
     }
     
     // MARK: - Configure Mode
@@ -309,7 +312,7 @@ final class ProjectDetailViewController: UIViewController {
         self.descriptionTextView.isEditable.toggle()
     }
     
-   
+    
     // MARK: - Keyboard Method
     
     private func addKeyboardNotificationObserver() {
@@ -357,7 +360,7 @@ final class ProjectDetailViewController: UIViewController {
     private func boundsOriginWillReturnToZero() {
         self.view.bounds.origin = .zero
     }
-
+    
 }
 
 // MARK: - UITextViewDelegate
@@ -367,7 +370,9 @@ extension ProjectDetailViewController: UITextViewDelegate {
     func textView(
         _ textView: UITextView,
         shouldChangeTextIn range: NSRange,
-        replacementText text: String) -> Bool {
+        replacementText text: String)
+    -> Bool
+    {
         let limitedCharacterCount = 1000
         let currentText = textView.text ?? ""
         
@@ -410,7 +415,7 @@ private enum Design {
     static let descriptionTextViewTextColor: UIColor = .label
     static let rightBarButtonTintColor = ColorPallete.buttonColor
     static let leftBarButtonTintColor = ColorPallete.buttonColor
-     
+    
     // font
     static let titleTextFieldFont: UIFont = .preferredFont(forTextStyle: .body, compatibleWith: nil)
     static let descriptionTextViewFont: UIFont = .preferredFont(forTextStyle: .body)
@@ -422,5 +427,5 @@ private enum Design {
     static let descriptionTextViewShadowColor = UIColor.shadowColor.cgColor
     static let descriptionTextViewShadowOpacity: Float = 0.3
     static let descriptionTextViewShadowRadius: CGFloat = 3
-
+    
 }

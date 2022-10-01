@@ -17,13 +17,11 @@ protocol ProjectRepository: AnyObject {
         
     func read(
         of identifier: String,
-        completion: @escaping (Result<Project?, Error>) -> Void
-    )
+        completion: @escaping (Result<Project?, Error>) -> Void)
     
     func read(
         of group: Status,
-        completion: @escaping (Result<[Project]?, Error>) -> Void
-    )
+        completion: @escaping (Result<[Project]?, Error>) -> Void)
     
     func updateContent(of project: Project, with modifiedProject: Project)
     

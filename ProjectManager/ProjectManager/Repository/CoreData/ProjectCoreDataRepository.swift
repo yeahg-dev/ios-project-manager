@@ -94,7 +94,8 @@ extension ProjectCoreDataRepository: ProjectRepository {
     
     func read(
         of identifier: String,
-        completion: @escaping (Result<Project?, Error>) -> Void) {
+        completion: @escaping (Result<Project?, Error>) -> Void)
+    {
         let result = self.fetch(of: identifier)
         let project = result?.toDomain()
         completion(.success(project))
@@ -102,7 +103,8 @@ extension ProjectCoreDataRepository: ProjectRepository {
     
     func read(
         of group: Status,
-        completion: @escaping (Result<[Project]?, Error>) -> Void) {
+        completion: @escaping (Result<[Project]?, Error>) -> Void)
+    {
         let results = self.fetch(of: group)
         let projects = results?.compactMap({ project in
             project.toDomain()
@@ -112,7 +114,8 @@ extension ProjectCoreDataRepository: ProjectRepository {
     
     func updateContent(
         of project: Project,
-        with modifiedProject: Project) {
+        with modifiedProject: Project)
+    {
         guard let identifier = project.identifier else {
             return
         }
@@ -129,7 +132,8 @@ extension ProjectCoreDataRepository: ProjectRepository {
     
     func updateStatus(
         of project: Project,
-        with status: Status) {
+        with status: Status)
+    {
         guard let identifier = project.identifier else {
             return
         }

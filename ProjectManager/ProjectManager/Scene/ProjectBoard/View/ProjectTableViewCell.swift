@@ -30,8 +30,12 @@ final class ProjectTableViewCell: UITableViewCell {
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
-        stackView.setCustomSpacing(Design.titleLabelBottomMargin, after: titleLabel)
-        stackView.setCustomSpacing(Design.descriptionLabelBottomMargin, after: descpritionLabel)
+        stackView.setCustomSpacing(
+            Design.titleLabelBottomMargin,
+            after: titleLabel)
+        stackView.setCustomSpacing(
+            Design.descriptionLabelBottomMargin,
+            after: descpritionLabel)
         return stackView
     }()
     
@@ -80,18 +84,20 @@ final class ProjectTableViewCell: UITableViewCell {
     
     // MARK: - Configure View
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(
+        _ previousTraitCollection: UITraitCollection?)
+    {
         super.traitCollectionDidChange(previousTraitCollection)
-
+        
         guard #available(iOS 13, *) else { return }
-
+        
         guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else { return }
         self.cellContainerView.layer.shadowColor = UIColor.shadowColor.cgColor
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.titleLabel.textColor = .label
+        self.titleLabel.textColor = Design.titleLabelTextColor
     }
     
     private func configureCellUI() {
@@ -102,7 +108,6 @@ final class ProjectTableViewCell: UITableViewCell {
     private func configureLayout() {
         self.contentView.addSubview(cellContainerView)
         self.cellContainerView.addSubview(stackView)
-    
         NSLayoutConstraint.activate([
             cellContainerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Design.cellMargin),
             cellContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -117,10 +122,12 @@ final class ProjectTableViewCell: UITableViewCell {
     
     // MARK: - API
     
-    func updateContent(title: String?,
-                       description: String?,
-                       deadline: String?,
-                       with DeadlineTextColor: UIColor) {
+    func updateContent(
+        title: String?,
+        description: String?,
+        deadline: String?,
+        with DeadlineTextColor: UIColor)
+    {
         self.titleLabel.text = title
         self.descpritionLabel.text = description
         self.deadlineLabel.textColor = DeadlineTextColor
@@ -130,7 +137,7 @@ final class ProjectTableViewCell: UITableViewCell {
     func setBackgroundColor(color: UIColor?) {
         self.cellContainerView.backgroundColor = color
     }
-   
+    
 }
 
 // MARK: - Design
@@ -164,5 +171,5 @@ private enum Design {
     static let titleLabelTextColor: UIColor = .label
     static let descriptionLabelTextColor: UIColor = .systemGray3
     static let deadlineLabelTextColor: UIColor = .black
-   
+    
 }

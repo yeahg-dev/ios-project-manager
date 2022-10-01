@@ -13,7 +13,7 @@ final class HistoryInMemoryRepository: HistoryRepository {
     
     var updateUI: (() -> Void) = { }
     var historyCount: Int {
-        return historys.count
+        historys.count
     }
     
     private var historys: [[String?: String?]] = []
@@ -23,14 +23,15 @@ final class HistoryInMemoryRepository: HistoryRepository {
     func fetchHistorys() { }
     
     func readHistory(of inedx: Int) -> [String?: String?]? {
-        return self.historys[inedx]
+        self.historys[inedx]
     }
     
     func createHistory(
         type: OperationType,
         of projectIdentifier: String?,
         title: String?,
-        status: Status?) {
+        status: Status?)
+    {
         let newHistory = OperationHistory(
             type: type,
             projectIdentifier: projectIdentifier,

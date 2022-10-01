@@ -26,11 +26,11 @@ protocol ProjectDetailDelegate: AnyObject{
 // MARK: - ProjectCreationDelegate
 
 protocol ProjectCreationDelegate: ProjectDetailDelegate {
-
+    
 }
 
 // MARK: - ProjectEditDelegate
 
 protocol ProjectEditDelegate: ProjectDetailDelegate {
-
+    
 }

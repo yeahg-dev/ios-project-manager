@@ -13,7 +13,7 @@ final class ProjectManager {
     
     weak var delegate: ProjectManagerDelegate?
     var historyRepository: HistoryRepository? {
-        return repository?.historyRepository
+        repository?.historyRepository
     }
     
     private let userNotificationHandler = UserNotificationHandler()
@@ -51,25 +51,30 @@ final class ProjectManager {
     
     func readProject(
         of identifier: String,
-        completion: @escaping (Result<Project?, Error>
-        ) -> Void) {
+        completion: @escaping (Result<Project?, Error>)
+        -> Void)
+    {
         self.repository?.read(of: identifier, completion: completion)
     }
     
     func readProject(
         of status: Status,
-        completion: @escaping (Result<[Project]?, Error>
-    ) -> Void)  {
+        completion: @escaping (Result<[Project]?, Error>)
+        -> Void)
+    {
         self.repository?.read(of: status, completion: completion)
     }
     
-    func updateProjectContent(of project: Project, with content: [String: Any]) {
+    func updateProjectContent(
+        of project: Project,
+        with content: [String: Any])
+    {
         var updatingProject = project
         updatingProject.updateContent(with: content)
         self.repository?.updateContent(of: project, with: updatingProject)
         if let _ = content[ProjectKey.deadline.rawValue],
            let hasUserNotification = content[ProjectKey.hasUserNotification.rawValue] as? Bool,
-            hasUserNotification == true {
+           hasUserNotification == true {
             self.modifyUserNotificationDate(of: updatingProject)
         }
     }
@@ -106,15 +111,20 @@ final class ProjectManager {
         }
         
         let content = userNotificationContent(project: project)
-        let dateComponent = Calendar.current.dateComponents(in: .current,
-                                                            from: deadline)
-
-        self.userNotificationHandler.requestNotification(of: content,
-                                                         when: dateComponent,
-                                                         identifier: identifier)
+        let dateComponent = Calendar.current.dateComponents(
+            in: .current,
+            from: deadline)
+        
+        self.userNotificationHandler.requestNotification(
+            of: content,
+            when: dateComponent,
+            identifier: identifier)
     }
     
-    private func userNotificationContent(project: Project) -> UserNotificationContent {
+    private func userNotificationContent(
+        project: Project)
+    -> UserNotificationContent
+    {
         let title = project.title ?? UserNotification.titlePlaceHodler.rawValue
         let body = UserNotification.body.rawValue
         return UserNotificationContent(title: title, body: body)
@@ -125,7 +135,7 @@ final class ProjectManager {
             of: project,
             with: [ProjectKey.hasUserNotification.rawValue: false])
         guard let identifier = project.identifier else {
-            return 
+            return
         }
         self.userNotificationHandler.removeNotification(of: identifier)
     }
@@ -134,5 +144,5 @@ final class ProjectManager {
         self.removeUserNotification(of: modifiedProject)
         self.registerUserNotification(of: modifiedProject)
     }
-
+    
 }
