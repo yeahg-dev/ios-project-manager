@@ -30,18 +30,29 @@ final class ProjectDetailViewController: UIViewController {
         return navigationBar
     }()
     
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(
+            arrangedSubviews: [titleTextField, datePicker,
+                               descriptionTextViewContainer])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .equalSpacing
+        return stackView
+    }()
+    
     private var titleTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.borderStyle = .roundedRect
-        textField.backgroundColor = .systemBackground
-        textField.font = .preferredFont(forTextStyle: .body, compatibleWith: nil)
-        textField.textColor = .label
+        textField.backgroundColor = Design.titleTextFieldColor
+        textField.font = Design.titleTextFieldFont
+        textField.textColor = Design.titleTextFieldTextColor
         textField.placeholder = "Title"
-        textField.layer.shadowColor = UIColor.shadowColor.cgColor
+        textField.layer.shadowColor = Design.titleTextFieldShadowColor
         textField.layer.shadowOffset = CGSize(width: 3, height: 3)
-        textField.layer.shadowOpacity = 0.3
-        textField.layer.shadowRadius = 3
+        textField.layer.shadowOpacity = Design.titleTextFieldShadowOpacity
+        textField.layer.shadowRadius = Design.titleTextFieldShadowRadius
         return textField
     }()
     
@@ -63,10 +74,10 @@ final class ProjectDetailViewController: UIViewController {
     
     private var descriptionTextViewContainer: UIView = {
         let view = UIView(frame: .zero)
-        view.layer.shadowColor = UIColor.shadowColor.cgColor
+        view.layer.shadowColor = Design.descriptionTextViewShadowColor
         view.layer.shadowOffset = CGSize(width: 3, height: 3)
-        view.layer.shadowOpacity = 0.3
-        view.layer.shadowRadius = 3
+        view.layer.shadowOpacity = Design.descriptionTextViewShadowOpacity
+        view.layer.shadowRadius = Design.descriptionTextViewShadowRadius
         view.layer.masksToBounds = false
         return view
     }()
@@ -74,9 +85,9 @@ final class ProjectDetailViewController: UIViewController {
     private var descriptionTextView: UITextView = {
         let textView = UITextView(frame: .zero)
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = ColorPallete.backgroundColor
-        textView.font = .preferredFont(forTextStyle: .body)
-        textView.textColor = .label
+        textView.backgroundColor = Design.descriptionTextViewColor
+        textView.font = Design.descriptionTextViewFont
+        textView.textColor = Design.descriptionTextViewTextColor
         textView.textContainerInset = UIEdgeInsets(
             top: 8,
             left: 8,
@@ -85,17 +96,6 @@ final class ProjectDetailViewController: UIViewController {
         textView.layer.masksToBounds = true
         textView.autocorrectionType = .no
         return textView
-    }()
-    
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(
-            arrangedSubviews: [titleTextField, datePicker,
-                               descriptionTextViewContainer])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .equalSpacing
-        return stackView
     }()
     
     var projectContent: [String: Any]{
@@ -130,9 +130,10 @@ final class ProjectDetailViewController: UIViewController {
     
     // MARK: - Initializer
     
-    init(mode: Mode,
-         project: Project?,
-         projectDetailDelegate: ProjectDetailDelegate?) {
+    init(
+        mode: Mode,
+        project: Project?,
+        projectDetailDelegate: ProjectDetailDelegate?) {
         self.mode = mode
         self.project = project
         self.projectDetailDelegate = projectDetailDelegate
@@ -179,39 +180,44 @@ final class ProjectDetailViewController: UIViewController {
     private func configureNavigationBarLayout() {
         self.view.addSubview(navigationBar)
         NSLayoutConstraint.activate([
-            navigationBar.topAnchor.constraint(equalTo: self.view.topAnchor),
-            navigationBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            navigationBar.topAnchor.constraint(
+                equalTo: self.view.topAnchor),
+            navigationBar.leadingAnchor.constraint(
+                equalTo: self.view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(
+                equalTo: self.view.trailingAnchor)
         ])
     }
     
     private func configureStackViewLayout() {
         self.descriptionTextViewContainer.addSubview(descriptionTextView)
         self.view.addSubview(stackView)
-        
         NSLayoutConstraint.activate([
-            titleTextField.heightAnchor.constraint(equalToConstant: 45),
+            titleTextField.heightAnchor.constraint(equalToConstant: Design.titleTextFieldHeight),
             descriptionTextView.topAnchor.constraint(
                 equalTo: descriptionTextViewContainer.topAnchor),
-            descriptionTextView.bottomAnchor.constraint(equalTo: descriptionTextViewContainer.bottomAnchor),
-            descriptionTextView.leadingAnchor.constraint(equalTo: descriptionTextViewContainer.leadingAnchor),
-            descriptionTextView.trailingAnchor.constraint(equalTo: descriptionTextViewContainer.trailingAnchor),
+            descriptionTextView.bottomAnchor.constraint(
+                equalTo: descriptionTextViewContainer.bottomAnchor),
+            descriptionTextView.leadingAnchor.constraint(
+                equalTo: descriptionTextViewContainer.leadingAnchor),
+            descriptionTextView.trailingAnchor.constraint(
+                equalTo: descriptionTextViewContainer.trailingAnchor),
             descriptionTextViewContainer.topAnchor.constraint(
                 equalTo: datePicker.bottomAnchor),
             descriptionTextViewContainer.bottomAnchor.constraint(
                 equalTo: stackView.bottomAnchor),
             stackView.topAnchor.constraint(
                 equalTo: navigationBar.bottomAnchor,
-                constant: 15),
+                constant: Design.topPadding),
             stackView.bottomAnchor.constraint(
                 equalTo: self.view.bottomAnchor,
-                constant: -15),
+                constant: -Design.bottomPadding),
             stackView.leadingAnchor.constraint(
                 equalTo: self.view.leadingAnchor,
-                constant: 15),
+                constant: Design.leadingPadding),
             stackView.trailingAnchor.constraint(
                 equalTo: self.view.trailingAnchor,
-                constant: -15)
+                constant: -Design.trailingPadding)
         ])
     }
     
@@ -227,12 +233,12 @@ final class ProjectDetailViewController: UIViewController {
             barButtonSystemItem: rightBarButtonItem,
             target: self,
             action: #selector(didTappedRightBarButton))
-        rightBarButton.tintColor = ColorPallete.buttonColor
+        rightBarButton.tintColor = Design.leftBarButtonTintColor
         let leftBarButton = UIBarButtonItem(
             barButtonSystemItem: leftBarButtonItem,
             target: self,
             action: #selector(didTappedLefttBarButton))
-        leftBarButton.tintColor = ColorPallete.buttonColor
+        leftBarButton.tintColor = Design.rightBarButtonTintColor
         navigationItem.rightBarButtonItem = rightBarButton
         navigationItem.leftBarButtonItem = leftBarButton
         navigationItem.title = title
@@ -263,8 +269,8 @@ final class ProjectDetailViewController: UIViewController {
         guard #available(iOS 13, *) else { return }
 
         guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else { return }
-        titleTextField.layer.shadowColor = UIColor.shadowColor.cgColor
-        descriptionTextView.layer.shadowColor = UIColor.shadowColor.cgColor
+            titleTextField.layer.shadowColor = Design.titleTextFieldShadowColor
+            descriptionTextView.layer.shadowColor = Design.descriptionTextViewShadowColor
     }
     
     // MARK: - Configure Mode
@@ -384,4 +390,37 @@ extension ProjectDetailViewController: UITextFieldDelegate {
         self.titleTextField.resignFirstResponder()
         return true
     }
+}
+
+// MARK: - Design
+
+private enum Design {
+    
+    // size
+    static let titleTextFieldHeight: CGFloat = 45
+    static let topPadding: CGFloat = 15
+    static let bottomPadding: CGFloat = 15
+    static let leadingPadding: CGFloat = 15
+    static let trailingPadding: CGFloat = 15
+    
+    // color
+    static let titleTextFieldColor: UIColor = .systemBackground
+    static let titleTextFieldTextColor: UIColor = .label
+    static let descriptionTextViewColor = ColorPallete.backgroundColor
+    static let descriptionTextViewTextColor: UIColor = .label
+    static let rightBarButtonTintColor = ColorPallete.buttonColor
+    static let leftBarButtonTintColor = ColorPallete.buttonColor
+     
+    // font
+    static let titleTextFieldFont: UIFont = .preferredFont(forTextStyle: .body, compatibleWith: nil)
+    static let descriptionTextViewFont: UIFont = .preferredFont(forTextStyle: .body)
+    
+    // shadow
+    static let titleTextFieldShadowColor = UIColor.shadowColor.cgColor
+    static let titleTextFieldShadowOpacity: Float = 0.3
+    static let titleTextFieldShadowRadius: CGFloat = 3
+    static let descriptionTextViewShadowColor = UIColor.shadowColor.cgColor
+    static let descriptionTextViewShadowOpacity: Float = 0.3
+    static let descriptionTextViewShadowRadius: CGFloat = 3
+
 }

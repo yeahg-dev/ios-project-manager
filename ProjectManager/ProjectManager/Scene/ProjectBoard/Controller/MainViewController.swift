@@ -28,11 +28,11 @@ final class MainViewController: UIViewController {
             arrangedSubviews: [todoViewController.view,doingViewController.view,
                                doneViewController.view])
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .systemBackground
+        stackView.backgroundColor = Design.projectListStackViewBackgroundColor
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.alignment = .fill
-        stackView.spacing = 7
+        stackView.spacing = Design.projectListStackViewSpacing
         return stackView
     }()
     
@@ -75,8 +75,7 @@ final class MainViewController: UIViewController {
     // MARK: - Configure View
     
     private func configureView() {
-        self.view.translatesAutoresizingMaskIntoConstraints = false
-        self.view.backgroundColor = .systemGray6
+        self.view.backgroundColor = Design.backgroundColor
     }
 
     private func configureLayout() {
@@ -89,9 +88,14 @@ final class MainViewController: UIViewController {
     private func configureNavigationBarLayout() {
         self.view.addSubview(navigationBar)
         let safeArea = self.view.safeAreaLayoutGuide
-        navigationBar.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
-        navigationBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor).isActive = true
-        navigationBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            navigationBar.topAnchor.constraint(
+                equalTo: safeArea.topAnchor),
+            navigationBar.leadingAnchor.constraint(
+                equalTo: safeArea.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor)
+        ])
     }
     
     private func configureProjectListStackViewLayout() {
@@ -99,10 +103,15 @@ final class MainViewController: UIViewController {
         let safeArea = self.view.safeAreaLayoutGuide
         let tabHeight = self.view.bounds.height * 0.05
         NSLayoutConstraint.activate([
-            projectListStackView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
-            projectListStackView.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
-            projectListStackView.rightAnchor.constraint(equalTo: safeArea.rightAnchor),
-            projectListStackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -tabHeight)
+            projectListStackView.topAnchor.constraint(
+                equalTo: navigationBar.bottomAnchor),
+            projectListStackView.leftAnchor.constraint(
+                equalTo: safeArea.leftAnchor),
+            projectListStackView.rightAnchor.constraint(
+                equalTo: safeArea.rightAnchor),
+            projectListStackView.bottomAnchor.constraint(
+                equalTo: safeArea.bottomAnchor,
+                constant: -tabHeight)
         ])
     }
     
@@ -110,10 +119,14 @@ final class MainViewController: UIViewController {
         self.view.addSubview(bottomBar)
         let safeArea = self.view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            self.bottomBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            self.bottomBar.topAnchor.constraint(equalTo: projectListStackView.bottomAnchor),
-            self.bottomBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            self.bottomBar.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+            self.bottomBar.leadingAnchor.constraint(
+                equalTo: safeArea.leadingAnchor),
+            self.bottomBar.topAnchor.constraint(
+                equalTo: projectListStackView.bottomAnchor),
+            self.bottomBar.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor),
+            self.bottomBar.bottomAnchor.constraint(
+                equalTo: safeArea.bottomAnchor)
         ])
     }
     
@@ -121,24 +134,30 @@ final class MainViewController: UIViewController {
         self.bottomBar.addSubview(repositorySettingButton)
         let safeArea = self.view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            self.repositorySettingButton.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
-            self.repositorySettingButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10)
+            self.repositorySettingButton.centerYAnchor.constraint(
+                equalTo: bottomBar.centerYAnchor),
+            self.repositorySettingButton.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor,
+                constant: -Design.repositorySettingButtonTrailingMargin)
         ])
     }
     
     private func configureNavigationItem() {
-        let navigationItem = UINavigationItem(title: ProjectBoardScene.mainTitle.rawValue)
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add,
-                                        target: self,
-                                        action: #selector(presentProjectCreatorViewController))
-        addButton.tintColor = ColorPallete.buttonColor
+        let navigationItem = UINavigationItem(
+            title: ProjectBoardScene.mainTitle.rawValue)
+        let addButton = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(presentProjectCreatorViewController))
+        addButton.tintColor = Design.addButtonTintColor
         navigationItem.rightBarButtonItem = addButton
         
-        let historyButton = UIBarButtonItem(title: ProjectBoardScene.historyTitle.rawValue,
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(presentProjectHistoryViewController))
-        historyButton.tintColor = ColorPallete.buttonColor
+        let historyButton = UIBarButtonItem(
+            title: ProjectBoardScene.historyTitle.rawValue,
+            style: .plain,
+            target: self,
+            action: #selector(presentProjectHistoryViewController))
+        historyButton.tintColor = Design.historyButtonTintColor
         navigationItem.leftBarButtonItem = historyButton
         
         navigationBar.items = [navigationItem]
@@ -151,7 +170,6 @@ final class MainViewController: UIViewController {
         self.todoViewController.delegate = self
         self.doingViewController.delegate = self
         self.doneViewController.delegate = self
-        
         self.projectManager.delegate = self
         self.navigationBar.delegate = self
     }
@@ -159,7 +177,8 @@ final class MainViewController: UIViewController {
     // MARK: - Method
     
     private func presentRepositoryConfigView() {
-        let repositoryConfigAlertVC = RepositotyConfigViewController(projectManager: self.projectManager)
+        let repositoryConfigAlertVC = RepositotyConfigViewController(
+            projectManager: self.projectManager)
         repositoryConfigAlertVC.modalPresentationStyle = .popover
         
         if let popoverPresentationController = repositoryConfigAlertVC.popoverPresentationController {
@@ -174,7 +193,9 @@ final class MainViewController: UIViewController {
             return
         }
         let currentImage = self.repositorySettingButton.image(for: .normal)
-        let newImage = currentImage?.withTintColor(color, renderingMode: .alwaysOriginal)
+        let newImage = currentImage?.withTintColor(
+            color,
+            renderingMode: .alwaysOriginal)
 
         self.repositorySettingButton.setImage(newImage, for: .normal)
     }
@@ -189,9 +210,10 @@ final class MainViewController: UIViewController {
     // MARK: - @objc Method
     
     @objc func presentProjectCreatorViewController() {
-        let creatorViewController = ProjectDetailViewController(mode: .creation,
-                                                          project: nil,
-                                                          projectDetailDelegate: self)
+        let creatorViewController = ProjectDetailViewController(
+            mode: .creation,
+            project: nil,
+            projectDetailDelegate: self)
         creatorViewController.modalPresentationStyle = .formSheet
         present(creatorViewController, animated: false, completion: nil)
     }
@@ -238,7 +260,9 @@ extension MainViewController: ProjectCreationDelegate {
         return .cancel
     }
     
-    func didTappedrightBarButtonItem(of project: Project?, projectContent: [String : Any]) {
+    func didTappedrightBarButtonItem(
+        of project: Project?,
+        projectContent: [String : Any]) {
         self.projectManager.create(with: projectContent)
         self.todoViewController.updateView()
     }
@@ -249,7 +273,10 @@ extension MainViewController: ProjectCreationDelegate {
 
 extension MainViewController: ProjectListViewControllerDelegate {
     
-    func readProject(of status: Status, completion: @escaping (Result<[Project]?, Error>) -> Void) {
+    func readProject(
+        of status: Status,
+        completion: @escaping (Result<[Project]?, Error>
+        ) -> Void) {
         self.projectManager.readProject(of: status, completion: completion)
     }
     
@@ -286,14 +313,38 @@ extension MainViewController: ProjectManagerDelegate {
     func projectManager(didChangedRepositoryWith repository: Repository) {
         switch repository {
         case .inMemory:
-            self.updateRepositorySettingButton(with: ColorPallete.inMemoryButtonColor)
+            self.updateRepositorySettingButton(
+                with: Design.inMemoryButtonColor)
         case .coreData:
-            self.updateRepositorySettingButton(with: ColorPallete.coreDataButtonColor)
+            self.updateRepositorySettingButton(
+                with: Design.coreDataButtonColor)
         case .firestore:
-            self.updateRepositorySettingButton(with: ColorPallete.firestoreButtonColor)
+            self.updateRepositorySettingButton(
+                with: Design.firestoreButtonColor)
         }
         
         self.updateProjectListViews()
     }
+    
+}
+
+// MARK: - Design
+
+private enum Design {
+    
+    // spacing
+    static let projectListStackViewSpacing: CGFloat = 7
+    
+    // margin
+    static let repositorySettingButtonTrailingMargin: CGFloat = 10
+    
+    // color
+    static let backgroundColor: UIColor = .systemGray6
+    static let projectListStackViewBackgroundColor: UIColor = .systemBackground
+    static let addButtonTintColor: UIColor? = ColorPallete.buttonColor
+    static let historyButtonTintColor: UIColor? = ColorPallete.buttonColor
+    static let inMemoryButtonColor = ColorPallete.inMemoryButtonColor
+    static let coreDataButtonColor = ColorPallete.coreDataButtonColor
+    static let firestoreButtonColor = ColorPallete.firestoreButtonColor
     
 }

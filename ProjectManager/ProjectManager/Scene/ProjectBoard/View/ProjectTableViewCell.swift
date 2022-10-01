@@ -11,36 +11,16 @@ final class ProjectTableViewCell: UITableViewCell {
     
     // MARK: - UI Property
     
-    private var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .headline)
-        label.textColor = .label
-        label.textAlignment = .left
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
-        return label
-    }()
-    
-    private var descpritionLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .body)
-        label.textColor = .systemGray2
-        label.textAlignment = .left
-        label.numberOfLines = 3
-        label.lineBreakMode = .byWordWrapping
-        label.lineBreakMode = .byTruncatingTail
-        return label
-    }()
-    
-    private var deadlineLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .caption1)
-        label.textColor = .black
-        label.textAlignment = .left
-        return label
+    var cellContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Design.cellBackgroundColor
+        view.layer.shadowColor = Design.cellShadowColor
+        view.layer.shadowOpacity = Design.cellShadowOpacity
+        view.layer.shadowOffset = Design.cellShadowOffset
+        view.layer.shadowRadius = Design.cellShadowRadius
+        view.layer.cornerRadius = Design.cellCornerRadius
+        return view
     }()
     
     private lazy var stackView: UIStackView = {
@@ -50,21 +30,40 @@ final class ProjectTableViewCell: UITableViewCell {
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
-        stackView.setCustomSpacing(3, after: titleLabel)
-        stackView.setCustomSpacing(7, after: descpritionLabel)
+        stackView.setCustomSpacing(Design.titleLabelBottomMargin, after: titleLabel)
+        stackView.setCustomSpacing(Design.descriptionLabelBottomMargin, after: descpritionLabel)
         return stackView
     }()
     
-    var cellContainerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(named: "projectCellColor")
-        view.layer.shadowColor = UIColor.shadowColor.cgColor
-        view.layer.shadowOpacity = 1
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowRadius = 0.5
-        view.layer.cornerRadius = 7
-        return view
+    private var titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Design.titleLabelFont
+        label.textColor = Design.titleLabelTextColor
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.lineBreakMode = .byTruncatingTail
+        return label
+    }()
+    
+    private var descpritionLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Design.descriptionLabelFont
+        label.textColor = Design.descriptionLabelTextColor
+        label.textAlignment = .left
+        label.numberOfLines = 3
+        label.lineBreakMode = .byTruncatingTail
+        return label
+    }()
+    
+    private var deadlineLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Design.deadlineLabelFont
+        label.textColor = Design.deadlineLabelTextColor
+        label.textAlignment = .left
+        return label
     }()
     
     // MARK: - Intiailizerr
@@ -105,18 +104,14 @@ final class ProjectTableViewCell: UITableViewCell {
         self.cellContainerView.addSubview(stackView)
     
         NSLayoutConstraint.activate([
-            cellContainerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            cellContainerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Design.cellMargin),
             cellContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             cellContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            cellContainerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
-        ])
-        
-        let margin = CGFloat(15)
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: cellContainerView.topAnchor, constant: margin),
-            stackView.bottomAnchor.constraint(equalTo: cellContainerView.bottomAnchor, constant: -margin),
-            stackView.leadingAnchor.constraint(equalTo: cellContainerView.leadingAnchor, constant: margin),
-            stackView.trailingAnchor.constraint(equalTo: cellContainerView.trailingAnchor, constant: -margin)
+            cellContainerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Design.cellMargin),
+            stackView.topAnchor.constraint(equalTo: cellContainerView.topAnchor, constant: Design.cellPadding),
+            stackView.bottomAnchor.constraint(equalTo: cellContainerView.bottomAnchor, constant: -Design.cellPadding),
+            stackView.leadingAnchor.constraint(equalTo: cellContainerView.leadingAnchor, constant: Design.cellPadding),
+            stackView.trailingAnchor.constraint(equalTo: cellContainerView.trailingAnchor, constant: -Design.cellPadding)
         ])
     }
     
@@ -135,5 +130,39 @@ final class ProjectTableViewCell: UITableViewCell {
     func setBackgroundColor(color: UIColor?) {
         self.cellContainerView.backgroundColor = color
     }
+   
+}
+
+// MARK: - Design
+
+private enum Design {
+    
+    // background color
+    static let cellBackgroundColor: UIColor? = ColorPallete.projectCellColor
+    
+    // radius
+    static let cellCornerRadius: CGFloat = 7
+    
+    // shadow
+    static let cellShadowColor: CGColor = UIColor.shadowColor.cgColor
+    static let cellShadowOpacity: Float = 1
+    static let cellShadowOffset: CGSize = CGSize(width: 0, height: 1)
+    static let cellShadowRadius: CGFloat = 0.5
+    
+    // margin, padding
+    static let cellMargin: CGFloat = 5
+    static let cellPadding: CGFloat = 15
+    static let titleLabelBottomMargin: CGFloat = 3
+    static let descriptionLabelBottomMargin: CGFloat = 7
+    
+    // font
+    static let titleLabelFont: UIFont = .preferredFont(forTextStyle: .headline)
+    static let descriptionLabelFont: UIFont = .preferredFont(forTextStyle: .body)
+    static let deadlineLabelFont: UIFont = .preferredFont(forTextStyle: .caption1)
+    
+    // text color
+    static let titleLabelTextColor: UIColor = .label
+    static let descriptionLabelTextColor: UIColor = .systemGray3
+    static let deadlineLabelTextColor: UIColor = .black
    
 }

@@ -15,12 +15,22 @@ final class RepositotyConfigViewController: UIViewController {
     weak var projectManager: ProjectManager?
     let repositoryTypes: [Repository] = [.inMemory, .coreData, .firestore]
     
-    // MARK: - UIProperty
+    // MARK: - UI Property
+    
+    private lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView(
+            arrangedSubviews: [titleLabel, repositorySegmentedControl])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        return stackView
+    }()
     
     private var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .callout)
+        label.font = Design.titleLabelFont
         label.text = RepositoryConfigScene.title.rawValue
         return label
     }()
@@ -31,9 +41,9 @@ final class RepositotyConfigViewController: UIViewController {
         }
         let segmentedControl = UISegmentedControl(items: dataSourceTypeDescriptions)
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        segmentedControl.selectedSegmentTintColor = ColorPallete.buttonColor
+        segmentedControl.selectedSegmentTintColor = Design.selectedSegmentTintColor
         segmentedControl.setTitleTextAttributes(
-            [.foregroundColor: UIColor.white],
+            [.foregroundColor: Design.segmentedControlTitleColor],
             for: .selected
         )
         let action = UIAction { UIAction in
@@ -41,16 +51,6 @@ final class RepositotyConfigViewController: UIViewController {
         }
         segmentedControl.addAction(action, for: .valueChanged)
         return segmentedControl
-    }()
-    
-    private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(
-            arrangedSubviews: [titleLabel, repositorySegmentedControl])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        return stackView
     }()
     
     // MARK: - Initializer
@@ -77,8 +77,8 @@ final class RepositotyConfigViewController: UIViewController {
     
     private func configureView() {
         self.view.translatesAutoresizingMaskIntoConstraints = false
-        self.view.backgroundColor = .systemBackground
-        self.preferredContentSize = CGSize(width: 300, height: 150)
+        self.view.backgroundColor = Design.backgroundColor
+        self.preferredContentSize = CGSize(width: Design.width, height: Design.height)
     }
     
     private func configureLayout() {
@@ -86,14 +86,14 @@ final class RepositotyConfigViewController: UIViewController {
         NSLayoutConstraint.activate([
             contentStackView.topAnchor.constraint(
                 equalTo: self.view.topAnchor,
-                constant: 30),
+                constant: Design.topPadding),
             contentStackView.leadingAnchor.constraint(
                 equalTo: self.view.leadingAnchor),
             contentStackView.trailingAnchor.constraint(
                 equalTo: self.view.trailingAnchor),
             contentStackView.bottomAnchor.constraint(
                 equalTo: self.view.bottomAnchor,
-                constant: -30)
+                constant: -Design.bottomPadding)
         ])
     }
 
@@ -110,4 +110,26 @@ final class RepositotyConfigViewController: UIViewController {
         let selectedIndex = self.repositorySegmentedControl.selectedSegmentIndex
         self.projectManager?.switchProjectRepository(with: repositoryTypes[selectedIndex])
     }
+}
+
+// MARK: - Design
+
+private enum Design {
+    
+    // padding
+    static let topPadding: CGFloat = 30
+    static let bottomPadding: CGFloat = 30
+    
+    // size
+    static let width: CGFloat = 300
+    static let height: CGFloat = 150
+    
+    // font
+    static let titleLabelFont: UIFont = .preferredFont(forTextStyle: .callout)
+    
+    // color
+    static let backgroundColor: UIColor = .systemBackground
+    static let selectedSegmentTintColor = ColorPallete.buttonColor
+    static let segmentedControlTitleColor: UIColor = .white
+    
 }

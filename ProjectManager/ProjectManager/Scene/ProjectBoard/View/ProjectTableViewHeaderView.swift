@@ -14,7 +14,7 @@ final class ProjectTableViewHeaderView: UIView {
     private let statusLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .title1)
+        label.font = Design.statusLabelFont
         label.textAlignment = .left
         return label
     }()
@@ -22,10 +22,10 @@ final class ProjectTableViewHeaderView: UIView {
     private let projectCountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .callout)
-        label.textColor = .white
+        label.font = Design.projectCountLabelFont
+        label.textColor = Design.projectCountLabelTextColor
         label.textAlignment = .center
-        label.layer.cornerRadius = 9
+        label.layer.cornerRadius = Design.projectCountLabelCornerRadius
         label.layer.cornerCurve = .circular
         label.layer.masksToBounds = true
         return label
@@ -35,10 +35,10 @@ final class ProjectTableViewHeaderView: UIView {
         let seperator = CALayer()
         seperator.frame = CGRect(
             x: 0,
-            y: self.bounds.height - 0.5,
+            y: self.bounds.height - Design.seperatorLeadingMargin,
             width: self.bounds.width,
-            height: 3)
-        seperator.backgroundColor = ColorPallete.tableViewSeperatorColor?.cgColor
+            height: Design.separatorHeight)
+        seperator.backgroundColor = Design.seperatorColor
         return seperator
     }()
     
@@ -47,18 +47,13 @@ final class ProjectTableViewHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.configureLayout()
+        self.layer.addSublayer(self.seperator)
     }
   
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.layer.addSublayer(self.seperator)
-    }
-    
+
     // MARK: - Configure Layout
     
     private func configureLayout() {
@@ -87,4 +82,25 @@ final class ProjectTableViewHeaderView: UIView {
         self.projectCountLabel.text = String(projectCount)
     }
     
+}
+
+// MARK: - Design
+
+private enum Design {
+    
+    // padding
+    static let seperatorLeadingMargin: CGFloat = 0.5
+    
+    // size
+    static let separatorHeight: CGFloat = 3
+    // font
+    static let statusLabelFont: UIFont = .preferredFont(forTextStyle: .title1)
+    static let projectCountLabelFont: UIFont = .preferredFont(forTextStyle: .callout)
+    
+    // color
+    static let projectCountLabelTextColor: UIColor = .white
+    static let seperatorColor: CGColor? = ColorPallete.tableViewSeperatorColor?.cgColor
+    
+    // corner radius
+    static let projectCountLabelCornerRadius: CGFloat = 9
 }

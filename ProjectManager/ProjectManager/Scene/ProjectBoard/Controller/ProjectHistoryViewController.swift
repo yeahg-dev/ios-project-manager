@@ -31,25 +31,35 @@ final class ProjectHistoryViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.preferredContentSize.height = self.historyTableView.contentSize.height + CGFloat(14)
+        self.preferredContentSize.height = self.historyTableView.contentSize.height + Design.topPadding + Design.bottomPadding
     }
     
     private func configureViewLayout() {
         self.view.addSubview(historyTableView)
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            historyTableView.topAnchor.constraint(equalTo: safeArea.topAnchor, constant: 7),
-            historyTableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 7),
-            historyTableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -7),
-            historyTableView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -7)
+            historyTableView.topAnchor.constraint(
+                equalTo: safeArea.topAnchor,
+                constant: Design.topPadding),
+            historyTableView.leadingAnchor.constraint(
+                equalTo: safeArea.leadingAnchor,
+                constant: Design.leadingPadding),
+            historyTableView.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor,
+                constant: -Design.trailingPadding),
+            historyTableView.bottomAnchor.constraint(
+                equalTo: safeArea.bottomAnchor,
+                constant: -Design.bottomPadding)
         ])
     }
     
     private func configureHistoryTableView(){
-        let historyTableViewCellNib = UINib(nibName: "HistoryTableViewCell",
-                                            bundle: nil)
-        self.historyTableView.register(historyTableViewCellNib,
-                                       forCellReuseIdentifier: "HistoryTableViewCell")
+        let historyTableViewCellNib = UINib(
+            nibName: "HistoryTableViewCell",
+            bundle: nil)
+        self.historyTableView.register(
+            historyTableViewCellNib,
+            forCellReuseIdentifier: "HistoryTableViewCell")
         self.historyRepository?.updateUI = { [weak self] in
             self?.historyTableView.reloadData()
         }
@@ -87,4 +97,16 @@ extension ProjectHistoryViewController: UITableViewDataSource {
         return historyTableViewCell
     }
 
+}
+
+// MARK: - Design
+
+private enum Design {
+    
+    // padding
+    static let topPadding: CGFloat = 7
+    static let leadingPadding: CGFloat = 7
+    static let trailingPadding: CGFloat = 7
+    static let bottomPadding: CGFloat = 7
+    
 }

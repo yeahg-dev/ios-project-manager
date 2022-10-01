@@ -53,13 +53,13 @@ final class ProjectListViewController: UIViewController {
     // MARK: - Configure View
     
     private func configureView() {
-        self.view.backgroundColor = ColorPallete.backgroundColor
+        self.view.backgroundColor = Design.backgroundColor
         self.view.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func configureTableView() {
         projectTableView.delegate = self
-        projectTableView.backgroundColor = ColorPallete.backgroundColor
+        projectTableView.backgroundColor = Design.backgroundColor
         projectTableView.register(cellWithClass: ProjectTableViewCell.self)
         projectTableView.translatesAutoresizingMaskIntoConstraints = false
         projectTableView.separatorStyle = .none
@@ -72,17 +72,22 @@ final class ProjectListViewController: UIViewController {
         let safeArea = self.view.safeAreaLayoutGuide
         
         NSLayoutConstraint.activate([
-            headerView.heightAnchor.constraint(equalToConstant: 60),
-            headerView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            headerView.bottomAnchor.constraint(equalTo: projectTableView.topAnchor)])
-        
-        NSLayoutConstraint.activate([
-            projectTableView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-            projectTableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            projectTableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
-        ])
+            headerView.heightAnchor.constraint(
+                equalToConstant: Design.headerViewHeight),
+            headerView.topAnchor.constraint(
+                equalTo: safeArea.topAnchor),
+            headerView.leadingAnchor.constraint(
+                equalTo: safeArea.leadingAnchor),
+            headerView.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor),
+            headerView.bottomAnchor.constraint(
+                equalTo: projectTableView.topAnchor),
+            projectTableView.bottomAnchor.constraint(
+                equalTo: safeArea.bottomAnchor),
+            projectTableView.leadingAnchor.constraint(
+                equalTo: safeArea.leadingAnchor),
+            projectTableView.trailingAnchor.constraint(
+                equalTo: safeArea.trailingAnchor)])
     }
     
     // MARK: - Configure Controller
@@ -90,7 +95,6 @@ final class ProjectListViewController: UIViewController {
     private func setupLongGestureRecognizerOnTableView() {
         self.longPressGestureRecognizer.minimumPressDuration = 0.5
         self.longPressGestureRecognizer.delaysTouchesBegan = true
-        
         self.projectTableView.addGestureRecognizer(longPressGestureRecognizer)
         self.longPressGestureRecognizer.addTarget(
             self,
@@ -111,10 +115,11 @@ final class ProjectListViewController: UIViewController {
             )
             let backgroundColor = self.projectStatus.cellBackgroundColor
             projectCell.setBackgroundColor(color: backgroundColor)
-            projectCell.updateContent(title: project.title,
-                                      description: project.description,
-                                      deadline: project.deadline?.localeString(),
-                                      with: project.deadlineColor)
+            projectCell.updateContent(
+                title: project.title,
+                description: project.description,
+                deadline: project.deadline?.localeString(),
+                with: project.deadlineColor)
             return projectCell
         }
     }
@@ -133,9 +138,10 @@ final class ProjectListViewController: UIViewController {
                     snapShot.appendSections([.main])
                     snapShot.appendItems(projects ?? [], toSection: .main)
                     
-                    self?.dataSource.apply(snapShot,
-                                           animatingDifferences: true,
-                                           completion: nil)
+                    self?.dataSource.apply(
+                        snapShot,
+                        animatingDifferences: true,
+                        completion: nil)
                 }
             case .failure(_):
                 self?.presentErrorAlert()
@@ -260,8 +266,9 @@ final class ProjectListViewController: UIViewController {
         let action = UIAlertAction(
             title: title,
             style: .default) { [weak viewController] _ in
-                viewController?.delegate?.updateProjectStatus(of: currentProject,
-                                                              with: targetStatus)
+                viewController?.delegate?.updateProjectStatus(
+                    of: currentProject,
+                    with: targetStatus)
                 viewController?.updateView()
             }
         return action
@@ -293,7 +300,7 @@ extension ProjectListViewController: UITableViewDelegate {
         didHighlightRowAt indexPath: IndexPath) {
         if let cell = projectTableView.cellForRow(
             at: indexPath) as? ProjectTableViewCell{
-            cell.cellContainerView.backgroundColor = ColorPallete.higlightedCellColor
+            cell.cellContainerView.backgroundColor = Design.highlightedCellBackgroundColor
         }
     }
     
@@ -326,8 +333,9 @@ extension ProjectListViewController: UITableViewDelegate {
         return actionConfigurations
     }
     
-    func tableView(_ tableView: UITableView,
-                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    func tableView(
+        _ tableView: UITableView,
+        leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
         let project = self.dataSource.itemIdentifier(for: indexPath)
         let cellRect = self.projectTableView.rectForRow(at: indexPath)
@@ -427,5 +435,18 @@ extension ProjectListViewController: ProjectEditDelegate {
             
         self.delegate?.updateProject(of: project, with: projectContent)
     }
+    
+}
+
+// MARK: - Design
+
+private enum Design {
+    
+    // color
+    static let backgroundColor = ColorPallete.backgroundColor
+    static let highlightedCellBackgroundColor = ColorPallete.higlightedCellColor
+    
+    // size
+    static let headerViewHeight: CGFloat = 60
     
 }
