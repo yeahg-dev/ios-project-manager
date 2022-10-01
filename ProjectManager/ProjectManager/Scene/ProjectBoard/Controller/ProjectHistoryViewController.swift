@@ -25,17 +25,17 @@ final class ProjectHistoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configureViewLayout()
-        self.configureHistoryTableView()
+        configureViewLayout()
+        configureHistoryTableView()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.preferredContentSize.height = self.historyTableView.contentSize.height + Design.topPadding + Design.bottomPadding
+        preferredContentSize.height = historyTableView.contentSize.height + Design.topPadding + Design.bottomPadding
     }
     
     private func configureViewLayout() {
-        self.view.addSubview(historyTableView)
+        view.addSubview(historyTableView)
         let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             historyTableView.topAnchor.constraint(
@@ -57,14 +57,14 @@ final class ProjectHistoryViewController: UIViewController {
         let historyTableViewCellNib = UINib(
             nibName: "HistoryTableViewCell",
             bundle: nil)
-        self.historyTableView.register(
+        historyTableView.register(
             historyTableViewCellNib,
             forCellReuseIdentifier: "HistoryTableViewCell")
-        self.historyRepository?.updateUI = { [weak self] in
+        historyRepository?.updateUI = { [weak self] in
             self?.historyTableView.reloadData()
         }
-        self.historyRepository?.fetchHistorys()
-        self.historyTableView.dataSource = self
+        historyRepository?.fetchHistorys()
+        historyTableView.dataSource = self
     }
     
 }
@@ -78,7 +78,7 @@ extension ProjectHistoryViewController: UITableViewDataSource {
         numberOfRowsInSection section: Int)
     -> Int
     {
-        return self.historyRepository?.historyCount ?? .zero
+        historyRepository?.historyCount ?? .zero
     }
     
     func tableView(
@@ -91,12 +91,12 @@ extension ProjectHistoryViewController: UITableViewDataSource {
             for: indexPath) as? HistoryTableViewCell else {
             return UITableViewCell(style: .subtitle, reuseIdentifier: nil) }
         
-        let history = self.historyRepository?.readHistory(of: indexPath.row)
+        let history = historyRepository?.readHistory(of: indexPath.row)
         let description = history?["description"] ?? ""
         let date = history?["date"] ?? ""
         historyTableViewCell.configureContentWith(description: description, date: date)
         
-        self.view.setNeedsLayout()
+        view.setNeedsLayout()
         
         return historyTableViewCell
     }

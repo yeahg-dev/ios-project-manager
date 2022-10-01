@@ -25,10 +25,10 @@ extension Date {
     }()
     
     func localeString() -> String {
-        return Date.localeDateFormatter.string(from: self)
+        Date.localeDateFormatter.string(from: self)
     }
     
     var formattedTimeString: String {
-        return Date.timeFormatter.string(from: self)
+        Date.timeFormatter.string(from: self)
     }
 }

@@ -27,20 +27,20 @@ final class NetworkChecker {
     
     func start() {
         self.monitor.pathUpdateHandler = { path in
-            self.isOn = path.status == .satisfied
-            self.connType = self.checkConnectionTypeForPath(path)
+            isOn = path.status == .satisfied
+            connType = checkConnectionTypeForPath(path)
             
-            print("📡\(self.isOn)")
+            print("📡\(isOn)")
             
-            if self.isOn == false {
-                self.presentNetworkNotiAlertController()
+            if isOn == false {
+                presentNetworkNotiAlertController()
             }
         }
         
     }
     
     func stop() {
-        self.monitor.cancel()
+        monitor.cancel()
     }
     
     func checkConnectionTypeForPath(_ path: NWPath) -> ConnectionType {
@@ -71,7 +71,9 @@ final class NetworkChecker {
                 handler: nil)
             alertController.addAction(okAction)
             
-            rootViewController.present(alertController, animated: false, completion: nil)
+            rootViewController.present(
+                alertController, animated: false,
+                completion: nil)
         }
     }
 }

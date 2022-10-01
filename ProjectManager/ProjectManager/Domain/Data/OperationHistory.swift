@@ -31,7 +31,7 @@ struct OperationHistory {
     
     var historyDescription: String {
         guard let projectTitle = self.projectTitle,
-              let projectStatus = self.projectStatus else {
+              let projectStatus = self.projects else {
             return "오류 발생"
         }
         
@@ -46,7 +46,7 @@ struct OperationHistory {
     }
     
     var dateDescription: String {
-        "\(date.localeString()) \(self.date.formattedTimeString)"
+        "\(date.localeString()) \(date.formattedTimeString)"
     }
     
     // MARK: - Initializer

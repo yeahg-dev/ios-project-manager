@@ -20,7 +20,7 @@ public class CDProject: NSManagedObject {
             return Status(rawValue: statusString)
         }
         set {
-            self.statusString = newValue?.rawValue
+            statusString = newValue?.rawValue
         }
     }
 }
@@ -29,11 +29,11 @@ extension CDProject {
     
     func toDomain() -> Project {
         return Project(
-            identifier: self.identifier,
-            title: self.title,
-            deadline: self.deadline,
-            description: self.descriptions,
-            status: self.status,
-            hasUserNotification: self.hasUSerNotification)
+            identifier: identifier,
+            title: title,
+            deadline: deadline,
+            description: descriptions,
+            status: status,
+            hasUserNotification: hasUSerNotification)
     }
 }

@@ -54,15 +54,15 @@ struct Project {
         for (key, value) in content {
             switch key {
             case ProjectKey.title.rawValue:
-                self.title = value as? String
+                title = value as? String
             case ProjectKey.description.rawValue:
-                self.description = value as? String
+                description = value as? String
             case ProjectKey.deadline.rawValue:
-                self.deadline = value as? Date
+                deadline = value as? Date
             case ProjectKey.status.rawValue:
-                self.status = value as? Status
+                status = value as? Status
             case ProjectKey.hasUserNotification.rawValue:
-                self.hasUserNotification = value as? Bool
+                hasUserNotification = value as? Bool
             default:
                 continue
             }
@@ -79,8 +79,8 @@ struct Project {
 extension Project: Hashable {
     
     func hash(into hasher: inout Hasher) {
-           hasher.combine(identifier)
-       }
+        hasher.combine(identifier)
+    }
     
 }
 

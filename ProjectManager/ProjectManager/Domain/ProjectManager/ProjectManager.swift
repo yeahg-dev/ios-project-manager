@@ -21,17 +21,17 @@ final class ProjectManager {
     
     private (set) var repositoryType: Repository? {
         get {
-            return self.repository?.type
+            return repository?.type
         }
         set
         {
             switch newValue {
             case .coreData:
-                self.repository = ProjectCoreDataRepository()
+                repository = ProjectCoreDataRepository()
             case .firestore:
-                self.repository = ProjectFirestoreRepository()
+                repository = ProjectFirestoreRepository()
             case .inMemory, .none:
-                self.repository = ProjectInMemoryRepository()
+                repository = ProjectInMemoryRepository()
             }
         }
     }
@@ -46,7 +46,7 @@ final class ProjectManager {
             description: content[ProjectKey.description.rawValue] as? String,
             status: content[ProjectKey.status.rawValue] as? Status,
             hasUserNotification: false)
-        self.repository?.create(project)
+        repository?.create(project)
     }
     
     func readProject(
@@ -54,7 +54,7 @@ final class ProjectManager {
         completion: @escaping (Result<Project?, Error>)
         -> Void)
     {
-        self.repository?.read(of: identifier, completion: completion)
+        repository?.read(of: identifier, completion: completion)
     }
     
     func readProject(
@@ -62,7 +62,7 @@ final class ProjectManager {
         completion: @escaping (Result<[Project]?, Error>)
         -> Void)
     {
-        self.repository?.read(of: status, completion: completion)
+        repository?.read(of: status, completion: completion)
     }
     
     func updateProjectContent(
@@ -71,37 +71,37 @@ final class ProjectManager {
     {
         var updatingProject = project
         updatingProject.updateContent(with: content)
-        self.repository?.updateContent(of: project, with: updatingProject)
+        repository?.updateContent(of: project, with: updatingProject)
         if let _ = content[ProjectKey.deadline.rawValue],
            let hasUserNotification = content[ProjectKey.hasUserNotification.rawValue] as? Bool,
            hasUserNotification == true {
-            self.modifyUserNotificationDate(of: updatingProject)
+            modifyUserNotificationDate(of: updatingProject)
         }
     }
     
     func updateProjectStatus(of project: Project, with status: Status) {
-        self.repository?.updateStatus(of: project, with: status)
+        repository?.updateStatus(of: project, with: status)
     }
     
     func delete(_ project: Project) {
-        self.repository?.delete(project)
-        self.removeUserNotification(of: project)
+        repository?.delete(project)
+        removeUserNotification(of: project)
     }
     
     // MARK: - ProjectRepository Configuration Method
     
     func switchProjectRepository(with repository: Repository) {
-        self.repositoryType = repository
-        self.delegate?.projectManager(didChangedRepositoryWith: repository)
+        repositoryType = repository
+        delegate?.projectManager(didChangedRepositoryWith: repository)
     }
     
     // MARK: - UserNotification Method
     
     func registerNewUserNotification(of project: Project) {
-        self.updateProjectContent(
+        updateProjectContent(
             of: project,
             with: [ProjectKey.hasUserNotification.rawValue: true])
-        self.registerUserNotification(of: project)
+        registerUserNotification(of: project)
     }
     
     func registerUserNotification(of project: Project) {
@@ -115,7 +115,7 @@ final class ProjectManager {
             in: .current,
             from: deadline)
         
-        self.userNotificationHandler.requestNotification(
+        userNotificationHandler.requestNotification(
             of: content,
             when: dateComponent,
             identifier: identifier)
@@ -131,18 +131,18 @@ final class ProjectManager {
     }
     
     func removeUserNotification(of project: Project) {
-        self.updateProjectContent(
+        updateProjectContent(
             of: project,
             with: [ProjectKey.hasUserNotification.rawValue: false])
         guard let identifier = project.identifier else {
             return
         }
-        self.userNotificationHandler.removeNotification(of: identifier)
+        userNotificationHandler.removeNotification(of: identifier)
     }
     
     func modifyUserNotificationDate(of modifiedProject: Project) {
-        self.removeUserNotification(of: modifiedProject)
-        self.registerUserNotification(of: modifiedProject)
+        removeUserNotification(of: modifiedProject)
+        registerUserNotification(of: modifiedProject)
     }
     
 }

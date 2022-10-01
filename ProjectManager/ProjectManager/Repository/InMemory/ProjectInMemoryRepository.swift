@@ -26,7 +26,7 @@ extension ProjectInMemoryRepository: ProjectRepository {
     }
     
     var historyRepository: HistoryRepository {
-        return history
+        history
     }
     
     // MARK: - CRUD Method
@@ -35,9 +35,9 @@ extension ProjectInMemoryRepository: ProjectRepository {
         guard let identifier = project.identifier else {
             return
         }
-        self.projects.updateValue(project, forKey: identifier)
+        projects.updateValue(project, forKey: identifier)
         
-        self.makeHistory(of: project, type: .add)
+        makeHistory(of: project, type: .add)
     }
     
     func read(
@@ -60,7 +60,7 @@ extension ProjectInMemoryRepository: ProjectRepository {
             return
         }
         
-        self.projects.updateValue(modifiedProject, forKey: identifier)
+        projects.updateValue(modifiedProject, forKey: identifier)
     }
     
     func updateStatus(of project: Project, with status: Status) {
@@ -70,9 +70,9 @@ extension ProjectInMemoryRepository: ProjectRepository {
         }
         
         updatingProject.updateStatus(with: status)
-        self.projects.updateValue(updatingProject, forKey: identifier)
+        projects.updateValue(updatingProject, forKey: identifier)
         
-        self.makeHistory(of: project, type: .move(status))
+        makeHistory(of: project, type: .move(status))
     }
     
     func delete(_ project: Project) {
@@ -80,9 +80,9 @@ extension ProjectInMemoryRepository: ProjectRepository {
             return
         }
         
-        self.projects.removeValue(forKey: identifier)
+        projects.removeValue(forKey: identifier)
         
-        self.makeHistory(of: project, type: .remove)
+        makeHistory(of: project, type: .remove)
     }
     
     private func makeHistory(of project: Project, type: OperationType) {

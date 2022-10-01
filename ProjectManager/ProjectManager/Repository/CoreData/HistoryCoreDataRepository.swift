@@ -18,15 +18,15 @@ class HistoryCoreDataRepository: HistoryRepository {
     private let context = ProjectPersistentContainer.context
     
     var historyCount: Int {
-        return historys.count
+        historys.count
     }
     
     func fetchHistorys() {
-        self.fetch()
+        fetch()
     }
     
     func readHistory(of inedx: Int) -> [String?: String?]? {
-        return ["description": historys[inedx].descrption,
+       ["description": historys[inedx].descrption,
                 "date": historys[inedx].date]
     }
     
@@ -41,7 +41,7 @@ class HistoryCoreDataRepository: HistoryRepository {
             projectIdentifier: projectIdentifier,
             projectTitle: title,
             projectStatus: status)
-        let cdHistory = CDHistory(context: self.context)
+        let cdHistory = CDHistory(context: context)
         cdHistory.descrption = newHistory.historyDescription
         cdHistory.date = newHistory.dateDescription
         
@@ -54,7 +54,7 @@ class HistoryCoreDataRepository: HistoryRepository {
         fetchRequest.sortDescriptors = [sortDescriptor]
         
         do {
-            self.historys = try context.fetch(fetchRequest)
+            historys = try context.fetch(fetchRequest)
         } catch  {
             print(error.localizedDescription)
         }
@@ -63,7 +63,7 @@ class HistoryCoreDataRepository: HistoryRepository {
     private func save() {
         if self.context.hasChanges {
             do {
-                try self.context.save()
+                try context.save()
             } catch {
                 print(error.localizedDescription)
             }

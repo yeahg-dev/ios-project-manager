@@ -23,7 +23,7 @@ final class HistoryInMemoryRepository: HistoryRepository {
     func fetchHistorys() { }
     
     func readHistory(of inedx: Int) -> [String?: String?]? {
-        self.historys[inedx]
+        historys[inedx]
     }
     
     func createHistory(

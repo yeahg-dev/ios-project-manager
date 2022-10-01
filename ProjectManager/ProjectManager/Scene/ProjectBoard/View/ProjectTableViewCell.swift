@@ -78,8 +78,8 @@ final class ProjectTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.configureCellUI()
-        self.configureLayout()
+        configureCellUI()
+        configureLayout()
     }
     
     // MARK: - Configure View
@@ -92,22 +92,22 @@ final class ProjectTableViewCell: UITableViewCell {
         guard #available(iOS 13, *) else { return }
         
         guard traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle else { return }
-        self.cellContainerView.layer.shadowColor = UIColor.shadowColor.cgColor
+        cellContainerView.layer.shadowColor = UIColor.shadowColor.cgColor
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.titleLabel.textColor = Design.titleLabelTextColor
+        titleLabel.textColor = Design.titleLabelTextColor
     }
     
     private func configureCellUI() {
-        self.backgroundColor = .clear
-        self.selectionStyle = .none
+        backgroundColor = .clear
+        selectionStyle = .none
     }
     
     private func configureLayout() {
-        self.contentView.addSubview(cellContainerView)
-        self.cellContainerView.addSubview(stackView)
+        contentView.addSubview(cellContainerView)
+        cellContainerView.addSubview(stackView)
         NSLayoutConstraint.activate([
             cellContainerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Design.cellMargin),
             cellContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -128,14 +128,14 @@ final class ProjectTableViewCell: UITableViewCell {
         deadline: String?,
         with DeadlineTextColor: UIColor)
     {
-        self.titleLabel.text = title
-        self.descpritionLabel.text = description
-        self.deadlineLabel.textColor = DeadlineTextColor
-        self.deadlineLabel.text = deadline
+        titleLabel.text = title
+        descpritionLabel.text = description
+        deadlineLabel.textColor = DeadlineTextColor
+        deadlineLabel.text = deadline
     }
     
     func setBackgroundColor(color: UIColor?) {
-        self.cellContainerView.backgroundColor = color
+        cellContainerView.backgroundColor = color
     }
     
 }

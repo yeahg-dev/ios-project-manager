@@ -35,8 +35,8 @@ final class ProjectTableViewHeaderView: UIView {
         let seperator = CALayer()
         seperator.frame = CGRect(
             x: 0,
-            y: self.bounds.height - Design.seperatorLeadingMargin,
-            width: self.bounds.width,
+            y: bounds.height - Design.seperatorLeadingMargin,
+            width: bounds.width,
             height: Design.separatorHeight)
         seperator.backgroundColor = Design.seperatorColor
         return seperator
@@ -46,8 +46,8 @@ final class ProjectTableViewHeaderView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.layer.addSublayer(self.seperator)
+        translatesAutoresizingMaskIntoConstraints = false
+        layer.addSublayer(seperator)
     }
     
     required init(coder: NSCoder) {
@@ -61,18 +61,18 @@ final class ProjectTableViewHeaderView: UIView {
         self.addSubview(projectCountLabel)
         NSLayoutConstraint.activate([
             statusLabel.centerYAnchor.constraint(
-                equalTo: self.centerYAnchor),
+                equalTo: centerYAnchor),
             statusLabel.leadingAnchor.constraint(
-                equalTo: self.leadingAnchor,
+                equalTo: leadingAnchor,
                 constant: Design.statusLabelLeadingMargin),
             projectCountLabel.trailingAnchor.constraint(
-                equalTo: self.trailingAnchor,
+                equalTo: trailingAnchor,
                 constant: -Design.projectCountLabelTrailingMargin),
             projectCountLabel.centerYAnchor.constraint(
-                equalTo: self.statusLabel.centerYAnchor),
-            self.projectCountLabel.heightAnchor.constraint(
+                equalTo: statusLabel.centerYAnchor),
+            projectCountLabel.heightAnchor.constraint(
                 equalToConstant: Design.projcetCountLabelDiameter),
-            self.projectCountLabel.widthAnchor.constraint(
+            projectCountLabel.widthAnchor.constraint(
                 equalToConstant: Design.projcetCountLabelDiameter)
         ])
     }
@@ -80,14 +80,14 @@ final class ProjectTableViewHeaderView: UIView {
     // MARK: - API
     
     func setLabelColor(with color: UIColor?) {
-        self.statusLabel.textColor = color
-        self.projectCountLabel.backgroundColor = color
+        statusLabel.textColor = color
+        projectCountLabel.backgroundColor = color
         
     }
     
     func configureContent(status: String?, projectCount: Int ) {
-        self.statusLabel.text = status
-        self.projectCountLabel.text = String(projectCount)
+        statusLabel.text = status
+        projectCountLabel.text = String(projectCount)
     }
     
 }

@@ -64,30 +64,30 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configureView()
-        self.configureDelegate()
-        self.configureLayout()
-        self.configureNavigationItem()
-        self.projectManager(
-            didChangedRepositoryWith: self.projectManager.repositoryType ?? .coreData)
+        configureView()
+        configureDelegate()
+        configureLayout()
+        configureNavigationItem()
+        projectManager(
+            didChangedRepositoryWith: projectManager.repositoryType ?? .coreData)
     }
     
     // MARK: - Configure View
     
     private func configureView() {
-        self.view.backgroundColor = Design.backgroundColor
+        view.backgroundColor = Design.backgroundColor
     }
     
     private func configureLayout() {
-        self.configureNavigationBarLayout()
-        self.configureProjectListStackViewLayout()
-        self.configureBottomBarLayout()
-        self.configureRepositorySettingButtonLayout()
+        configureNavigationBarLayout()
+        configureProjectListStackViewLayout()
+        configureBottomBarLayout()
+        configureRepositorySettingButtonLayout()
     }
     
     private func configureNavigationBarLayout() {
-        self.view.addSubview(navigationBar)
-        let safeArea = self.view.safeAreaLayoutGuide
+        view.addSubview(navigationBar)
+        let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             navigationBar.topAnchor.constraint(
                 equalTo: safeArea.topAnchor),
@@ -99,9 +99,9 @@ final class MainViewController: UIViewController {
     }
     
     private func configureProjectListStackViewLayout() {
-        self.view.addSubview(projectListStackView)
-        let safeArea = self.view.safeAreaLayoutGuide
-        let tabHeight = self.view.bounds.height * 0.05
+        view.addSubview(projectListStackView)
+        let safeArea = view.safeAreaLayoutGuide
+        let tabHeight = view.bounds.height * 0.05
         NSLayoutConstraint.activate([
             projectListStackView.topAnchor.constraint(
                 equalTo: navigationBar.bottomAnchor),
@@ -116,27 +116,27 @@ final class MainViewController: UIViewController {
     }
     
     private func configureBottomBarLayout() {
-        self.view.addSubview(bottomBar)
-        let safeArea = self.view.safeAreaLayoutGuide
+        view.addSubview(bottomBar)
+        let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            self.bottomBar.leadingAnchor.constraint(
+            bottomBar.leadingAnchor.constraint(
                 equalTo: safeArea.leadingAnchor),
-            self.bottomBar.topAnchor.constraint(
+            bottomBar.topAnchor.constraint(
                 equalTo: projectListStackView.bottomAnchor),
-            self.bottomBar.trailingAnchor.constraint(
+            bottomBar.trailingAnchor.constraint(
                 equalTo: safeArea.trailingAnchor),
-            self.bottomBar.bottomAnchor.constraint(
+            bottomBar.bottomAnchor.constraint(
                 equalTo: safeArea.bottomAnchor)
         ])
     }
     
     private func configureRepositorySettingButtonLayout() {
-        self.bottomBar.addSubview(repositorySettingButton)
-        let safeArea = self.view.safeAreaLayoutGuide
+        bottomBar.addSubview(repositorySettingButton)
+        let safeArea = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            self.repositorySettingButton.centerYAnchor.constraint(
+            repositorySettingButton.centerYAnchor.constraint(
                 equalTo: bottomBar.centerYAnchor),
-            self.repositorySettingButton.trailingAnchor.constraint(
+            repositorySettingButton.trailingAnchor.constraint(
                 equalTo: safeArea.trailingAnchor,
                 constant: -Design.repositorySettingButtonTrailingMargin)
         ])
@@ -167,43 +167,43 @@ final class MainViewController: UIViewController {
     // MARK: - Configure Controller
     
     private func configureDelegate() {
-        self.todoViewController.delegate = self
-        self.doingViewController.delegate = self
-        self.doneViewController.delegate = self
-        self.projectManager.delegate = self
-        self.navigationBar.delegate = self
+        todoViewController.delegate = self
+        doingViewController.delegate = self
+        doneViewController.delegate = self
+        projectManager.delegate = self
+        navigationBar.delegate = self
     }
     
     // MARK: - Method
     
     private func presentRepositoryConfigView() {
         let repositoryConfigAlertVC = RepositotyConfigViewController(
-            projectManager: self.projectManager)
+            projectManager: projectManager)
         repositoryConfigAlertVC.modalPresentationStyle = .popover
         
         if let popoverPresentationController = repositoryConfigAlertVC.popoverPresentationController {
-            popoverPresentationController.sourceView = self.repositorySettingButton
-            popoverPresentationController.sourceRect = self.repositorySettingButton.frame(forAlignmentRect: .zero)
+            popoverPresentationController.sourceView = repositorySettingButton
+            popoverPresentationController.sourceRect = repositorySettingButton.frame(forAlignmentRect: .zero)
         }
-        self.present(repositoryConfigAlertVC, animated: false, completion: nil)
+        present(repositoryConfigAlertVC, animated: false, completion: nil)
     }
     
     private func updateRepositorySettingButton(with color: UIColor?) {
         guard let color = color else {
             return
         }
-        let currentImage = self.repositorySettingButton.image(for: .normal)
+        let currentImage = repositorySettingButton.image(for: .normal)
         let newImage = currentImage?.withTintColor(
             color,
             renderingMode: .alwaysOriginal)
         
-        self.repositorySettingButton.setImage(newImage, for: .normal)
+        repositorySettingButton.setImage(newImage, for: .normal)
     }
     
     private func updateProjectListViews() {
-        self.todoViewController.updateView()
-        self.doingViewController.updateView()
-        self.doneViewController.updateView()
+        todoViewController.updateView()
+        doingViewController.updateView()
+        doneViewController.updateView()
     }
     
     
@@ -220,18 +220,18 @@ final class MainViewController: UIViewController {
     
     @objc func presentProjectHistoryViewController() {
         let historyViewController = ProjectHistoryViewController()
-        historyViewController.historyRepository = self.projectManager.historyRepository
+        historyViewController.historyRepository = projectManager.historyRepository
         
         historyViewController.modalPresentationStyle = .popover
         
-        guard let historyButton = self.navigationBar.items?.first?.leftBarButtonItem else {
+        guard let historyButton = navigationBar.items?.first?.leftBarButtonItem else {
             return
         }
         
         if let popoverPresentationController = historyViewController.popoverPresentationController {
             popoverPresentationController.barButtonItem = historyButton
         }
-        self.present(historyViewController, animated: false, completion: nil)
+        present(historyViewController, animated: false, completion: nil)
     }
 }
 
@@ -240,7 +240,7 @@ final class MainViewController: UIViewController {
 extension MainViewController: UINavigationBarDelegate {
     
     func position(for bar: UIBarPositioning) -> UIBarPosition {
-        return UIBarPosition.topAttached
+       UIBarPosition.topAttached
     }
 }
 
@@ -249,23 +249,23 @@ extension MainViewController: UINavigationBarDelegate {
 extension MainViewController: ProjectCreationDelegate {
     
     func barTitle() -> String {
-        return ProjectDetailScene.creationTtile.rawValue
+        ProjectDetailScene.creationTtile.rawValue
     }
     
     func rightBarButtonItem() -> UIBarButtonItem.SystemItem {
-        return .done
+        .done
     }
     
     func leftBarButtonItem() -> UIBarButtonItem.SystemItem {
-        return .cancel
+        .cancel
     }
     
     func didTappedrightBarButtonItem(
         of project: Project?,
         projectContent: [String : Any])
     {
-        self.projectManager.create(with: projectContent)
-        self.todoViewController.updateView()
+        projectManager.create(with: projectContent)
+        todoViewController.updateView()
     }
     
 }
@@ -279,31 +279,31 @@ extension MainViewController: ProjectListViewControllerDelegate {
         completion: @escaping (Result<[Project]?, Error>)
         -> Void)
     {
-        self.projectManager.readProject(of: status, completion: completion)
+        projectManager.readProject(of: status, completion: completion)
     }
     
     func updateProjectStatus(of project: Project, with status: Status) {
-        self.projectManager.updateProjectStatus(of: project, with: status)
-        self.updateProjectListViews()
+        projectManager.updateProjectStatus(of: project, with: status)
+        updateProjectListViews()
     }
     
     func updateProject(of project: Project, with content: [String : Any]) {
-        self.projectManager.updateProjectContent(of: project, with: content)
-        self.updateProjectListViews()
+        projectManager.updateProjectContent(of: project, with: content)
+        updateProjectListViews()
     }
     
     func deleteProject(_ project: Project) {
-        self.projectManager.delete(project)
+        projectManager.delete(project)
     }
     
     func registerUserNotification(of project: Project) {
         if project.hasUserNotification == false {
-            self.projectManager.registerNewUserNotification(of: project)
+            projectManager.registerNewUserNotification(of: project)
         }
     }
     
     func removeUserNotification(of project: Project) {
-        self.projectManager.removeUserNotification(of: project)
+        projectManager.removeUserNotification(of: project)
     }
     
 }
@@ -315,17 +315,17 @@ extension MainViewController: ProjectManagerDelegate {
     func projectManager(didChangedRepositoryWith repository: Repository) {
         switch repository {
         case .inMemory:
-            self.updateRepositorySettingButton(
+            updateRepositorySettingButton(
                 with: Design.inMemoryButtonColor)
         case .coreData:
-            self.updateRepositorySettingButton(
+            updateRepositorySettingButton(
                 with: Design.coreDataButtonColor)
         case .firestore:
-            self.updateRepositorySettingButton(
+            updateRepositorySettingButton(
                 with: Design.firestoreButtonColor)
         }
         
-        self.updateProjectListViews()
+        updateProjectListViews()
     }
     
 }

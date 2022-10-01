@@ -65,12 +65,12 @@ extension ProjectCoreDataRepository: ProjectRepository {
    
     var type: Repository {
         get {
-            return .coreData
+            .coreData
         }
     }
     
     var historyRepository: HistoryRepository {
-        return HistoryCoreDataRepository()
+        HistoryCoreDataRepository()
     }
     
     // MARK: - CRUD
@@ -84,9 +84,9 @@ extension ProjectCoreDataRepository: ProjectRepository {
         cdProject.status = project.status
         cdProject.hasUSerNotification = project.hasUserNotification ?? false
         
-        self.save()
+        save()
         
-        self.historyRepository.createHistory(type: .add,
+        historyRepository.createHistory(type: .add,
                                         of: project.identifier,
                                         title: project.title,
                                         status: project.status)
@@ -96,7 +96,7 @@ extension ProjectCoreDataRepository: ProjectRepository {
         of identifier: String,
         completion: @escaping (Result<Project?, Error>) -> Void)
     {
-        let result = self.fetch(of: identifier)
+        let result = fetch(of: identifier)
         let project = result?.toDomain()
         completion(.success(project))
     }
@@ -105,7 +105,7 @@ extension ProjectCoreDataRepository: ProjectRepository {
         of group: Status,
         completion: @escaping (Result<[Project]?, Error>) -> Void)
     {
-        let results = self.fetch(of: group)
+        let results = fetch(of: group)
         let projects = results?.compactMap({ project in
             project.toDomain()
         })
@@ -120,14 +120,14 @@ extension ProjectCoreDataRepository: ProjectRepository {
             return
         }
             
-        let project = self.fetch(of: identifier)
+        let project = fetch(of: identifier)
         project?.title = modifiedProject.title
         project?.descriptions = modifiedProject.description
         project?.deadline = modifiedProject.deadline
         project?.status = modifiedProject.status
         project?.hasUSerNotification = modifiedProject.hasUserNotification ?? false
         
-        self.save()
+        save()
     }
     
     func updateStatus(
@@ -138,28 +138,30 @@ extension ProjectCoreDataRepository: ProjectRepository {
             return
         }
             
-        let project = self.fetch(of: identifier)
+        let project = fetch(of: identifier)
         let currentStatus = project?.status
         project?.status = status
-        self.save()
+        save()
         
-        self.historyRepository.createHistory(type: .move(status),
-                                        of: identifier,
-                                        title: project?.title,
-                                        status: currentStatus)
+        historyRepository.createHistory(
+            type: .move(status),
+            of: identifier,
+            title: project?.title,
+            status: currentStatus)
     }
     
     func delete(_ project: Project) {
         guard let identifier = project.identifier,
-              let project = self.fetch(of: identifier),
+              let project = fetch(of: identifier),
               let title = project.title,
               let status = project.status else {
                   return
               }
-        context.delete(project)
-        self.save()
         
-        self.historyRepository.createHistory(type: .remove,
+        context.delete(project)
+        save()
+        
+        historyRepository.createHistory(type: .remove,
                                         of: identifier,
                                         title: title,
                                         status: status)

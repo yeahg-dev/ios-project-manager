@@ -46,8 +46,8 @@ final class RepositotyConfigViewController: UIViewController {
             [.foregroundColor: Design.segmentedControlTitleColor],
             for: .selected
         )
-        let action = UIAction { UIAction in
-            self.switchDataSource()
+        let action = UIAction { [weak self] UIAction in
+            self?.switchDataSource()
         }
         segmentedControl.addAction(action, for: .valueChanged)
         return segmentedControl
@@ -68,31 +68,31 @@ final class RepositotyConfigViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configureView()
-        self.configureLayout()
-        self.configureContent()
+        configureView()
+        configureLayout()
+        configureContent()
     }
     
     // MARK: - Configure UI
     
     private func configureView() {
-        self.view.translatesAutoresizingMaskIntoConstraints = false
-        self.view.backgroundColor = Design.backgroundColor
-        self.preferredContentSize = CGSize(width: Design.width, height: Design.height)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Design.backgroundColor
+        preferredContentSize = CGSize(width: Design.width, height: Design.height)
     }
     
     private func configureLayout() {
         self.view.addSubview(contentStackView)
         NSLayoutConstraint.activate([
             contentStackView.topAnchor.constraint(
-                equalTo: self.view.topAnchor,
+                equalTo: view.topAnchor,
                 constant: Design.topPadding),
             contentStackView.leadingAnchor.constraint(
-                equalTo: self.view.leadingAnchor),
+                equalTo: view.leadingAnchor),
             contentStackView.trailingAnchor.constraint(
-                equalTo: self.view.trailingAnchor),
+                equalTo: view.trailingAnchor),
             contentStackView.bottomAnchor.constraint(
-                equalTo: self.view.bottomAnchor,
+                equalTo: view.bottomAnchor,
                 constant: -Design.bottomPadding)
         ])
     }
@@ -103,12 +103,12 @@ final class RepositotyConfigViewController: UIViewController {
             return
         }
         
-        self.repositorySegmentedControl.selectedSegmentIndex = index
+        repositorySegmentedControl.selectedSegmentIndex = index
     }
     
     private func switchDataSource() {
-        let selectedIndex = self.repositorySegmentedControl.selectedSegmentIndex
-        self.projectManager?.switchProjectRepository(with: repositoryTypes[selectedIndex])
+        let selectedIndex = repositorySegmentedControl.selectedSegmentIndex
+        projectManager?.switchProjectRepository(with: repositoryTypes[selectedIndex])
     }
 }
 

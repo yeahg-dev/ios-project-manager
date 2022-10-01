@@ -45,18 +45,18 @@ struct ProjectDTO {
     }
     
     func toDomain() -> Project? {
-        guard let deadlineTimestamp = self.deadline,
-              let statusRawValue = self.statusRawValue else {
+        guard let deadlineTimestamp = deadline,
+              let statusRawValue = statusRawValue else {
             return nil
         }
         let deadline = Date(timeIntervalSince1970: TimeInterval(deadlineTimestamp.seconds))
         return Project(
-            identifier: self.identifier,
-            title: self.title,
+            identifier: identifier,
+            title: title,
             deadline: deadline,
-            description: self.description,
+            description: description,
             status: Status(rawValue: statusRawValue),
-            hasUserNotification: self.hasUserNotification)
+            hasUserNotification: hasUserNotification)
     }
     
     func toEntity() -> [String: Any] {
@@ -65,19 +65,19 @@ struct ProjectDTO {
             identifier as Any,
             forKey: ProjectKey.identifier.rawValue)
         dict.updateValue(
-            self.title as Any,
+            title as Any,
             forKey: ProjectKey.title.rawValue)
         dict.updateValue(
-            self.deadline as Any,
+            deadline as Any,
             forKey: ProjectKey.deadline.rawValue)
         dict.updateValue(
-            self.description as Any,
+            description as Any,
             forKey: ProjectKey.description.rawValue)
         dict.updateValue(
-            self.statusRawValue as Any,
+            statusRawValue as Any,
             forKey: ProjectKey.status.rawValue)
         dict.updateValue(
-            self.hasUserNotification as Any,
+            hasUserNotification as Any,
             forKey: ProjectKey.hasUserNotification.rawValue)
         return dict
     }
@@ -88,16 +88,16 @@ struct ProjectDTO {
 extension Project {
     
     func toDTO() -> ProjectDTO? {
-        guard let deadline = self.deadline else {
+        guard let deadline = deadline else {
             return nil
         }
         
         return ProjectDTO(
-            identifier: self.identifier,
-            title: self.title,
+            identifier: identifier,
+            title: title,
             deadline:  Timestamp(date: deadline),
-            description: self.description,
-            statusRawValue: self.status?.rawValue,
-            hasUserNotification: self.hasUserNotification)
+            description: description,
+            statusRawValue: status?.rawValue,
+            hasUserNotification: hasUserNotification)
     }
 }

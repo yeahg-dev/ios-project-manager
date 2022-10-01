@@ -17,9 +17,9 @@ final class HistoryTableViewCell: UITableViewCell {
     // MARK: - API
     
     func configureContentWith(description: String?, date: String?) {
-        self.descriptionLabel?.text = description
-        self.dateLabel?.text = date
-        self.descriptionLabel?.textColor = ColorPallete.buttonColor
+        descriptionLabel?.text = description
+        dateLabel?.text = date
+        descriptionLabel?.textColor = ColorPallete.buttonColor
     }
     
 }

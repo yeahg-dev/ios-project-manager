@@ -100,7 +100,7 @@ final class ProjectDetailViewController: UIViewController {
     
     var projectContent: [String: Any]{
         var content: [String: Any] = [:]
-        switch self.mode {
+        switch mode {
         case .creation:
             content.updateValue(
                 UUID().uuidString as Any,
@@ -110,7 +110,7 @@ final class ProjectDetailViewController: UIViewController {
                 forKey: ProjectKey.status.rawValue)
         default:
             content.updateValue(
-                self.project?.status as Any,
+                project?.status as Any,
                 forKey: ProjectKey.status.rawValue)
         }
         content.updateValue(
@@ -149,50 +149,50 @@ final class ProjectDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configureLayout()
-        self.configureNavigationItems()
-        self.configureMode()
-        self.descriptionTextView.delegate = self
-        self.titleTextField.delegate = self
+        configureLayout()
+        configureNavigationItems()
+        configureMode()
+        descriptionTextView.delegate = self
+        titleTextField.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.addKeyboardNotificationObserver()
+        addKeyboardNotificationObserver()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.removeKeyboardNotificationObserver()
+        removeKeyboardNotificationObserver()
     }
     
     // MARK: - Configure View
     
     private func configureLayout() {
-        self.configureView()
-        self.configureNavigationBarLayout()
-        self.configureStackViewLayout()
+        configureView()
+        configureNavigationBarLayout()
+        configureStackViewLayout()
     }
     
     private func configureView() {
-        self.view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemBackground
     }
     
     private func configureNavigationBarLayout() {
-        self.view.addSubview(navigationBar)
+        view.addSubview(navigationBar)
         NSLayoutConstraint.activate([
             navigationBar.topAnchor.constraint(
-                equalTo: self.view.topAnchor),
+                equalTo: view.topAnchor),
             navigationBar.leadingAnchor.constraint(
-                equalTo: self.view.leadingAnchor),
+                equalTo: view.leadingAnchor),
             navigationBar.trailingAnchor.constraint(
-                equalTo: self.view.trailingAnchor)
+                equalTo: view.trailingAnchor)
         ])
     }
     
     private func configureStackViewLayout() {
-        self.descriptionTextViewContainer.addSubview(descriptionTextView)
-        self.view.addSubview(stackView)
+        descriptionTextViewContainer.addSubview(descriptionTextView)
+        view.addSubview(stackView)
         NSLayoutConstraint.activate([
             titleTextField.heightAnchor.constraint(
                 equalToConstant: Design.titleTextFieldHeight),
@@ -212,22 +212,22 @@ final class ProjectDetailViewController: UIViewController {
                 equalTo: navigationBar.bottomAnchor,
                 constant: Design.topPadding),
             stackView.bottomAnchor.constraint(
-                equalTo: self.view.bottomAnchor,
+                equalTo: view.bottomAnchor,
                 constant: -Design.bottomPadding),
             stackView.leadingAnchor.constraint(
-                equalTo: self.view.leadingAnchor,
+                equalTo: view.leadingAnchor,
                 constant: Design.leadingPadding),
             stackView.trailingAnchor.constraint(
-                equalTo: self.view.trailingAnchor,
+                equalTo: view.trailingAnchor,
                 constant: -Design.trailingPadding)
         ])
     }
     
     private func configureNavigationItems() {
         let navigationItem = UINavigationItem()
-        guard let rightBarButtonItem = self.projectDetailDelegate?.rightBarButtonItem(),
-              let leftBarButtonItem = self.projectDetailDelegate?.leftBarButtonItem(),
-              let title = self.projectDetailDelegate?.barTitle() else {
+        guard let rightBarButtonItem = projectDetailDelegate?.rightBarButtonItem(),
+              let leftBarButtonItem = projectDetailDelegate?.leftBarButtonItem(),
+              let title = projectDetailDelegate?.barTitle() else {
             return
         }
         
@@ -245,14 +245,14 @@ final class ProjectDetailViewController: UIViewController {
         navigationItem.leftBarButtonItem = leftBarButton
         navigationItem.title = title
         
-        self.navigationBar.items = [navigationItem]
+        navigationBar.items = [navigationItem]
     }
     
     @objc func didTappedRightBarButton() {
-        self.projectDetailDelegate?.didTappedrightBarButtonItem(
+        projectDetailDelegate?.didTappedrightBarButtonItem(
             of: project,
             projectContent: self.projectContent)
-        self.dismiss(animated: false)
+        dismiss(animated: false)
     }
     
     @objc func didTappedLefttBarButton() {
@@ -260,7 +260,7 @@ final class ProjectDetailViewController: UIViewController {
         case .edit:
             self.enableEdit()
         default:
-            self.dismiss(animated: false)
+            dismiss(animated: false)
         }
     }
     
@@ -283,8 +283,8 @@ final class ProjectDetailViewController: UIViewController {
         case .creation:
             break
         case .edit:
-            self.configureContentWithProject()
-            self.toggleEditMode()
+            configureContentWithProject()
+            toggleEditMode()
         default:
             return
         }
@@ -296,9 +296,9 @@ final class ProjectDetailViewController: UIViewController {
         guard self.project != nil else {
             return
         }
-        self.titleTextField.text = self.project?.title
-        self.datePicker.date = self.project?.deadline ?? Date()
-        self.descriptionTextView.text = self.project?.description
+        titleTextField.text = project?.title
+        datePicker.date = project?.deadline ?? Date()
+        descriptionTextView.text = project?.description
     }
     
     private func enableEdit() {
@@ -307,9 +307,9 @@ final class ProjectDetailViewController: UIViewController {
     }
     
     private func toggleEditMode() {
-        self.titleTextField.isEnabled.toggle()
-        self.datePicker.isEnabled.toggle()
-        self.descriptionTextView.isEditable.toggle()
+        titleTextField.isEnabled.toggle()
+        datePicker.isEnabled.toggle()
+        descriptionTextView.isEditable.toggle()
     }
     
     
@@ -340,7 +340,7 @@ final class ProjectDetailViewController: UIViewController {
     }
     
     @objc private func keyboardWillShow(_ sender: Notification) {
-        self.boundsOriginWillIncreaseByKeyboardHeight(sender)
+        boundsOriginWillIncreaseByKeyboardHeight(sender)
     }
     
     private func boundsOriginWillIncreaseByKeyboardHeight(_ sender: Notification) {
@@ -348,17 +348,17 @@ final class ProjectDetailViewController: UIViewController {
             if let keyboardFrame: NSValue = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
                 let keyboardRectangle = keyboardFrame.cgRectValue
                 let keyboardHeight = keyboardRectangle.height
-                self.view.bounds.origin.y += keyboardHeight * 0.5
+                view.bounds.origin.y += keyboardHeight * 0.5
             }
         }
     }
     
     @objc private func keyboardWillHide(_ sender: Notification) {
-        self.boundsOriginWillReturnToZero()
+        boundsOriginWillReturnToZero()
     }
     
     private func boundsOriginWillReturnToZero() {
-        self.view.bounds.origin = .zero
+        view.bounds.origin = .zero
     }
     
 }
@@ -392,7 +392,7 @@ extension ProjectDetailViewController: UITextViewDelegate {
 extension ProjectDetailViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.titleTextField.resignFirstResponder()
+        titleTextField.resignFirstResponder()
         return true
     }
 }
