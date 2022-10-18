@@ -48,6 +48,7 @@ final class ProjectTableViewHeaderView: UIView {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         layer.addSublayer(seperator)
+        configureLayout()
     }
     
     required init(coder: NSCoder) {
