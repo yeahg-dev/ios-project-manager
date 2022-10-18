@@ -31,7 +31,7 @@ struct OperationHistory {
     
     var historyDescription: String {
         guard let projectTitle = self.projectTitle,
-              let projectStatus = self.projects else {
+              let projectStatus = self.projectStatus else {
             return "오류 발생"
         }
         

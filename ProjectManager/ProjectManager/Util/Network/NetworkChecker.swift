@@ -26,14 +26,14 @@ final class NetworkChecker {
     }
     
     func start() {
-        self.monitor.pathUpdateHandler = { path in
-            isOn = path.status == .satisfied
-            connType = checkConnectionTypeForPath(path)
+        self.monitor.pathUpdateHandler = { [weak self] path in
+            self?.isOn = ( path.status == .satisfied )
+            self?.connType = self?.checkConnectionTypeForPath(path) ?? .wifi
             
-            print("📡\(isOn)")
+            print("📡\(self?.isOn)")
             
-            if isOn == false {
-                presentNetworkNotiAlertController()
+            if self?.isOn == false {
+                self?.presentNetworkNotiAlertController()
             }
         }
         
