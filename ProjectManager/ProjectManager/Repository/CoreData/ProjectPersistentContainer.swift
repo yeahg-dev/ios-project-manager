@@ -22,4 +22,6 @@ enum ProjectPersistentContainer {
     }()
     
     static var context = ProjectPersistentContainer.persistentContainer.viewContext
+    
+    static let backgroundContext = persistentContainer.newBackgroundContext()
 }

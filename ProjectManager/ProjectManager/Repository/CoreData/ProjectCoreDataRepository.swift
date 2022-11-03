@@ -13,47 +13,61 @@ final class ProjectCoreDataRepository {
     // MARK: - Property
     
     private let persistentContainer = ProjectPersistentContainer.persistentContainer
-    private let context = ProjectPersistentContainer.context
+    private let backgroundContext = ProjectPersistentContainer.backgroundContext
     
     // MARK: - Method
     
-    private func fetch<T>(of identifier: T) -> CDProject? {
-        let fetchRequest = CDProject.fetchRequest()
-        let identifierString = String(describing: identifier)
-        let predicate = NSPredicate(format: "\(ProjectKey.identifier.rawValue) = %@", identifierString)
-        fetchRequest.predicate = predicate
-        
-        do {
-            return try context.fetch(fetchRequest).first
-        } catch  {
-            print(error.localizedDescription)
-            return nil
+    private func fetch<T>(
+        of identifier: T,
+        completion: @escaping (CDProject?) -> Void)
+    {
+        backgroundContext.perform {
+            let fetchRequest = CDProject.fetchRequest()
+            let identifierString = String(describing: identifier)
+            let predicate = NSPredicate(format: "\(ProjectKey.identifier.rawValue) = %@", identifierString)
+            fetchRequest.predicate = predicate
+            
+            do {
+                let project = try self.backgroundContext.fetch(fetchRequest).first
+                completion(project)
+            } catch  {
+                print("Error fetching project in coredata\(error.localizedDescription)")
+                return
+            }
         }
     }
     
-    private func fetch(of status: Status) -> [CDProject]? {
-        let fetchRequest = CDProject.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(
-            key: ProjectKey.deadline.rawValue,
-            ascending: true)
-        let predicate = NSPredicate(format: "statusString = %@", status.rawValue)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        fetchRequest.predicate = predicate
-        
-        do {
-            return try context.fetch(fetchRequest)
-        } catch  {
-            print(error.localizedDescription)
-            return nil
+    private func fetch(
+        of status: Status,
+        completion: @escaping ([CDProject]?) -> Void )
+    {
+        backgroundContext.perform {
+            let fetchRequest = CDProject.fetchRequest()
+            let sortDescriptor = NSSortDescriptor(
+                key: ProjectKey.deadline.rawValue,
+                ascending: true)
+            let predicate = NSPredicate(format: "statusString = %@", status.rawValue)
+            fetchRequest.sortDescriptors = [sortDescriptor]
+            fetchRequest.predicate = predicate
+            
+            do {
+                let projects = try self.backgroundContext.fetch(fetchRequest)
+                completion(projects)
+            } catch  {
+                print(error.localizedDescription)
+                return
+            }
         }
     }
     
     private func save() {
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                print(error.localizedDescription)
+        backgroundContext.perform {
+            if self.backgroundContext.hasChanges {
+                do {
+                    try self.backgroundContext.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }
     }
@@ -76,13 +90,15 @@ extension ProjectCoreDataRepository: ProjectRepository {
     // MARK: - CRUD
     
     func create(_ project: Project) {
-        let cdProject = CDProject(context: context)
-        cdProject.identifier = project.identifier
-        cdProject.title = project.title
-        cdProject.descriptions = project.description
-        cdProject.deadline = project.deadline
-        cdProject.status = project.status
-        cdProject.hasUSerNotification = project.hasUserNotification ?? false
+        backgroundContext.perform {
+            let cdProject = CDProject(context: self.backgroundContext)
+            cdProject.identifier = project.identifier
+            cdProject.title = project.title
+            cdProject.descriptions = project.description
+            cdProject.deadline = project.deadline
+            cdProject.status = project.status
+            cdProject.hasUSerNotification = project.hasUserNotification ?? false
+        }
         
         save()
         
@@ -96,20 +112,21 @@ extension ProjectCoreDataRepository: ProjectRepository {
         of identifier: String,
         completion: @escaping (Result<Project?, Error>) -> Void)
     {
-        let result = fetch(of: identifier)
-        let project = result?.toDomain()
-        completion(.success(project))
+        fetch(of: identifier){ (project) in
+            completion(.success(project?.toDomain()))
+        }
     }
     
     func read(
         of group: Status,
         completion: @escaping (Result<[Project]?, Error>) -> Void)
     {
-        let results = fetch(of: group)
-        let projects = results?.compactMap({ project in
-            project.toDomain()
-        })
-        completion(.success(projects))
+        fetch(of: group) { results in
+            let projects = results?.compactMap({ project in
+                project.toDomain()
+            })
+            completion(.success(projects))
+        }
     }
     
     func updateContent(
@@ -120,14 +137,15 @@ extension ProjectCoreDataRepository: ProjectRepository {
             return
         }
             
-        let project = fetch(of: identifier)
-        project?.title = modifiedProject.title
-        project?.descriptions = modifiedProject.description
-        project?.deadline = modifiedProject.deadline
-        project?.status = modifiedProject.status
-        project?.hasUSerNotification = modifiedProject.hasUserNotification ?? false
-        
-        save()
+        fetch(of: identifier) { project in
+            project?.title = modifiedProject.title
+            project?.descriptions = modifiedProject.description
+            project?.deadline = modifiedProject.deadline
+            project?.status = modifiedProject.status
+            project?.hasUSerNotification = modifiedProject.hasUserNotification ?? false
+            
+            self.save()
+        }
     }
     
     func updateStatus(
@@ -137,34 +155,41 @@ extension ProjectCoreDataRepository: ProjectRepository {
         guard let identifier = project.identifier else {
             return
         }
+        fetch(of: identifier) { project in
+            let currentStatus = project?.status
+            project?.status = status
             
-        let project = fetch(of: identifier)
-        let currentStatus = project?.status
-        project?.status = status
-        save()
+            self.save()
+            
+            self.historyRepository.createHistory(
+                type: .move(status),
+                of: identifier,
+                title: project?.title,
+                status: currentStatus)
+        }
         
-        historyRepository.createHistory(
-            type: .move(status),
-            of: identifier,
-            title: project?.title,
-            status: currentStatus)
     }
     
     func delete(_ project: Project) {
-        guard let identifier = project.identifier,
-              let project = fetch(of: identifier),
-              let title = project.title,
-              let status = project.status else {
+        guard let identifier = project.identifier else {
                   return
               }
         
-        context.delete(project)
-        save()
-        
-        historyRepository.createHistory(type: .remove,
-                                        of: identifier,
-                                        title: title,
-                                        status: status)
+        fetch(of: identifier) { project in
+            guard let project = project,
+                  let title = project.title,
+                  let status = project.status else {
+                return
+            }
+            
+            self.backgroundContext.delete(project)
+            self.save()
+            
+            self.historyRepository.createHistory(type: .remove,
+                                            of: identifier,
+                                            title: title,
+                                            status: status)
+        }
     }
     
 }

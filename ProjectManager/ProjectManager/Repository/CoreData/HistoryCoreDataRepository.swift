@@ -14,6 +14,7 @@ class HistoryCoreDataRepository: HistoryRepository {
     
     private var historys: [CDHistory] = []
     private let persistentContainer = ProjectPersistentContainer.persistentContainer
+    private let backgroundContext = ProjectPersistentContainer.backgroundContext
     
     private let context = ProjectPersistentContainer.context
     
@@ -36,36 +37,42 @@ class HistoryCoreDataRepository: HistoryRepository {
         title: String?,
         status: Status?)
     {
-        let newHistory = OperationHistory(
-            type: type,
-            projectIdentifier: projectIdentifier,
-            projectTitle: title,
-            projectStatus: status)
-        let cdHistory = CDHistory(context: context)
-        cdHistory.descrption = newHistory.historyDescription
-        cdHistory.date = newHistory.dateDescription
-        
+        // TODO: - OperationHistory 타입으로 변환해서 사용
+        backgroundContext.perform {
+            let newHistory = OperationHistory(
+                type: type,
+                projectIdentifier: projectIdentifier,
+                projectTitle: title,
+                projectStatus: status)
+            let cdHistory = CDHistory(context: self.backgroundContext)
+            cdHistory.descrption = newHistory.historyDescription
+            cdHistory.date = newHistory.dateDescription
+        }
         self.save()
     }
     
     private func fetch() {
-        let fetchRequest = CDHistory.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "date", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        do {
-            historys = try context.fetch(fetchRequest)
-        } catch  {
-            print(error.localizedDescription)
+        backgroundContext.perform {
+            let fetchRequest = CDHistory.fetchRequest()
+            let sortDescriptor = NSSortDescriptor(key: "date", ascending: false)
+            fetchRequest.sortDescriptors = [sortDescriptor]
+            
+            do {
+                self.historys = try self.backgroundContext.fetch(fetchRequest)
+            } catch  {
+                print(error.localizedDescription)
+            }
         }
     }
     
     private func save() {
-        if self.context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                print(error.localizedDescription)
+        backgroundContext.perform {
+            if self.backgroundContext.hasChanges {
+                do {
+                    try self.backgroundContext.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
         }
     }
