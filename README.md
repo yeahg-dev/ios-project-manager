@@ -98,42 +98,74 @@
 
 #  3. 트러블 슈팅
 
-## 1) 공통 뷰 구현 및 재사용 
+## 1) MVC에서 역할 분리하여 UI 재사용 하기 
 ### todo, doing, done 테이블뷰
 **상황**
 
-`할 일`, `하는 중`, `했음` 리스트는 UI와 공통적 행동(상태수정, 알림설정, 수정화면 전환)을 공유함
+- `Todo`, `Doing`, `Done` 3개의 테이블뷰는 공동된 UI와 로직, 액션(상태 수정, 알림 설정, 수정화면으로 전환)을 가집니다.
+- `ProjectListViewController`를 재사용하고자 했습니다.
 
 **해결 방법**
 
--  `Status`를 주입받는 `ProjectListViewController`를 정의
--   각 상태에 따른 할 일, 상태 수정을 그리도록 구현
--   공통적 변화 사항을 하나의 객체로만 관리할 수 있음
+- `ProjectListViewController`가 각 테이블뷰의 모델인 `Status`를 주입받도록 합니다.
+- `ProjectListViewController`는 TableView를 그리고, 사용자 액션을 정의합니다.
+- 사용자 액션에 따른 비즈니스 로직의 실행은 Delegate인 부모에게 위임합니다. 
+-  `Todo`, `Doing`, `Done`을 주입한 3개의 `ProjectListViewController`를 생성하고, 각 상태에 해당하는 데이터 Delegate로부터 읽어와 뷰에 바인딩했습니다. 
 
-### 할 일 생성 / 수정 뷰
+```swift
+// 부모인 MainViewController가 채택하여 구현, 비지니스 로직은 MainVC에서만 일어나도록 역할 분리
+protocol ProjectListViewControllerDelegate: AnyObject {
+    
+    func readProject(
+        of status: Status,
+        completion: @escaping (Result<[Project]?, Error>)
+        -> Void)
+    
+    func updateProject(of project: Project, with content: [String: Any])
+    
+    func updateProjectStatus(of project: Project, with status: Status)
+    
+    func deleteProject(_ project: Project)
+    
+    func registerUserNotification(of project: Project)
+    
+    func removeUserNotification(of project: Project)
+}
+```
 
-**상황**
+**결과**
 
-`할 일 생성`, `할 일 수정` 뷰는 동일한 UI를 공유하지만, navigationBar의 버튼의 역할이 다름
-
-
-**해결 방법**
-
-- `ProjectDetailDelegate`에 버튼의 타이틀, 탭 시 액션을 정의하여 delegate로 부터 전달받도록 구현
-- `DetailVC`를 공동 사용 가능하도록 리팩터링
+- `ProjectListViewController`에서 상태별로 다른 액션 Title을 제공하기 위해 여전히 분기처리가 필요했습니다.
+- 뷰와 모델이 결합되어 역할 분리가 어려운 MVC 패턴의 단점을 이해할 수 있었습니다. 
 
 <br>
 
-## 2) adaptive한 TableView 구현
+### 할 일 생성 / 수정 뷰
+
+<img width="778" alt="image" src="https://user-images.githubusercontent.com/81469717/218263254-51a72257-9803-45c2-9f15-5cda11973e93.png">
 
 **상황**
 
-`HistoryTableViewController`의 popover사이즈가 history 갯수에 따라 adaptive한 높이를 가지도록 구현하고자 함
+`할 일 생성`, `할 일 수정` 뷰는 동일한 UI를 공유하지만, navigationBar와 버튼이 실행하는 로직이 다릅니다.
 
 
 **해결 방법**
 
-- `tableView(_: ,cellForRowAt:)`내부에서  cell을 리턴하기전 self.view.setNeedsLayout()를 호출
-- 다음 드로잉사이클 때 바뀐 테이블 뷰의 사이즈를 반영하여 한번만 레이아웃을 업데이트 하도록 수정함
+- `ProjectDetailDelegate`에 버튼의 타이틀과 버튼 액션을 정의하고, delegate가 처리하도록 구현했습니다.
+- 생성 뷰와 수정 뷰의 델리게이트를 다르게 지정함으로써, `ProjectDetailVC`를 재사용할 수 있었습니다.
+
+<br>
+
+## 2) adaptive한 TableView 구현하기
+
+**상황**
+
+`HistoryTableViewController`의 popover사이즈가 history 갯수에 따라 adaptive한 높이를 가지도록 구현하고자 했습니다.
+
+
+**해결 방법**
+
+- `tableView(_: ,cellForRowAt:)`내부에서  cell을 리턴하기전 self.view.setNeedsLayout()를 호출했습니다
+- 다음 드로잉사이클 때 바뀐 테이블 뷰의 사이즈를 반영하여 한번만 레이아웃을 업데이트 하도록 수정했습니다.
 
 [해당 Issue thread](https://github.com/yeahg-dev/ios-project-manager/issues/16)
